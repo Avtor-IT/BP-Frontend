@@ -8,12 +8,12 @@ import { MarketPage } from 'pages/MarketPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
 import { TutorialPage } from 'pages/TutorialPage';
 import { Suspense } from 'react';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppRoutes, RoutePath } from 'shared/router';
 import PrivateRoute from '../ui/PrivateRoute';
 
 const Routes = () => {
-	const router = createHashRouter([
+	const router = createBrowserRouter([
 		{
 			id: 'root',
 			path: '/',

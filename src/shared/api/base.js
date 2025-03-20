@@ -5,10 +5,11 @@ const url = {
 	testing: 'https://intizar.pythonanywhere.com',
 	broadcast: 'http://0.0.0.0:8000',
 	local: 'http://127.0.0.1:8000',
+	vps: 'http://5.35.82.235'
 };
 
 const instance = axios.create({
-	baseURL: url.local,
+	baseURL: url.vps,
 });
 
 // Add urlParams config property
