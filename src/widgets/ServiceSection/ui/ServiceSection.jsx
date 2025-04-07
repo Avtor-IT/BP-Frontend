@@ -1,10 +1,10 @@
-import SectionTitle from 'shared/ui/SectionTitle';
-import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { useGetUserServices } from 'entities/Service';
-import ServiceBlock from './ServiceBlock';
-import RenderServiceById from './RenderServiceById';
 import { useWidth } from 'shared/model';
+import SectionTitle from 'shared/ui/SectionTitle';
+import RenderServiceById from './RenderServiceById';
+import ServiceBlock from './ServiceBlock';
 
 const renderServices = (services) =>
 	services.map(({ service }) => (
@@ -13,7 +13,6 @@ const renderServices = (services) =>
 			id={service}
 		/>
 	));
-
 const renderSkeleton = () =>
 	Array.from({ length: 4 }).map((_, i) => <ServiceBlock key={i} />);
 

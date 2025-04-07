@@ -1,8 +1,8 @@
 import { Skeleton, Typography } from '@mui/material';
-import cls from './ServiceBlock.module.scss';
 import { Stack } from '@mui/system';
+import cls from './ServiceBlock.module.scss';
 
-const ServiceBlock = ({ serviceTitle, children }) => {
+const ServiceBlock = ({ serviceTitle, children = null }) => {
 	return (
 		<Stack
 			className={cls.ServiceBlock}

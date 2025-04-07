@@ -4,7 +4,7 @@ import { CompanyCard } from 'widgets/CompanyCard';
 import { MyManager } from 'widgets/ManagerCard';
 import { Notifications } from 'widgets/Notifications';
 import { MyRecommends } from 'widgets/RecommendationsCard';
-import ServiceSection from './../../../widgets/ServiceSection/ui/ServiceSection';
+import { ServiceSection } from 'widgets/ServiceSection';
 
 const MainPage = () => {
 	return (
