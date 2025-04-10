@@ -16,7 +16,7 @@ export default defineConfig({
 			shared: path.resolve(__dirname, './src/shared'),
 		},
 	},
-	base: './',
+	base: '/',
 	build: {
 		outDir: './docs',
 		emptyOutDir: true, // also necessary
