@@ -1,8 +1,9 @@
-import { apiCaller } from 'shared/api';
+import { api } from 'shared/api';
+import { apiEndpoints } from 'shared/model';
 
 const getCompanyDocuments = async () => {
 	try {
-		return await apiCaller('DOCUMENTS');
+		return await api.Get(apiEndpoints.DOCUMENTS);
 	} catch (e) {
 		if (
 			e?.message === 'No documents found in the company folder.' ||

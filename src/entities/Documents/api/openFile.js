@@ -1,9 +1,7 @@
-import Api from 'shared/api/base';
+import { api } from 'shared/api';
 
 const OpenFile = async (url, params) => {
 	try {
-		const api = new Api();
-
 		const object = await api.GetBlob(url, params);
 
 		const objectUrl = URL.createObjectURL(object);

@@ -1,3 +1,4 @@
+import { ChatPage } from 'pages/ChatPage';
 import { CompanyPage } from 'pages/CompanyPage';
 import { DocumentsPage } from 'pages/DocumentsPage';
 import { FallbackPage } from 'pages/FallbackPage';
@@ -47,6 +48,10 @@ const Routes = () => {
 				{
 					path: RoutePath[AppRoutes.TUTORIAL],
 					element: <TutorialPage />,
+				},
+				{
+					path: RoutePath[AppRoutes.CHAT],
+					element: <ChatPage />,
 				},
 				{
 					path: RoutePath[AppRoutes.NOT_FOUND],

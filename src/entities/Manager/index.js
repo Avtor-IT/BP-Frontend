@@ -1,1 +1,1 @@
-export { useManager } from './lib/hooks.js';
+export { useManager } from './api/getManager.js';

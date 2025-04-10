@@ -5,7 +5,7 @@ const url = {
 	testing: 'https://intizar.pythonanywhere.com',
 	broadcast: 'http://0.0.0.0:8000',
 	local: 'http://127.0.0.1:8000',
-	vps: 'http://5.35.82.235'
+	vps: 'http://5.35.82.235',
 };
 
 const instance = axios.create({
@@ -136,4 +136,6 @@ class Api {
 	};
 }
 
-export default Api;
+const api = new Api();
+
+export default api;

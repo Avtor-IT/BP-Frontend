@@ -1,9 +1,10 @@
-import { apiCaller } from 'shared/api';
+import { api } from 'shared/api';
+import { apiEndpoints } from 'shared/model';
 
 export const getCurrentUser = async () => {
 	try {
-		return apiCaller('ME');
+		return await api.Get(apiEndpoints.ME);
 	} catch (_e) {
-		throw Error('Не удалось получить информацию о пользователе');
+		throw Error('Current user failed');
 	}
 };

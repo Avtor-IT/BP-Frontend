@@ -1,68 +1,85 @@
-import { Suspense } from 'react';
-import { SideMenu } from 'widgets/SideMenu';
-import { LogoLink } from 'widgets/LogoLink';
-import { Navigation } from 'widgets/Navigation';
-import { Header } from 'widgets/Header';
-import LogoText, { LogoIcon } from 'shared/ui/Logo';
-import { Outlet } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { Box, Grid, Stack } from '@mui/system';
 import { FallbackContent } from 'pages/FallbackPage';
+import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import LogoText, { LogoIcon } from 'shared/ui/Logo';
+import { Header } from 'widgets/Header';
+import { LogoLink } from 'widgets/LogoLink';
+import { Navigation } from 'widgets/Navigation';
+import { SideMenu } from 'widgets/SideMenu';
 
 export const Layout = () => (
 	<Container
 		fixed
 		maxWidth="xl"
-		sx={{ paddingTop: 4 }}
+		sx={{ paddingTop: 4, height: '100vh' }}
 	>
-		<Grid
-			container
-			columns={7}
-			columnSpacing={2}
-			rowSpacing={8}
+		<Stack
+			minHeight="100%"
+			gap={8}
 		>
-			<Grid size={1}>
-				<Stack
-					direction="row"
-					justifyContent="center"
-				>
-					<LogoLink>
-						<Stack
-							direction="row"
-							alignItems="center"
-							justifyContent="center"
-							spacing="16px"
-						>
-							<LogoIcon />
-							<LogoText />
-						</Stack>
-					</LogoLink>
-				</Stack>
-			</Grid>
-			<Grid size={6}>
-				<Header />
+			{/* Header */}
+			<Grid
+				container
+				columns={7}
+				columnSpacing={2}
+			>
+				<Grid size={1}>
+					<Stack
+						direction="row"
+						justifyContent="center"
+					>
+						<LogoLink>
+							<Stack
+								direction="row"
+								alignItems="center"
+								justifyContent="center"
+								spacing="16px"
+							>
+								<LogoIcon />
+								<LogoText />
+							</Stack>
+						</LogoLink>
+					</Stack>
+				</Grid>
+				<Grid size={6}>
+					<Header />
+				</Grid>
 			</Grid>
 
-			<Grid size={1}>
-				<Stack
-					direction="row"
-					justifyContent="center"
-				>
-					<Box
-						paddingInline={2}
-						width="100%"
+			{/* Nav & Page content */}
+			<Grid
+				container
+				flexGrow={1}
+				columns={7}
+				columnSpacing={2}
+				rowSpacing={8}
+			>
+				<Grid size={1}>
+					<Stack
+						direction="row"
+						justifyContent="center"
 					>
-						<SideMenu>
-							<Navigation />
-						</SideMenu>
-					</Box>
-				</Stack>
+						<Box
+							paddingInline={2}
+							width="100%"
+						>
+							<SideMenu>
+								<Navigation />
+							</SideMenu>
+						</Box>
+					</Stack>
+				</Grid>
+				<Grid
+					size={6}
+					minHeight="100%"
+				>
+					<Suspense fallback={<FallbackContent />}>
+						<Outlet />
+					</Suspense>
+				</Grid>
 			</Grid>
-			<Grid size={6}>
-				<Suspense fallback={<FallbackContent />}>
-					<Outlet />
-				</Suspense>
-			</Grid>
-		</Grid>
+		</Stack>
 	</Container>
 );

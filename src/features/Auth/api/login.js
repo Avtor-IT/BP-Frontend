@@ -1,8 +1,10 @@
-import { apiCaller } from 'shared/api';
+import { api } from 'shared/api';
+import { apiEndpoints } from 'shared/model';
 
-export const login = async (params) => {
+export const login = async (body) => {
 	try {
-		const response = await apiCaller('JWT_CREATE', 'POST', params);
+		const response = await api.Post(apiEndpoints.JWT_CREATE, body);
+
 		if (response?.access) {
 			sessionStorage.setItem('access', response.access);
 			sessionStorage.setItem('refresh', response.refresh);

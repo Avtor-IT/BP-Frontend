@@ -1,1 +1,1 @@
-export { default as apiCaller } from './apiCaller';
+export { default as api } from './base';

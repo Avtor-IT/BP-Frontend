@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '../api/getCurrentUser';
 
-const useCurrentUserQuery = () => {
+const useUser = () => {
 	return useQuery({
 		queryFn: getCurrentUser,
 		queryKey: ['users', 'current'],
@@ -9,4 +9,4 @@ const useCurrentUserQuery = () => {
 	});
 };
 
-export default useCurrentUserQuery;
+export default useUser;

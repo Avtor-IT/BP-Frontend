@@ -1,9 +1,7 @@
-import Api from 'shared/api/base';
+import { api } from 'shared/api';
 
 const downloadFile = async (url, params) => {
 	try {
-		const api = new Api();
-
 		const blob = await api.GetBlob(url, params);
 		const objectUrl = URL.createObjectURL(blob);
 

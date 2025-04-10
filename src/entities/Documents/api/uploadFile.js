@@ -1,4 +1,5 @@
-import { apiCaller } from 'shared/api';
+import { api } from 'shared/api';
+import { apiEndpoints } from 'shared/model';
 
 const uploadFile = async (fileName, base64) => {
 	try {
@@ -6,15 +7,10 @@ const uploadFile = async (fileName, base64) => {
 		// const contentType = base64.split(';')[0].split(':')[1];
 		// const fileContent = base64.split(',')[1];
 
-		return await apiCaller(
-			'UPLOAD_FILE',
-			'POST',
-			{
-				fileName,
-				fileContent: base64,
-			}
-			// { 'Content-Type': contentType }
-		);
+		return await api.Post(apiEndpoints.UPLOAD_FILE, {
+			fileName,
+			fileContent: base64,
+		});
 	} catch (e) {
 		throw Error(`Ошибка при загрузке файла ${fileName}: ${e.message}`);
 	}

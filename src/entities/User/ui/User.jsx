@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button } from 'shared/ui/Button';
 import { useNavigate } from 'react-router-dom';
-import useCurrentUserQuery from '../hooks/useCurrentUserQuery';
+import { Button } from 'shared/ui/Button';
+import useUser from '../hooks/useUser';
 
 const User = () => {
-	const { data, isLoading } = useCurrentUserQuery();
+	const { data, isLoading } = useUser();
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();

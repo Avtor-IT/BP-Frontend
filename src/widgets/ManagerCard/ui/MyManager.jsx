@@ -50,33 +50,29 @@ export const MyManager = ({ ...props }) => {
 				</Box>
 				<Box className={`${cls.infoManager}`}>
 					<Box className={`${cls.avatarFIO}`}>
-						<AvatarManager
-							src={manager.result[0]['PERSONAL_PHOTO']}
-						/>
+						<AvatarManager src={manager['PERSONAL_PHOTO']} />
 						<Typography
 							variant="M16"
 							style={{ lineHeight: '1.3' }}
 						>
-							{manager.result[0]['LAST_NAME']}
+							{manager['LAST_NAME']}
 							<br />
-							{manager.result[0]['NAME']}
+							{manager['NAME']}
 							<br />
-							{manager.result[0]['SECOND_NAME']}
+							{manager['SECOND_NAME']}
 						</Typography>
 					</Box>
 					<Box className={`${cls.contactManager}`}>
-						{manager.result[0]['WORK_PHONE'] ? (
+						{manager['WORK_PHONE'] ? (
 							<CopyBtn
 								className={`${cls.phoneManager}`}
-								textToCopy={manager.result[0]['WORK_PHONE']}
+								textToCopy={manager['WORK_PHONE']}
 							>
 								<Typography
 									variant="R20"
 									color="var(--tertiary)"
 								>
-									{formatPhoneNumber(
-										manager.result[0]['WORK_PHONE']
-									)}
+									{formatPhoneNumber(manager['WORK_PHONE'])}
 								</Typography>
 							</CopyBtn>
 						) : null}

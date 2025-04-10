@@ -1,7 +1,13 @@
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import { Dialogs } from 'widgets/Chat';
 
 const TutorialPage = () => {
-	return <Typography variant="M40">Tutorial page</Typography>;
+	return (
+		<Stack>
+			<Typography variant="M40">Tutorial page</Typography>
+			<Dialogs />
+		</Stack>
+	);
 };
 
 export default TutorialPage;
