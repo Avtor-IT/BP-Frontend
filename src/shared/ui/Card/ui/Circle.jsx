@@ -10,7 +10,7 @@ const Circle = ({ width, height, size, sx, ...otherProps }) => {
 				zIndex: 1,
 				borderRadius: '100%',
 				transition: 'all 0.3s ease',
-				background: 'var(--primary)',
+				background: 'primary.main',
 				...sx,
 			}}
 			{...otherProps}

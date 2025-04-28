@@ -1,3 +1,6 @@
+import { cardShadow, typography } from 'shared/mui';
+import ArrowIconWithTransition from '../ui/ArrowIconWithTransition';
+
 const components = {
 	MuiTypography: {
 		defaultProps: {
@@ -45,20 +48,21 @@ const components = {
 						style: {
 							padding: 0,
 							background: 'transparent',
+							'&:hover': {
+								background: 'transparent',
+							},
 						},
 					},
 					{
 						props: { variant: 'card' },
-						style: ({ theme, ownerState }) => ({
-							padding: '16px',
-							background: 'transparent',
-							boxShadow:
-								'0px 1px 3px 1px #00000026, 0px 1px 2px 0px #0000004d',
+						style: ({ theme, _ownerState }) => ({
+							...typography['M20'],
+							...cardShadow,
 							'&:hover': {
-								boxShadow:
-									'0px 1px 3px 1px #00000026, 0px 1px 2px 0px #0000004d',
+								...cardShadow,
 							},
-							color: theme.palette[ownerState.color].main,
+							color: theme.palette['textSecondary'].default,
+							padding: '16px',
 						}),
 					},
 					{
@@ -79,15 +83,18 @@ const components = {
 		styleOverrides: {
 			root: {
 				borderRadius: 16,
-				boxShadow:
-					'0px 1px 3px 1px #00000026, 0px 1px 2px 0px #0000004d',
+				...cardShadow,
 			},
 		},
 	},
 	MuiCardContent: {
 		styleOverrides: {
 			root: {
-				// padding: '0 24px',
+				'&:last-child': {
+					paddingBottom: '16px',
+				},
+				color: 'tertiary.dark',
+				padding: '32px 24px 16px',
 			},
 		},
 	},
@@ -108,6 +115,82 @@ const components = {
 		styleOverrides: {
 			root: {
 				padding: '24px 24px 16px 24px',
+			},
+		},
+	},
+	MuiInputBase: {
+		styleOverrides: {
+			root: {
+				'& svg': {
+					right: '16px !important',
+				},
+			},
+		},
+	},
+	MuiSelect: {
+		defaultProps: {
+			IconComponent: ArrowIconWithTransition,
+		},
+		styleOverrides: {
+			select: {
+				padding: 16,
+				paddingRight: '64px !important',
+			},
+			root: {
+				variants: [
+					{
+						props: { variant: 'filled' },
+						style: ({ theme, _ownerState }) => ({
+							...typography['M20'],
+							...cardShadow,
+							color: theme.palette['textSecondary'].default,
+							backgroundColor: 'transparent',
+							borderRadius: 8,
+							'&:before': {
+								display: 'none', // disabling default underline
+							},
+							'&:after': {
+								display: 'none', // disabling focused underline
+							},
+							'&:hover:not(.Mui-disabled):before': {
+								borderBottom: 'none', // disabling hover underline
+							},
+						}),
+					},
+				],
+			},
+		},
+	},
+
+	MuiInput: {
+		styleOverrides: {
+			input: {
+				padding: '14px 28px',
+			},
+			root: {
+				variants: [
+					{
+						props: { variant: 'card' },
+						style: {
+							...typography['M20'],
+							...cardShadow,
+
+							borderRadius: '16px',
+							position: 'relative',
+							overflow: 'hidden',
+
+							'&:before': {
+								display: 'none', // disabling default underline
+							},
+							'&:after': {
+								display: 'none', // disabling focused underline
+							},
+							'&:hover:not(.Mui-disabled):before': {
+								borderBottom: 'none', // disabling hover underline
+							},
+						},
+					},
+				],
 			},
 		},
 	},

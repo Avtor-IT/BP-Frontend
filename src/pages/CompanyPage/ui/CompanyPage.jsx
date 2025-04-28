@@ -1,5 +1,5 @@
 import { Grid, Stack } from '@mui/system';
-import { BillItem } from 'entities/Bill';
+import { BillList } from 'entities/Bill';
 import { TaxExtractCard } from 'entities/Documents';
 import { CompanyCard } from 'widgets/CompanyCard';
 import { MyDocumentsCard, WorkingDocumentsCard } from 'widgets/DocumentsCard';
@@ -28,12 +28,12 @@ const CompanyPage = () => {
 						>
 							<Grid size={1}>
 								<CompanyCard
-									height="100%"
+									sx={{ height: '100%' }}
 									documents={false}
 								/>
 							</Grid>
 							<Grid size={1}>
-								<TaxExtractCard height="100%" />
+								<TaxExtractCard sx={{ height: '100%' }} />
 							</Grid>
 						</Grid>
 						<Grid
@@ -45,13 +45,13 @@ const CompanyPage = () => {
 						>
 							<Grid size={1}>
 								<MyDocumentsCard
-									height="100%"
+									sx={{ height: '100%' }}
 									companyTitle="Вторая тестовая компания"
 								/>
 							</Grid>
 							<Grid size={1}>
 								<WorkingDocumentsCard
-									height="100%"
+									sx={{ height: '100%' }}
 									companyTitle="Вторая тестовая компания"
 								/>
 							</Grid>
@@ -59,7 +59,7 @@ const CompanyPage = () => {
 					</Stack>
 				</Grid>
 				<Grid size={1}>
-					<DocumentTemplateCard height="100%" />
+					<DocumentTemplateCard sx={{ height: '100%' }} />
 				</Grid>
 			</Grid>
 
@@ -68,7 +68,7 @@ const CompanyPage = () => {
 				columns={5}
 			>
 				<Grid size={4}>
-					<BillItem />
+					<BillList />
 				</Grid>
 			</Grid>
 		</Stack>

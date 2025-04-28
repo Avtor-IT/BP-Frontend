@@ -47,6 +47,7 @@ const Chat = ({ ...props }) => {
 				height="100%"
 				justifyContent="end"
 				gap={2}
+				maxHeight="800px"
 			>
 				<Box
 					position={'relative'}

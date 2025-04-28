@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import CheckCircleBtn from 'features/CheckCircleBtn/index.js';
 import Slider from 'react-slick';
 import cls from '../notifications.module.scss';
+import './SliderNotifications.scss';
 
 const SliderNotifications = ({
 	navDots,
@@ -38,6 +39,7 @@ const SliderNotifications = ({
 				{...settings}
 				asNavFor={navDots}
 				ref={refFunction}
+				className="slider-notifications"
 			>
 				{notifications.map((notification, index) => (
 					<Box

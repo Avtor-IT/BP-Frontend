@@ -1,15 +1,15 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from 'shared/ui/Card';
 import cls from './notifications.module.scss';
 import SliderDots from './slider/SliderDots';
 import SliderNotifications from './slider/SliderNotifications';
 
-export const Notifications = () => {
+export const Notifications = (props) => {
 	// const { data: companies, isError, isLoading } = useCompanies();
 
-	// const [selectedCompany, setSelectedCompany] = React.useState();
+	// const [selectedCompany, setSelectedCompany] = React.useState();/
 
 	// useEffect(() => {
 	// 	if (companies) {
@@ -37,12 +37,12 @@ export const Notifications = () => {
 	// 	);
 	// }
 
-	const [currentSlide, setCurrentSlide] = React.useState(0); // Состояние для хранения текущего слайда
+	const [currentSlide, setCurrentSlide] = useState(0); // Состояние для хранения текущего слайда
 
-	const [navSlider, setNavSlider] = React.useState(null);
-	const [navDots, setNavDots] = React.useState(null);
-	let refSlider = React.useRef(null);
-	let refDots = React.useRef(null);
+	const [navSlider, setNavSlider] = useState(null);
+	const [navDots, setNavDots] = useState(null);
+	let refSlider = useRef(null);
+	let refDots = useRef(null);
 
 	useEffect(() => {
 		setNavSlider(refSlider);
@@ -60,7 +60,10 @@ export const Notifications = () => {
 	];
 
 	return (
-		<Card className={cls.notificationsCard}>
+		<Card
+			{...props}
+			className={cls.notificationsCard}
+		>
 			<Box
 				width="100%"
 				position="relative"
@@ -70,7 +73,7 @@ export const Notifications = () => {
 						<>
 							<Typography
 								variant="M24"
-								color="#A43270"
+								color="primary"
 							>
 								Внимание!
 							</Typography>
@@ -94,7 +97,7 @@ export const Notifications = () => {
 						</>
 					) : (
 						<Box
-							style={{
+							sx={{
 								display: 'flex',
 								flexDirection: 'column',
 								gap: '16px',
@@ -102,13 +105,13 @@ export const Notifications = () => {
 						>
 							<Typography
 								variant="M24"
-								style={{ color: '#7B7F9F' }}
+								sx={{ color: 'tertiary.main' }}
 							>
 								Ничего срочного!
 							</Typography>
 							<Typography
 								variant="R16"
-								style={{ color: '#7B7F9F' }}
+								sx={{ color: 'tertiary.main' }}
 							>
 								Если у вас возникли трудности, обратитесь к
 								менеджеру.

@@ -1,58 +1,112 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
+import { CheckSquareIcon } from 'shared/icons/CheckSquare';
+import { EditSquareIcon } from 'shared/icons/EditSqueare';
+import ExportIcon from 'shared/icons/Export';
+import ImportIcon from 'shared/icons/Import';
 
-const LetterCard = () => {
+const iconSx = {
+	position: 'absolute',
+	top: 8,
+	right: '50%',
+	transform: 'translateX(50%)',
+};
+
+const getTypeTitle = (type) => {
+	switch (type) {
+		case 'draft':
+			return (
+				<Typography
+					variant="M20"
+					color="warning.main"
+				>
+					Черновик
+				</Typography>
+			);
+		case 'formed':
+			return (
+				<Typography
+					variant="M20"
+					color="success.main"
+				>
+					Сформировано
+				</Typography>
+			);
+		case 'sent':
+			return (
+				<Typography
+					variant="M20"
+					color="success.main"
+				>
+					Отправлено
+				</Typography>
+			);
+	}
+};
+
+const LetterCard = ({ letter, ...props }) => {
 	return (
-		<Box p={1}>
-			<Card>
-				<CardContent>
-					<Typography variant="M20">№123/А</Typography>
-				</CardContent>
+		<Box {...props}>
+			<Card
+				sx={{
+					color: 'tertiary.dark',
+					padding: '32px 24px 16px',
+					position: 'relative',
+				}}
+			>
+				{letter.type === 'draft' ? (
+					<EditSquareIcon
+						color="warning"
+						sx={iconSx}
+					/>
+				) : (
+					<CheckSquareIcon
+						color="success"
+						sx={iconSx}
+					/>
+				)}
+
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+				>
+					<Typography variant="M20">{letter.num}</Typography>
+					<Typography variant="M20">{letter.date}</Typography>
+				</Stack>
+
+				<Stack
+					mt={2}
+					direction="row"
+					justifyContent="space-between"
+				>
+					<Typography variant="R16">Тема:</Typography>
+					<Typography variant="M16">{letter.topic}</Typography>
+				</Stack>
+
+				<Stack
+					mt={1}
+					direction="row"
+					justifyContent="space-between"
+				>
+					<Typography variant="R16">Адресат:</Typography>
+					<Typography variant="M16">{letter.destination}</Typography>
+				</Stack>
+
+				<Stack
+					mt={3}
+					direction="row"
+					justifyContent="space-between"
+				>
+					<Stack
+						direction="row"
+						gap={1}
+					>
+						<ImportIcon />
+						<ExportIcon />
+					</Stack>
+					{getTypeTitle(letter.type)}
+				</Stack>
 			</Card>
 		</Box>
-		// <Box p={1}>
-		// 	<Card sx={{ color: 'tertiary.dark' }}>
-		// 		<Stack
-		// 			direction="row"
-		// 			justifyContent="space-between"
-		// 		>
-		// 			<Typography variant="M20">№123/А</Typography>
-		// 			<Typography variant="M20">28.11.2024</Typography>
-		// 		</Stack>
-
-		// 		<Stack
-		// 			mt={2}
-		// 			direction="row"
-		// 			justifyContent="space-between"
-		// 		>
-		// 			<Typography variant="R16">Тема:</Typography>
-		// 			<Typography variant="M16">О подписании договора</Typography>
-		// 		</Stack>
-
-		// 		<Stack
-		// 			mt={1}
-		// 			direction="row"
-		// 			justifyContent="space-between"
-		// 		>
-		// 			<Typography variant="R16">Адресат:</Typography>
-		// 			<Typography variant="M16">ООО "Пример"</Typography>
-		// 		</Stack>
-
-		// 		<Stack
-		// 			mt={3}
-		// 			direction="row"
-		// 			justifyContent="space-between"
-		// 		>
-		// 			<Stack
-		// 				direction="row"
-		// 				gap={1}
-		// 			>
-		// 				<ImportIcon />
-		// 				<ExportIcon />
-		// 			</Stack>
-		// 			<Typography variant="M20">Отправлено</Typography>
-		// 		</Stack>
-		// 	</Card>
-		// </Box>
 	);
 };
 

@@ -1,4 +1,4 @@
-const typography = {
+const typography = Object.freeze({
 	fontFamily: 'Rubik, sans-serif',
 	M40: {
 		fontSize: 40,
@@ -48,6 +48,6 @@ const typography = {
 		fontSize: 16,
 		fontWeight: 300,
 	},
-};
+});
 
 export default typography;

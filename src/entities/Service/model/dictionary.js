@@ -1,6 +1,6 @@
+import CoinsIcon from 'shared/icons/Coins';
 import UsersIcon from 'shared/icons/Users';
 import { Accounting, HumanResources, LegalSupport } from '../services';
-import CoinsIcon from 'shared/icons/Coins';
 
 const servicesDictionary = (id) => {
 	switch (id) {

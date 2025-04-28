@@ -7,39 +7,21 @@ import {
 	Typography,
 } from '@mui/material';
 
-import { Box, Stack } from '@mui/system';
+import { Box } from '@mui/system';
 import { DownloadFile } from 'shared/icons/DownloadFile';
 
-const BillActionCard = ({ status }) => {
-	if (status === 'needToPay') {
-		return (
-			<Card>
-				<CardHeader
-					title="Название услуги"
-					action={
-						<Typography
-							variant="M20"
-							color="tertiary.main"
-						>
-							Бухгалтерия
-						</Typography>
-					}
-				/>
-				<CardContent>Название услуги</CardContent>
-			</Card>
-		);
-	}
-
+const BillActionCard = ({ bill, ...props }) => {
 	return (
-		<Card>
+		<Card {...props}>
 			<CardHeader
 				title="Услуга завершена"
 				titleTypographyProps={{
 					color: 'tertiary.main',
 					variant: 'M24',
 				}}
+				sx={{ paddingBottom: 0 }}
 			/>
-			<CardContent>
+			<CardContent sx={{ paddingTop: 2, paddingBottom: 3 }}>
 				<Box
 					sx={{
 						paddingLeft: 1,
@@ -54,22 +36,12 @@ const BillActionCard = ({ status }) => {
 					оставить отзыв о нашей работе.
 				</Box>
 			</CardContent>
-			<CardActions>
+			<CardActions sx={{ paddingTop: 0 }}>
 				<Button
 					fullWidth
 					color="secondary"
 					variant="card"
-					startIcon={
-						<Stack
-							sx={(theme) => ({
-								'& svg': {
-									stroke: theme.palette.secondary.main, // Используем secondary.main из темы
-								},
-							})}
-						>
-							<DownloadFile />
-						</Stack>
-					}
+					startIcon={<DownloadFile color="secondary" />}
 				>
 					<Typography
 						variant="M20"

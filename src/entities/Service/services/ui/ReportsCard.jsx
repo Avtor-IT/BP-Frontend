@@ -5,7 +5,7 @@ const ReportsCard = ({ reportsTitle, children, ...props }) => {
 	return (
 		<TitledCard
 			{...props}
-			minHeight="100%"
+			sx={{ minHeight: '100%' }}
 			circleSx={{
 				background:
 					'linear-gradient(15deg, var(--secondary), var(--bg-additional-color))',

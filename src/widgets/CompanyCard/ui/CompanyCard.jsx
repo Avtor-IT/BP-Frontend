@@ -27,16 +27,12 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 			<Skeleton
 				variant="rectangular"
 				{...props}
-				sx={{ borderRadius: '16px', minHeight: '192px' }}
 			/>
 		);
 	}
 
 	return (
 		<TitledCard
-			sx={{
-				paddingTop: '24px !important',
-			}}
 			title={
 				<Link
 					style={{ zIndex: 1 }}

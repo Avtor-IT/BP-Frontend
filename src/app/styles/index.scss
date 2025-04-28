@@ -55,6 +55,7 @@ html {
 	font-weight: 300;
 	color: var(--color-dark);
 	background-color: var(--bg-color);
+	padding-right: 0 !important;
 
 	&::-webkit-scrollbar {
 		background: transparent;

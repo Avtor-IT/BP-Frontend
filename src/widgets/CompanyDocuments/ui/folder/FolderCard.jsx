@@ -24,6 +24,7 @@ const FolderCard = ({ children, title, onTitleClick, open, sx, ...props }) => {
 			>
 				<Stack
 					direction="row"
+					alignItems="center"
 					gap={2}
 				>
 					<Typography
@@ -34,8 +35,8 @@ const FolderCard = ({ children, title, onTitleClick, open, sx, ...props }) => {
 					</Typography>
 					<ArrowIcon
 						strokeWidth={2}
-						strokeColor="var(--secondary)"
-						style={{
+						color="secondary"
+						sx={{
 							transition: 'transform .1s ease-in-out',
 							transform: open ? 'rotate(90deg)' : '',
 						}}

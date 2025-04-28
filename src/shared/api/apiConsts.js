@@ -12,7 +12,7 @@ export const apiEndpoints = {
 	MANAGER: `/api/${version1}/hooks/users_me_manager/`,
 	COMPANIES: `/api/${version1}/hooks/user_me_company/`,
 	DOCUMENTS: `/api/${version1}/hooks/user_company_documents/`,
-	USER_SERVICES: `/api/${version1}/hooks/user-service/check-expiration/`,
+	USER_SERVICES: `/api/user-service/check-expiration/`,
 	DOWNLOAD_FILE: `/api/${version1}/hooks/downloadfile/`,
 	UPLOAD_FILE: `/api/${version1}/hooks/upload_user_file/`,
 	CHAT_ROOM: `chat/${version1}/chat/:b24_user_id/`,

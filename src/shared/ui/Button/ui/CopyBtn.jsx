@@ -1,9 +1,14 @@
-import { Snackbar } from '@mui/material';
-import React from 'react';
-import { Button } from 'shared/ui/Button';
+import { Box, Snackbar } from '@mui/material';
+import { useState } from 'react';
 
-const CopyBtn = ({ children, textToCopy, snackabarProps, ...otherProps }) => {
-	const [openSnackbar, setOpen] = React.useState(false);
+const CopyBtn = ({
+	children,
+	textToCopy,
+	snackabarProps,
+	sx,
+	...otherProps
+}) => {
+	const [openSnackbar, setOpen] = useState(false);
 
 	const handleCopy = () => {
 		if (textToCopy) {
@@ -22,13 +27,13 @@ const CopyBtn = ({ children, textToCopy, snackabarProps, ...otherProps }) => {
 
 	return (
 		<>
-			<Button
-				variant="unStyled"
+			<Box
 				onClick={handleCopy}
 				{...otherProps}
+				sx={{ cursor: 'pointer', ...sx }}
 			>
 				{children}
-			</Button>
+			</Box>
 			<Snackbar
 				open={openSnackbar}
 				autoHideDuration={3000}

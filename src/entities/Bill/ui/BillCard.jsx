@@ -1,20 +1,116 @@
-import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	Stack,
+	Typography,
+} from '@mui/material';
+import BillDocuments from './BillDocuments';
 
-const BillCard = () => {
+const statusName = {
+	needToPay: 'Не оплачено',
+	paid: 'Оплачено',
+	proccessing: 'Оплачено',
+	completed: 'Оплачено',
+};
+
+const statusColor = {
+	needToPay: 'error.main',
+	paid: 'success.main',
+	proccessing: 'success.main',
+	completed: 'success.main',
+};
+
+const BillCard = ({ bill, ...props }) => {
 	return (
-		<Card>
-			<CardHeader
-				title="Название услуги"
-				action={
-					<Typography
-						variant="M20"
-						color="tertiary.main"
+		<Card {...props}>
+			<Stack height="100%">
+				<CardHeader
+					title={bill.serviceName}
+					action={
+						<Typography
+							variant="M20"
+							color="tertiary.main"
+						>
+							{bill.category}
+						</Typography>
+					}
+					sx={{ paddingBottom: 0 }}
+				/>
+				<CardContent sx={{ paddingTop: 2, flexGrow: 1 }}>
+					<Stack
+						direction="row"
+						justifyContent="space-between"
+						height="100%"
 					>
-						Бухгалтерия
-					</Typography>
-				}
-			/>
-			<CardContent>Название услуги</CardContent>
+						<Stack
+							minWidth="400px"
+							height="100%"
+							gap={2}
+							justifyContent="space-between"
+						>
+							<Stack gap={2}>
+								<Stack
+									direction="row"
+									justifyContent="space-between"
+								>
+									<Typography
+										variant="M20"
+										color="textSecondary"
+									>
+										Сумма к оплате:
+									</Typography>
+									<Typography variant="M20">
+										{bill.sum}
+									</Typography>
+								</Stack>
+
+								<Stack
+									direction="row"
+									justifyContent="space-between"
+								>
+									<Typography
+										variant="M20"
+										color="textSecondary"
+									>
+										Дата:
+									</Typography>
+									<Typography variant="M20">
+										{bill.date}
+									</Typography>
+								</Stack>
+							</Stack>
+
+							<Stack
+								direction="row"
+								justifyContent="space-between"
+							>
+								<Typography
+									variant="M20"
+									color="textSecondary"
+								>
+									Статус:
+								</Typography>
+								<Typography
+									variant="M20"
+									color={statusColor[bill.status]}
+								>
+									{statusName[bill.status]}
+								</Typography>
+							</Stack>
+						</Stack>
+
+						<Stack
+							height="100%"
+							gap={1}
+							justifyContent="end"
+							minWidth="348px"
+						>
+							<BillDocuments bill={bill} />
+						</Stack>
+					</Stack>
+				</CardContent>
+			</Stack>
 		</Card>
 	);
 };

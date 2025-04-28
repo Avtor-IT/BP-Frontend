@@ -34,7 +34,7 @@ const FolderTitle = ({ pathArray }) => {
 					{i !== slicedPathArray.length - 1 && (
 						<ArrowIcon
 							strokeWidth={2}
-							strokeColor="var(--secondary)"
+							color="secondary"
 						/>
 					)}
 				</Fragment>

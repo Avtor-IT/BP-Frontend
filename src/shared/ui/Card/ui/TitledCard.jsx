@@ -1,27 +1,27 @@
-import { Typography } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { Card } from './Card';
 import Circle from './Circle';
 
-const TitledCard = ({ children, circleSx, title, ...props }) => {
+const TitledCard = ({ children, circleSx, title, sx, ...props }) => {
 	return (
 		<Card
 			{...props}
-			position="relative"
+			sx={{ position: 'relative', ...sx }}
 		>
 			<Circle
 				sx={{
 					background: 'var(--primary)',
+					position: 'absolute',
 					left: -220,
 					top: -594,
 					...circleSx,
 				}}
 			/>
-			{title ? (
+			<CardContent sx={{ height: '100%' }}>
 				<Box position="relative">
 					<Typography
 						zIndex={1}
-						position={'absolute'}
+						position="absolute"
 						variant="M24"
 						color="#fff"
 						display="inline-block"
@@ -30,8 +30,8 @@ const TitledCard = ({ children, circleSx, title, ...props }) => {
 						{title}
 					</Typography>
 				</Box>
-			) : null}
-			{children}
+				{children}
+			</CardContent>
 		</Card>
 	);
 };

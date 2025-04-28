@@ -1,13 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 import { useRecommendsQuery } from 'entities/Recommends';
-import CheckCircleBtn from 'features/CheckCircleBtn';
-import React from 'react';
 import Slider from 'react-slick';
 import { ArrowInCircle } from 'shared/icons/ArrowInCircle';
-import { Button } from 'shared/ui/Button';
-import { Card, TitledCard } from 'shared/ui/Card';
-import cls from './MyRecommends.module.scss';
+import { Circle } from 'shared/ui/Card';
 import './MyRecommendsSlider.scss';
+import RecommendationSlide from './RecommendationSlide';
 
 /*
  * Отсюда брал
@@ -21,26 +18,35 @@ import './MyRecommendsSlider.scss';
  *
  * */
 
-const SlickArrowLeft = ({ currentSlide, ...props }) => {
-	// eslint-disable-next-line no-unused-vars
-	const { slideCount, ...otherProps } = props;
-
+// eslint-disable-next-line no-unused-vars
+const SlickArrowLeft = ({ slideCount, currentSlide, ...props }) => {
 	return (
-		<Button
-			variant="unStyled"
-			{...otherProps}
-			aria-hidden={true}
-			aria-disabled={currentSlide === 0}
-			type="button"
+		<IconButton
+			{...props}
+			aria-hidden="true"
+			disabled={currentSlide === 0}
+			sx={{
+				'&:before': { display: 'none' },
+				color: 'secondary.contrastText',
+				transform: 'scaleX(-1) translate(100%, -100%);',
+				'&:hover': { color: 'secondary.contrastText' },
+				position: 'absolute',
+				top: '-28px',
+				right: 0,
+				left: 'auto',
+				width: '48px',
+				height: '48px',
+				zIndex: 2,
+			}}
 		>
 			<ArrowInCircle
-				variant={'left'}
-				width={32}
-				height={32}
+				sx={{
+					height: '32px',
+					width: '32px',
+				}}
 				strokeWidth={2}
-				color={currentSlide === 0 ? 'dark-gray' : 'white'}
 			/>
-		</Button>
+		</IconButton>
 	);
 };
 
@@ -50,44 +56,45 @@ const SlickArrowRight = ({
 	slidesToShow,
 	...props
 }) => (
-	<Button
-		variant="unStyled"
+	<IconButton
 		{...props}
+		sx={{
+			'&:hover': { color: 'secondary.contrastText' },
+			'&:before': { display: 'none' },
+			color: 'secondary.contrastText',
+			transform: 'translate(0, -100%)',
+			position: 'absolute',
+			top: '-28px',
+			right: 0,
+			left: 'auto',
+			width: '48px',
+			height: '48px',
+			zIndex: 2,
+		}}
 		aria-hidden="true"
-		aria-disabled={currentSlide === slideCount - slidesToShow}
-		type="button"
+		disabled={currentSlide === slideCount - slidesToShow}
 	>
 		<ArrowInCircle
-			variant={'right'}
-			width={32}
-			height={32}
+			sx={{ height: '32px', width: '32px' }}
 			strokeWidth={2}
-			color={
-				currentSlide === slideCount - slidesToShow
-					? 'dark-gray'
-					: 'white'
-			}
 		/>
-	</Button>
+	</IconButton>
 );
 
-export const MyRecommends = ({ ...props }) => {
-	const slidesToShow = 2;
+export const MyRecommends = (props) => {
+	const slidesToShow = 4;
 	const settings = {
 		dots: false,
 		slidesToShow,
 		swipeToSlide: true,
 		focusOnSelect: true,
 		infinite: false,
-		slidesToScroll: 2,
+		slidesToScroll: 1,
 		variableWidth: true,
 		navButtonsAlwaysVisible: true,
 		prevArrow: <SlickArrowLeft />,
 		nextArrow: <SlickArrowRight slidesToShow={slidesToShow} />,
 	};
-
-	// eslint-disable-next-line no-unused-vars
-	const [hovered, setHovered] = React.useState(false); // для анимации при наведении
 
 	const { isLoading, error, data } = useRecommendsQuery();
 
@@ -96,65 +103,54 @@ export const MyRecommends = ({ ...props }) => {
 	if (error) return 'Error';
 
 	return (
-		<TitledCard
-			className={cls.MyRecommends}
-			onMouseOver={() => setHovered(true)}
-			onMouseOut={() => setHovered(false)}
-			sx={{
-				background: 'linear-gradient(to left, #FFF 0%, #4C5385 240%)',
-			}}
-			circleSx={{
-				height: '813px',
-				width: '813px',
-				background:
-					'linear-gradient(15deg, var(--secondary) 0%, #FFF 100%) !important',
-				right: '-350px',
-				top: '-732px',
-				left: 'auto',
-			}}
+		<Card
 			{...props}
+			sx={{
+				background: 'linear-gradient(to left, #FFF 0%, #4C5385 180%)',
+				position: 'relative',
+				display: 'flex',
+				flexDirection: 'column',
+				...props?.sx,
+			}}
 		>
-			<Box position="relative">
-				<Box className={`${cls.sliderRecommends} slider-container`}>
-					<Typography
-						variant="M24"
-						color="#FFF"
-						sx={{
-							textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-						}}
-					>
-						Актуальные изменения в законодательстве
-					</Typography>
-
-					<Slider {...settings}>
-						{data.map((item, index) => (
-							<Card
-								className={cls.recommendItem}
-								key={index}
-							>
-								<Box
-									style={{
-										display: 'flex',
-										alignItems: 'baseline',
-										justifyContent: 'space-between',
-									}}
-								>
-									<Typography
-										variant="M20"
-										// width={'219px'}
-									>
-										{item.title}
-									</Typography>
-									<CheckCircleBtn />
-								</Box>
-								<Typography variant="R16">
-									{item.description}
-								</Typography>
-							</Card>
-						))}
-					</Slider>
-				</Box>
-			</Box>
-		</TitledCard>
+			<Circle
+				sx={{
+					height: '813px',
+					width: '813px',
+					background:
+						'linear-gradient(15deg, var(--secondary) 0%, #FFF 100%) !important',
+					right: '-350px',
+					top: '-732px',
+				}}
+			/>
+			<CardHeader
+				sx={{
+					color: 'primary.contrastText',
+					paddingBottom: '0 !important',
+				}}
+				title="Актуальные изменения в законодательстве"
+			/>
+			<CardContent sx={{ flexGrow: 1 }}>
+				<Slider
+					{...settings}
+					className="recommends-slider"
+				>
+					{data.map((item, index) => (
+						<Box
+							key={index}
+							sx={{
+								paddingRight:
+									index === data.length - 1 ? '0' : 1,
+								height: '100%',
+							}}
+						>
+							<RecommendationSlide
+								sx={{ maxWidth: '328px', height: '229px' }}
+							/>
+						</Box>
+					))}
+				</Slider>
+			</CardContent>
+		</Card>
 	);
 };

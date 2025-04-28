@@ -1,1 +1,1 @@
-export { default as BillItem } from './ui/BillItem';
+export { default as BillList } from './ui/BillList';

@@ -1,32 +1,46 @@
-import { Typography } from '@mui/material';
-import { Grid, Stack } from '@mui/system';
-import { LettersSlider } from 'entities/Letter';
-import { Card } from 'shared/ui/Card';
+import { Stack } from '@mui/material';
+import { Grid } from '@mui/system';
+import {
+	LettersFilter,
+	LettersList,
+	LettersSearch,
+	LettersSort,
+} from 'entities/Letter';
+import { CreateNewLetterCard } from 'widgets/CreateNewLetterCard';
+import { LastLettersCard } from 'widgets/LastLettersCard';
 
 const LetterPage = () => {
 	return (
 		<Grid
 			container
 			columns={5}
+			columnSpacing={2}
+			rowSpacing={9}
 		>
 			<Grid size={3}>
-				<Card>
-					<Stack
-						direction="row"
-						alignItems="start"
-						gap={4}
-					>
-						<Typography variant="M24">
-							Ваши последние
-							<br />
-							письма
-						</Typography>
-						<LettersSlider />
-					</Stack>
-				</Card>
+				<LastLettersCard height="100%" />
 			</Grid>
 			<Grid size={2}>
-				<Typography variant="M40">Конструктор письма</Typography>
+				<CreateNewLetterCard sx={{ height: '100%' }} />
+			</Grid>
+
+			<Grid size={4}>
+				<Stack
+					gap={4}
+					alignItems="start"
+				>
+					<LettersSearch />
+
+					<Stack
+						direction="row"
+						gap={1}
+					>
+						<LettersSort />
+						<LettersFilter />
+					</Stack>
+
+					<LettersList />
+				</Stack>
 			</Grid>
 		</Grid>
 	);

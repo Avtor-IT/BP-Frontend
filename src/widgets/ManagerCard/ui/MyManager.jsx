@@ -1,25 +1,32 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import {
+	Button,
+	Card,
+	CardContent,
+	IconButton,
+	Skeleton,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { useManager } from 'entities/Manager';
 import { Link } from 'react-router-dom';
+import { CallIcon } from 'shared/icons/Call';
+import CopyIcon from 'shared/icons/Copy';
 import MailIcon from 'shared/icons/Mail';
 import MessageIcon from 'shared/icons/Message';
 import { formatPhoneNumber } from 'shared/lib';
 import { AppRoutes, RoutePath } from 'shared/router';
 import AvatarManager from 'shared/ui/AvatarManager';
-import { Button, CopyBtn } from 'shared/ui/Button';
-import { Card, ErrorCard } from 'shared/ui/Card';
-import cls from './MyManager.module.scss';
+import { CopyBtn } from 'shared/ui/Button';
+import { ErrorCard } from 'shared/ui/Card';
 
 export const MyManager = ({ ...props }) => {
-	// const [hovered, setHovered] = React.useState(false); // для анимации при наведении
 	const { data: manager, isLoading, isError } = useManager();
 
 	if (isLoading)
 		return (
 			<Skeleton
-				variant="rectangular"
+				variant="rounded"
 				height="100%"
-				sx={{ borderRadius: '16px', minHeight: '192px' }}
 			/>
 		);
 
@@ -27,74 +34,120 @@ export const MyManager = ({ ...props }) => {
 
 	if (manager) {
 		return (
-			<Card
-				className={`${cls.MyManager}`}
-				// onMouseOver={() => setHovered(true)}
-				// onMouseOut={() => setHovered(false)}
-				{...props}
-			>
-				{/* <Circle
-				width={474}
-				height={474}
-				top={-197}
-				right={hovered ? -98 : -148}
-				/> */}
-				<Box className={`${cls.titleManager}`}>
-					<Typography variant="M24">Мой менеджер</Typography>
-					<Button
-						style={{ width: '24px', height: '24px' }}
-						variant="unStyled"
+			<Card {...props}>
+				<CardContent sx={{ height: '100%' }}>
+					<Stack
+						direction="row"
+						justifyContent="space-between"
+						height="100%"
 					>
-						<MailIcon />
-					</Button>
-				</Box>
-				<Box className={`${cls.infoManager}`}>
-					<Box className={`${cls.avatarFIO}`}>
-						<AvatarManager src={manager['PERSONAL_PHOTO']} />
-						<Typography
-							variant="M16"
-							style={{ lineHeight: '1.3' }}
+						<Stack
+							justifyContent="space-between"
+							height="100%"
 						>
-							{manager['LAST_NAME']}
-							<br />
-							{manager['NAME']}
-							<br />
-							{manager['SECOND_NAME']}
-						</Typography>
-					</Box>
-					<Box className={`${cls.contactManager}`}>
-						{manager['WORK_PHONE'] ? (
-							<CopyBtn
-								className={`${cls.phoneManager}`}
-								textToCopy={manager['WORK_PHONE']}
+							<Typography variant="M24">Мой менеджер</Typography>
+
+							<Stack
+								direction="row"
+								alignItems="center"
+								gap={2}
 							>
+								<AvatarManager
+									src={manager['PERSONAL_PHOTO']}
+								/>
 								<Typography
-									variant="R20"
-									color="var(--tertiary)"
+									variant="M16"
+									style={{ lineHeight: '1.3' }}
 								>
-									{formatPhoneNumber(manager['WORK_PHONE'])}
+									{manager['LAST_NAME']}
+									<br />
+									{manager['NAME']}
+									<br />
+									{manager['SECOND_NAME']}
 								</Typography>
-							</CopyBtn>
-						) : null}
-						<Link
-							to={RoutePath[AppRoutes.MAIN]}
-							className={`${cls.btnMessage}`}
+							</Stack>
+						</Stack>
+
+						<Stack
+							justifyContent="space-between"
+							alignItems="end"
+							height="100%"
 						>
-							<Typography
-								variant="R16"
-								color="var(--tertiary)"
+							<IconButton>
+								<Stack
+									direction="row"
+									alignItems="center"
+									gap={0.5}
+									color="primary.main"
+								>
+									<Typography variant="R16">3</Typography>
+									<MailIcon fontSize="small" />
+								</Stack>
+							</IconButton>
+
+							<Stack
+								gap={2}
+								alignItems="end"
+								color="tertiary.main"
 							>
-								Написать
-							</Typography>
-							<Button
-								style={{ width: '24px', height: '24px' }}
-								variant="unStyled"
-							>
-								<MessageIcon />
-							</Button>
-						</Link>
-					</Box>
-				</Box>
+								{manager['WORK_PHONE'] ? (
+									<CopyBtn textToCopy={manager['WORK_PHONE']}>
+										<Stack
+											gap={1}
+											alignItems="center"
+											direction="row"
+										>
+											<Typography variant="R20">
+												{formatPhoneNumber(
+													manager['WORK_PHONE']
+												)}
+											</Typography>
+											<CopyIcon strokeWidth={1.5} />
+										</Stack>
+									</CopyBtn>
+								) : null}
+
+								<Stack
+									direction="row"
+									gap={3}
+								>
+									<Button
+										component={Link}
+										to={RoutePath[AppRoutes.MAIN]}
+										variant="unstyled"
+									>
+										<Stack
+											direction="row"
+											alignItems="center"
+											gap={1}
+										>
+											<Typography variant="R16">
+												Заказать звонок
+											</Typography>
+											<CallIcon strokeWidth={1.5} />
+										</Stack>
+									</Button>
+									<Button
+										component={Link}
+										to={RoutePath[AppRoutes.MAIN]}
+										variant="unstyled"
+									>
+										<Stack
+											direction="row"
+											alignItems="center"
+											gap={1}
+										>
+											<Typography variant="R16">
+												Написать
+											</Typography>
+											<MessageIcon strokeWidth={1.5} />
+										</Stack>
+									</Button>
+								</Stack>
+							</Stack>
+						</Stack>
+					</Stack>
+				</CardContent>
 			</Card>
 		);
 	}

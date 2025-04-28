@@ -34,7 +34,7 @@ const palette = {
 		dark: '#E2363C',
 	},
 	warning: {
-		main: '#FFB11A',
+		main: '#D58528',
 		light: '#FCB62B',
 		dark: '#E9A010',
 	},
@@ -46,7 +46,8 @@ const palette = {
 	success: {
 		main: '#3EAD5D',
 		light: '#49B567',
-		dark: '#2F9B4D',
+		dark: '#34996D',
+		contrastText: '#FFFFFF',
 	},
 };
 
