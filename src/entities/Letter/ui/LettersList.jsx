@@ -72,10 +72,10 @@ const LettersList = () => {
 				<Grid
 					key={i}
 					container
-					columns={4}
+					columns={{ xxxl: 4, xs: 5 }}
 					columnSpacing={2}
 				>
-					<Grid size={1}>
+					<Grid size={{ xxxl: 1, xs: 2 }}>
 						<LetterCard letter={letter} />
 					</Grid>
 					<Grid size={2}>

@@ -1,27 +1,39 @@
-import { Typography } from '@mui/material';
-import { Card } from 'shared/ui/Card';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 
 const Employees = ({ ...props }) => {
 	return (
 		<Card
 			{...props}
-			position="relative"
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				height: '100%',
+			}}
 		>
-			<Typography variant="M24">Налоги и&nbsp;взносы</Typography>
+			<CardHeader title="Сотрудники" />
 
-			<Typography
-				color="var(--tertiary)"
-				variant="R20"
-				display="block"
-				position="absolute"
-				top="50%"
-				left="50%"
-				sx={{ transform: 'translate(-50%, -50%)' }}
-				width="100%"
-				textAlign="center"
+			<CardContent
+				sx={{
+					position: 'relative',
+					flexGrow: 1,
+				}}
 			>
-				Информациаи о сотрудниках пока нет
-			</Typography>
+				<Typography
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: '100%',
+						textAlign: 'center',
+						display: 'block',
+					}}
+					color="tertiary"
+					variant="R20"
+				>
+					Информации о сотрудниках пока нет
+				</Typography>
+			</CardContent>
 		</Card>
 	);
 };

@@ -1,28 +1,50 @@
-import { Typography } from '@mui/material';
-import { Card } from 'shared/ui/Card';
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	IconButton,
+	Typography,
+} from '@mui/material';
+import useAccountingReportStore from '../../../model/accountingReportStore.js';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const Requirements = ({ ...props }) => {
+	const clearReport = useAccountingReportStore.use.clearReport();
+
 	return (
 		<Card
 			{...props}
-			position="relative"
-			height="100%"
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				height: '100%',
+				...props.sx,
+			}}
 		>
-			<Typography variant="M24">Требования</Typography>
+			<CardHeader
+				title="Требования"
+				action={
+					<IconButton onClick={() => clearReport()}>
+						<CloseRoundedIcon />
+					</IconButton>
+				}
+			/>
 
-			<Typography
-				color="var(--tertiary)"
-				variant="R20"
-				display="block"
-				position="absolute"
-				top="50%"
-				left="50%"
-				sx={{ transform: 'translate(-50%, -50%)' }}
-				width="100%"
-				textAlign="center"
+			<CardContent
+				sx={{
+					flexGrow: 1,
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
 			>
-				Требований нет
-			</Typography>
+				<Typography
+					color="textSecondary"
+					variant="R20"
+				>
+					Требований нет
+				</Typography>
+			</CardContent>
 		</Card>
 	);
 };

@@ -1,43 +1,57 @@
-import { Skeleton, Typography } from '@mui/material';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	IconButton,
+	Skeleton,
+} from '@mui/material';
 import { Stack } from '@mui/system';
-import { Card } from 'shared/ui/Card';
+import useAccountingReportStore from '../../../model/accountingReportStore';
 
 const FirstColumn = ({ ...props }) => {
+	const clearReport = useAccountingReportStore.use.clearReport();
+
 	return (
 		<Card {...props}>
-			<Typography
-				variant="M24"
-				mb={4}
-			>
-				Отчёт 1
-			</Typography>
-			<Stack spacing={2}>
-				<Skeleton
-					variant="text"
-					sx={{ fontSize: '1rem' }}
-					animation={false}
-				/>
-				<Skeleton
-					variant="rounded"
-					height={60}
-					animation={false}
-				/>
-				<Skeleton
-					variant="rounded"
-					height={60}
-					animation={false}
-				/>
-				<Skeleton
-					variant="rounded"
-					height={60}
-					animation={false}
-				/>
-				<Skeleton
-					variant="rounded"
-					height={60}
-					animation={false}
-				/>
-			</Stack>
+			<CardHeader
+				title="Отчёт 1"
+				action={
+					<IconButton onClick={() => clearReport()}>
+						<CloseRoundedIcon />
+					</IconButton>
+				}
+			/>
+
+			<CardContent>
+				<Stack spacing={2}>
+					<Skeleton
+						variant="text"
+						sx={{ fontSize: '1rem' }}
+						animation={false}
+					/>
+					<Skeleton
+						variant="rounded"
+						height={60}
+						animation={false}
+					/>
+					<Skeleton
+						variant="rounded"
+						height={60}
+						animation={false}
+					/>
+					<Skeleton
+						variant="rounded"
+						height={60}
+						animation={false}
+					/>
+					<Skeleton
+						variant="rounded"
+						height={60}
+						animation={false}
+					/>
+				</Stack>
+			</CardContent>
 		</Card>
 	);
 };

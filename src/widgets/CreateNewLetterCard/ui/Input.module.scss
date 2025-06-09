@@ -1,0 +1,12 @@
+.letterInput {
+	background-color: #eee;
+	flex-grow: 1;
+	justify-content: space-between;
+	align-items: start;
+	box-shadow: none;
+	&:hover,
+	&:active {
+		box-shadow: none;
+	}
+	border: 1px solid #d3d3d3;
+}

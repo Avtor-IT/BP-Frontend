@@ -14,13 +14,13 @@ const ReportPlaceholder = () => {
 			height="100%"
 		>
 			<Grid size={2}>
-				<FirstColumn height="100%" />
+				<FirstColumn sx={{ height: '100%' }} />
 			</Grid>
 			<Grid size={1}>
-				<SecondColumn height="100%" />
+				<SecondColumn sx={{ height: '100%' }} />
 			</Grid>
 			<Grid size={1}>
-				<ThirdColumn height="100%" />
+				<ThirdColumn sx={{ height: '100%' }} />
 			</Grid>
 		</Grid>
 	);

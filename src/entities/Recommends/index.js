@@ -1,1 +1,1 @@
-export { default as useRecommendsQuery } from './hooks/useRecommendsQuery.js';
+export { default as Recommends } from './ui/Recommends';

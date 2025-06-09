@@ -6,7 +6,6 @@ const AddSquareIcon = (props) => {
 			<svg
 				fill="none"
 				viewBox="0 0 24 24"
-				strokeWidth={1}
 				stroke="currentColor"
 			>
 				<path

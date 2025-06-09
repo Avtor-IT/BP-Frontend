@@ -2,9 +2,10 @@ import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import cls from './SectionTitle.module.scss';
 
-const SectionTitle = ({ children }) => {
+const SectionTitle = ({ children, ...props }) => {
 	return (
 		<Box
+			{...props}
 			paddingBlock="51px"
 			className={cls.TitleBox}
 		>

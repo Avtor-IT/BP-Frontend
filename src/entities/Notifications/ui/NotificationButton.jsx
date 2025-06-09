@@ -1,14 +1,17 @@
+import { IconButton } from '@mui/material';
 import NotificationsIcon from 'shared/icons/Notifications';
-import { Button } from 'shared/ui/Button';
-import Badge from 'shared/ui/Badge';
+import Badge from '@mui/material/Badge';
 
 const NotificationButton = () => {
 	return (
-		<Button variant="unStyled">
-			<Badge>
+		<IconButton>
+			<Badge
+				badgeContent={100}
+				color="error"
+			>
 				<NotificationsIcon />
 			</Badge>
-		</Button>
+		</IconButton>
 	);
 };
 

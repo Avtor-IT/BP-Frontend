@@ -4,11 +4,15 @@ import { createSelectors } from 'shared/zustand';
 
 const useAccountingReportStoreBase = create(
 	immer((set) => ({
-		report: '',
+		report: null,
 		setReport: (newReport) =>
 			set((state) => {
 				state.report = newReport;
 			}),
+		clearReport: () =>
+			set(() => ({
+				report: null,
+			})),
 	}))
 );
 

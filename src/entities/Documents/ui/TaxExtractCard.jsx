@@ -1,58 +1,131 @@
-import { Typography } from '@mui/material';
-import { Stack } from '@mui/system';
+import {
+	Box,
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	Typography,
+} from '@mui/material';
+import { Stack, useMediaQuery, useTheme } from '@mui/system';
 import ExportIcon from 'shared/icons/Export';
 import ImportIcon from 'shared/icons/Import';
 import { RefreshIcon } from 'shared/icons/Refresh';
-import { TitledCard } from 'shared/ui/Card';
-import { Button } from './../../../shared/ui/Button/ui/Button';
+import { CircledTitle } from 'shared/ui/CircledTitle';
 
 const TaxExtractCard = ({ ...props }) => {
-	return (
-		<TitledCard
-			{...props}
-			title="Выписка с налоговой"
-			circleSx={{ left: '-224px', top: '-571px', background: '#C16496' }}
-		>
-			<Stack
-				height="100%"
-				direction="row"
-				alignItems="end"
-				justifyContent="space-between"
-			>
-				<Stack color="var(--tertiary)">
-					<Typography variant="R20">Последнее обновление</Typography>
-					<Typography variant="M16">29.08.2024 в 10:00</Typography>
-				</Stack>
+	const theme = useTheme();
+	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
+	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
+	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
 
-				<Stack
-					height="100%"
-					justifyContent="space-between"
-				>
-					<Button variant="unStyled">
-						<Stack
-							direction="row"
-							alignItems="center"
-							justifyContent="end"
-							gap={1}
+	return (
+		<Card
+			{...props}
+			sx={{ gap: downXl ? 2 : 3, ...props.sx }}
+		>
+			<CardHeader
+				title={
+					<CircledTitle
+						title="Выписка с налоговой"
+						color="primary.light"
+					/>
+				}
+				sx={{ alignItems: 'start' }}
+				action={
+					!downXxl && (
+						<Button
+							variant="unstyled"
+							sx={{
+								maxWidth: downXxxl ? 105 : 'auto',
+								display: 'flex',
+								flexDirection: downXxxl
+									? 'column-reverse'
+									: 'row',
+								alignItems: downXxxl ? 'end' : 'center',
+								gap: 1,
+								color: 'tertiary.main',
+							}}
 						>
 							<Typography
 								variant="M16"
-								color="var(--tertiary)"
 								textAlign="end"
 							>
 								Запрос на обновление
 							</Typography>
 							<RefreshIcon />
-						</Stack>
-					</Button>
-					<Stack
-						direction="row"
-						alignItems="center"
-						gap={2}
+						</Button>
+					)
+				}
+			/>
+
+			<CardContent
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					flexGrow: 1,
+				}}
+			>
+				{downXxl && (
+					<Button
+						variant="unstyled"
+						sx={{
+							maxWidth: '50%',
+							display: 'flex',
+							flexDirection: downXl ? 'column' : 'row',
+							alignItems: downXl ? 'start' : 'end',
+							justifyContent: 'start',
+							gap: 1,
+							color: downXl ? 'primary.main' : 'tertiary.main',
+							'& .MuiButton-endIcon': { marginLeft: 0 },
+						}}
+						endIcon={
+							<Box sx={{ p: downXl ? 0 : 0.5 }}>
+								<RefreshIcon />
+							</Box>
+						}
 					>
 						<Typography
 							variant="M16"
-							color="var(--secondary)"
+							maxWidth="105px"
+						>
+							Запрос на обновление
+						</Typography>
+					</Button>
+				)}
+				<Stack
+					sx={{ marginTop: 'auto' }}
+					direction="row"
+					justifyContent="space-between"
+					alignItems="end"
+				>
+					<Stack
+						color="tertiary.main"
+						gap={downXxxl ? 0.5 : 1}
+					>
+						<Typography
+							variant={downXxl ? (downXl ? 'M12' : 'M16') : 'R20'}
+							whiteSpace={downXxl ? 'normal' : 'nowrap'}
+						>
+							Последнее обновление
+						</Typography>
+						<Typography
+							color={downXl ? 'secondary.main' : undefined}
+							variant={downXxl ? (downXl ? 'R12' : 'R16') : 'M16'}
+						>
+							29.08.2024 в 10:00
+						</Typography>
+					</Stack>
+
+					<Stack
+						direction={downXxxl ? 'column' : 'row'}
+						alignItems={downXxxl ? 'end' : 'center'}
+						gap={downXxxl ? 0.5 : 1}
+					>
+						<Typography
+							textAlign="end"
+							variant={downXl ? 'M12' : 'M16'}
+							color="secondary"
 						>
 							Выписка за 29.08.2024
 						</Typography>
@@ -65,9 +138,8 @@ const TaxExtractCard = ({ ...props }) => {
 						</Stack>
 					</Stack>
 				</Stack>
-			</Stack>
-		</TitledCard>
+			</CardContent>
+		</Card>
 	);
 };
-
 export default TaxExtractCard;

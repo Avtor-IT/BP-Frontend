@@ -1,27 +1,31 @@
-import { Typography } from '@mui/material';
-import { Card } from 'shared/ui/Card';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 
 const DocsToApprove = ({ ...props }) => {
 	return (
 		<Card
 			{...props}
-			position="relative"
+			sx={{ display: 'flex', flexDirection: 'column', ...props.sx }}
 		>
-			<Typography variant="M24">Документы на&nbsp;утверждение</Typography>
+			<CardHeader title="Документы на&nbsp;утверждение" />
 
-			<Typography
-				color="var(--tertiary)"
-				variant="R20"
-				display="block"
-				position="absolute"
-				top="50%"
-				left="50%"
-				sx={{ transform: 'translate(-50%, -50%)' }}
-				width="100%"
-				textAlign="center"
+			<CardContent
+				sx={{
+					flexGrow: 1,
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
 			>
-				Документов нет
-			</Typography>
+				<Typography
+					color="textSecondary"
+					variant="R20"
+					sx={{
+						display: 'block',
+					}}
+				>
+					Документов нет
+				</Typography>
+			</CardContent>
 		</Card>
 	);
 };

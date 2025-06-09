@@ -1,17 +1,29 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import { Stack } from '@mui/system';
+import { useMediaQuery, useTheme } from '@mui/system';
 
-const ErrorCard = ({ text }) => {
+const ErrorCard = ({ text, ...props }) => {
+	const theme = useTheme();
+	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
+
 	return (
-		<Card sx={{ height: '100%' }}>
-			<CardContent sx={{ height: '100%' }}>
-				<Stack
-					alignItems="center"
-					height="100%"
-					justifyContent="center"
+		<Card
+			sx={{ height: '100%', ...props.sx }}
+			{...props}
+		>
+			<CardContent
+				sx={{
+					flexGrow: 1,
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
+				<Typography
+					color="error"
+					variant={downXxl ? 'M20' : 'M24'}
 				>
-					<Typography variant="M24">{text || 'Ошибка'}</Typography>
-				</Stack>
+					{text || 'Ошибка'}
+				</Typography>
 			</CardContent>
 		</Card>
 	);

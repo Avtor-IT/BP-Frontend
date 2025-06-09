@@ -1,6 +1,6 @@
-import cls from 'widgets/Notifications/ui/notifications.module.scss';
-import Slider from 'react-slick';
 import { Box } from '@mui/system';
+import Slider from 'react-slick';
+import cls from '../notifications.module.scss';
 
 const SliderDots = ({
 	navSlider,
@@ -35,7 +35,10 @@ const SliderDots = ({
 	};
 
 	return (
-		<Box className={`${cls.sliderDots} slider-container`}>
+		<Box
+			className={`${cls.sliderDots} slider-container`}
+			sx={{ maxWidth: '50px' }}
+		>
 			<Slider
 				{...settingsDots}
 				asNavFor={navSlider}
@@ -46,7 +49,6 @@ const SliderDots = ({
 						key={index}
 						sx={{
 							height: '8px',
-							width: '100%',
 							display: 'flex !important',
 							alignItems: 'center !important',
 							justifyContent: 'center !important',

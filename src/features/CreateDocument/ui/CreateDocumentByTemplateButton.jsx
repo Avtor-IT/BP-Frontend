@@ -1,27 +1,29 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AppRoutes, createRoute } from 'shared/router';
-import { Button } from 'shared/ui/Button';
 
 const CreateDocumentByTemplateButton = () => {
 	return (
-		<Link to={createRoute(AppRoutes.LETTER)}>
-			<Button
-				variant="outlined"
-				style={{
-					'--bg': 'var(--tertiary)',
-					borderWidth: '2px',
-					boxShadow: '0 1px 2px 0 #0000001F, 0 1px 3px 1px #0000001F',
-				}}
+		<Button
+			component={Link}
+			to={createRoute(AppRoutes.LETTER)}
+			variant="outlined"
+			color="tertriary"
+			sx={{
+				borderWidth: '2px',
+				borderRadius: '16px',
+				boxShadow: '0 1px 2px 0 #00000010, 0 0px 3px 1px #0000001F',
+				paddingInline: 3,
+				paddingBlock: 2,
+			}}
+		>
+			<Typography
+				variant="M20"
+				color="textSecondary"
 			>
-				<Typography
-					variant="M20"
-					color="var(--tertiary)"
-				>
-					Заполнить бланк
-				</Typography>
-			</Button>
-		</Link>
+				Заполнить бланк
+			</Typography>
+		</Button>
 	);
 };
 

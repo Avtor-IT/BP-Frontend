@@ -1,18 +1,22 @@
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/system';
 import Slider from 'react-slick';
 import useLetters from '../api/getLetters';
 import LetterCard from './LetterCard';
 import './SliderStyles.scss';
 
 const LettersSlider = () => {
+	const theme = useTheme();
+	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
 	const { data: letters, isLoading, isError } = useLetters();
 
 	const settings = {
 		speed: 500,
 		arrows: false,
-		slidesToShow: 2,
+		slidesToShow: downXxxl ? 1 : 2,
 		swipeToSlide: true,
 		infinite: false,
+		cancelable: true,
 		overflow: 'visible',
 	};
 
@@ -54,16 +58,23 @@ const LettersSlider = () => {
 	}
 
 	return (
-		<Slider {...settings}>
-			{letters.map((letter, i) => (
-				<Box
-					key={i}
-					p={1}
-				>
-					<LetterCard letter={letter} />
-				</Box>
-			))}
-		</Slider>
+		<Box
+			sx={{
+				'& .slick-list': { overflow: 'visible' },
+				width: downXxxl ? 305 : 616,
+			}}
+		>
+			<Slider {...settings}>
+				{letters.map((letter, i) => (
+					<Box
+						key={i}
+						paddingRight={i === letters.length - 1 ? 0 : 2}
+					>
+						<LetterCard letter={letter} />
+					</Box>
+				))}
+			</Slider>
+		</Box>
 	);
 };
 

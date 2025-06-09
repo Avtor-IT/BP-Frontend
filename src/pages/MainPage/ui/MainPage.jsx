@@ -1,74 +1,79 @@
-import { Box, Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
-import { useWidth } from 'shared/model';
+import {
+	ServiceAnchorList,
+	ServiceWidgetList,
+} from 'entities/Service/index.js';
+import { useMinWidth } from 'shared/model/index.js';
+import SectionTitle from 'shared/ui/SectionTitle';
 import { CompanyCard } from 'widgets/CompanyCard';
 import { MyManager } from 'widgets/ManagerCard';
 import { Notifications } from 'widgets/Notifications';
-import { MyRecommends } from 'widgets/RecommendationsCard';
-import { ServiceSection } from 'widgets/ServiceSection';
+import { Recommends } from 'entities/Recommends';
 
 const MainPage = () => {
-	const breakpointWidth = useWidth();
+	const breakpoints = useMinWidth();
+
 	return (
 		<Stack gap={3}>
-			<Stack spacing={2}>
+			<Grid
+				container
+				columns={5}
+				spacing={2}
+			>
 				<Grid
-					container
-					columns={5}
-					spacing={2}
+					size={{
+						xxxl: 2,
+						lg: 3,
+						xs: 5,
+					}}
+					order={1}
+					sx={{ minHeight: '192px' }}
 				>
+					<CompanyCard sx={{ height: '100%' }} />
+				</Grid>
+
+				{!breakpoints.lg && (
 					<Grid
-						size={{
-							xl: 2,
-							xs: 5,
-						}}
-						sx={{ minHeight: '192px' }}
-					>
-						<CompanyCard sx={{ height: '100%' }} />
-					</Grid>
-					<Grid
-						size={1}
-						sx={{ minHeight: '192px' }}
-					>
-						<Notifications sx={{ height: '100%' }} />
-					</Grid>
-					<Grid
-						size={{
-							xl: 2,
-							xs: 4,
-						}}
+						size={2}
+						order={{ xxxl: 3, lg: 2, xs: 5 }}
 						sx={{ minHeight: '192px' }}
 					>
 						<MyManager sx={{ height: '100%' }} />
 					</Grid>
-				</Grid>
-				<Grid
-					container
-					columns={5}
-					columnSpacing={2}
-					rowSpacing={2}
-				>
-					<Grid size={5}>
-						<MyRecommends sx={{ minHeight: '337px' }} />
-					</Grid>
-				</Grid>
-			</Stack>
+				)}
 
-			<Box
-				component="section"
-				position="relative"
-			>
-				<Box
-					position="absolute"
-					width={breakpointWidth}
-					height="2px"
+				<Grid
+					size={{
+						xxxl: 1,
+						xxl: 5,
+					}}
+					order={{ xxl: 2, xs: 3 }}
 					sx={(theme) => ({
-						background: `color-mix(in srgb, ${theme.palette.tertiary.main} 20%, transparent)`,
+						[theme.breakpoints.up('xxxl')]: {
+							minHeight: '192px',
+						},
 					})}
-					left="-285px"
-				/>
-				<ServiceSection marginTop={4} />
-			</Box>
+				>
+					<Notifications sx={{ height: '100%' }} />
+				</Grid>
+
+				<Grid
+					size={5}
+					order={4}
+				>
+					<Recommends sx={{ minHeight: '337px' }} />
+				</Grid>
+			</Grid>
+
+			{!breakpoints.xxl && <SectionTitle>Мои услуги</SectionTitle>}
+
+			{breakpoints.lg && (
+				<Typography variant="M20">Быстрый переход</Typography>
+			)}
+
+			<ServiceAnchorList />
+			<ServiceWidgetList />
 		</Stack>
 	);
 };

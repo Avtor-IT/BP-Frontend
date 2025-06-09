@@ -1,11 +1,11 @@
-import { Skeleton, Typography } from '@mui/material';
+import { Card, CardHeader, Skeleton, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useCompanies } from 'entities/Company';
 import { INN, KPP } from 'features/GetCompanyInfo';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoutes, RoutePath } from 'shared/router';
-import { Circle, ErrorCard, TitledCard } from 'shared/ui/Card';
+import { Circle, ErrorCard } from 'shared/ui/Card';
 import CompanyBalanceCard from './CompanyBalanceCard';
 import CompanyTitle from './CompanyTitle';
 
@@ -19,20 +19,25 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 	}, [companies]);
 
 	if (isError) {
-		return <ErrorCard text={`Ошибка при загрузке компании`} />;
+		return (
+			<ErrorCard
+				text={`Ошибка при загрузке компании`}
+				{...props}
+			/>
+		);
 	}
 
 	if (isLoading) {
 		return (
 			<Skeleton
-				variant="rectangular"
+				variant="rounded"
 				{...props}
 			/>
 		);
 	}
 
 	return (
-		<TitledCard
+		<Card
 			title={
 				<Link
 					style={{ zIndex: 1 }}
@@ -43,6 +48,8 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 			}
 			{...props}
 		>
+			<CardHeader title={selectedCompany?.['TITLE']} />
+
 			<Stack
 				height="100%"
 				direction="row"
@@ -93,6 +100,6 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 
 				<CompanyBalanceCard />
 			</Stack>
-		</TitledCard>
+		</Card>
 	);
 };

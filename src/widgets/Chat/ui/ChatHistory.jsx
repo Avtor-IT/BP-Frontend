@@ -17,7 +17,7 @@ const ChatHistory = ({ id, ...props }) => {
 
 	return (
 		<List {...props}>
-			{messages.map((message) => (
+			{messages.results.map((message) => (
 				<ListItemText
 					key={message.id}
 					primary={message.content}

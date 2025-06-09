@@ -11,12 +11,12 @@ const LegalSupport = () => {
 			columns={5}
 			flexGrow={1}
 		>
-			<Grid size={1}>
+			<Grid size={{ xxxl: 1, xs: 2 }}>
 				<Card height="100%">
 					<LegalSupportReports />
 				</Card>
 			</Grid>
-			<Grid size={4}>
+			<Grid size={{ xxxl: 4, xs: 3 }}>
 				<Card height="100%">
 					<Docs />
 				</Card>

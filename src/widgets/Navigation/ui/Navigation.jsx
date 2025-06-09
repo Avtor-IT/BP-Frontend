@@ -1,4 +1,5 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/system';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Document from 'shared/icons/Document';
 import HomeIcon from 'shared/icons/Home';
@@ -6,7 +7,6 @@ import ListIcon from 'shared/icons/List';
 import Market from 'shared/icons/Market';
 import OfficeIcon from 'shared/icons/Office';
 import { AppRoutes, RoutePath } from 'shared/router';
-import cls from './Navigation.module.scss';
 
 const styles = (isActive) => ({
 	justifyContent: 'start',
@@ -16,6 +16,9 @@ const styles = (isActive) => ({
 
 	'&:hover': {
 		backgroundColor: isActive ? 'primary.main' : 'transparent',
+	},
+	'&:active': {
+		boxShadow: 'none',
 	},
 	'&:not(.nav--active)::before': {
 		borderLeft: '3px solid',
@@ -51,6 +54,9 @@ const navIcon = (el, isActive) => (
 );
 
 export const Navigation = ({ ...props }) => {
+	const theme = useTheme();
+	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
+
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -85,8 +91,19 @@ export const Navigation = ({ ...props }) => {
 	};
 
 	return (
-		<Box
-			className={cls.NavigationList}
+		<Stack
+			component="aside"
+			gap={{ xxl: 1, xs: 2 }}
+			sx={(theme) => ({
+				[theme.breakpoints.up('xxxl')]: {
+					paddingInline: 2,
+				},
+				[theme.breakpoints.down('xxl')]: {
+					flexDirection: 'row',
+				},
+				width: '100%',
+				...props.sx,
+			})}
 			{...props}
 		>
 			{menu.list.map((el) => {
@@ -106,11 +123,19 @@ export const Navigation = ({ ...props }) => {
 							navigate(el.link);
 						}}
 						fullWidth
-						sx={styles(isActive)}
+						sx={(theme) => ({
+							...styles(isActive),
+							color: 'textSecondary',
+							paddingLeft: '12px',
+							[theme.breakpoints.down('xxl')]: {
+								justifyContent: 'center',
+								paddingInline: 1,
+							},
+						})}
 						startIcon={navIcon(el, isActive)}
 					>
 						<Typography
-							variant="L16"
+							variant={downXxxl ? 'L12' : 'L16'}
 							color={
 								isActive ? 'primary.contrastText' : undefined
 							}
@@ -120,6 +145,6 @@ export const Navigation = ({ ...props }) => {
 					</Button>
 				);
 			})}
-		</Box>
+		</Stack>
 	);
 };

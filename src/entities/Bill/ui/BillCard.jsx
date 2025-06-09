@@ -2,26 +2,24 @@ import {
 	Card,
 	CardContent,
 	CardHeader,
+	Skeleton,
 	Stack,
 	Typography,
 } from '@mui/material';
 import BillDocuments from './BillDocuments';
+import { statusColor, statusName } from '../model/billStatus';
 
-const statusName = {
-	needToPay: 'Не оплачено',
-	paid: 'Оплачено',
-	proccessing: 'Оплачено',
-	completed: 'Оплачено',
-};
+const BillCard = ({ bill, loading, ...props }) => {
+	if (loading) {
+		return (
+			<Skeleton
+				height={248}
+				variant="rounded"
+				{...props}
+			/>
+		);
+	}
 
-const statusColor = {
-	needToPay: 'error.main',
-	paid: 'success.main',
-	proccessing: 'success.main',
-	completed: 'success.main',
-};
-
-const BillCard = ({ bill, ...props }) => {
 	return (
 		<Card {...props}>
 			<Stack height="100%">

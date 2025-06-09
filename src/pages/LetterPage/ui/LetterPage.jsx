@@ -1,13 +1,12 @@
-import { Stack } from '@mui/material';
-import { Grid } from '@mui/system';
+import { Stack, Grid } from '@mui/material';
 import {
+	LastLettersWidget,
 	LettersFilter,
 	LettersList,
 	LettersSearch,
 	LettersSort,
 } from 'entities/Letter';
 import { CreateNewLetterCard } from 'widgets/CreateNewLetterCard';
-import { LastLettersCard } from 'widgets/LastLettersCard';
 
 const LetterPage = () => {
 	return (
@@ -15,17 +14,28 @@ const LetterPage = () => {
 			container
 			columns={5}
 			columnSpacing={2}
-			rowSpacing={9}
+			rowSpacing={2}
+			paddingBottom={3}
 		>
-			<Grid size={3}>
-				<LastLettersCard height="100%" />
+			<Grid
+				size={{ xxl: 3, xs: 5 }}
+				order={{ xxl: 1, xs: 2 }}
+			>
+				<LastLettersWidget height="100%" />
 			</Grid>
-			<Grid size={2}>
+			<Grid
+				size={{ xxl: 2, xs: 5 }}
+				order={{ xxl: 2, xs: 1 }}
+			>
 				<CreateNewLetterCard sx={{ height: '100%' }} />
 			</Grid>
 
-			<Grid size={4}>
+			<Grid
+				size={{ xxxl: 4, xs: 5 }}
+				order={3}
+			>
 				<Stack
+					paddingTop={{ xxl: 7, xl: 5, xs: 2 }}
 					gap={4}
 					alignItems="start"
 				>

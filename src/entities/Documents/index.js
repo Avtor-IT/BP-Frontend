@@ -11,3 +11,4 @@ export { default as DocumentModal } from './ui/DocumentModal';
 export { default as DownloadDocumentButton } from './ui/DownloadDocumentButton';
 export { default as ExportDocumentButton } from './ui/ExportDocumentButton';
 export { default as TaxExtractCard } from './ui/TaxExtractCard';
+export { default as DocumentsWidget } from './ui/DocumentsWidget.jsx';

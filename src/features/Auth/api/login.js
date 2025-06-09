@@ -13,9 +13,9 @@ export const login = async (body) => {
 		return response;
 	} catch (e) {
 		console.error('Login failed:', e);
-		if (e.response.status === 401) {
+		if (e.response?.status === 401) {
 			throw Error('Unauthorized');
 		}
-		throw Error(e.response.status);
+		throw Error(e.response?.status);
 	}
 };

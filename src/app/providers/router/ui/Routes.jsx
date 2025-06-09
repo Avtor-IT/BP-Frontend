@@ -18,11 +18,6 @@ const Routes = () => {
 		{
 			id: 'root',
 			path: '/',
-			// element: (
-			// 	<B24WidgetProvider>
-			// 		<PrivateRoute />
-			// 	</B24WidgetProvider>
-			// ),
 			element: <PrivateRoute />,
 			children: [
 				{

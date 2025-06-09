@@ -7,36 +7,6 @@ import SliderDots from './slider/SliderDots';
 import SliderNotifications from './slider/SliderNotifications';
 
 export const Notifications = (props) => {
-	// const { data: companies, isError, isLoading } = useCompanies();
-
-	// const [selectedCompany, setSelectedCompany] = React.useState();/
-
-	// useEffect(() => {
-	// 	if (companies) {
-	// 		setSelectedCompany(companies[0]);
-	// 	}
-	// }, [companies]);
-
-	// if (isLoading) {
-	// 	return (
-	// 		<Skeleton
-	// 			variant="rectangular"
-	// 			height="100%"
-	// 			sx={{ borderRadius: '16px', minHeight: '192px' }}
-	// 		/>
-	// 	);
-	// }
-
-	// if (isError) {
-	// 	return (
-	// 		<Card style={{ height: '100%' }}>
-	// 			<Typography variant="M24">
-	// 				Ошибка при загрузке компаний
-	// 			</Typography>
-	// 		</Card>
-	// 	);
-	// }
-
 	const [currentSlide, setCurrentSlide] = useState(0); // Состояние для хранения текущего слайда
 
 	const [navSlider, setNavSlider] = useState(null);

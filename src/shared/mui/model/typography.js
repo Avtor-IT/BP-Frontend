@@ -20,6 +20,10 @@ const typography = Object.freeze({
 		fontSize: 16,
 		fontWeight: 500,
 	},
+	M12: {
+		fontSize: 12,
+		fontWeight: 500,
+	},
 	R48: {
 		fontSize: 48,
 		fontWeight: 400,
@@ -46,6 +50,10 @@ const typography = Object.freeze({
 	},
 	L16: {
 		fontSize: 16,
+		fontWeight: 300,
+	},
+	L12: {
+		fontSize: 12,
 		fontWeight: 300,
 	},
 });

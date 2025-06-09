@@ -1,43 +1,57 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import { ButtonCard } from 'shared/ui/Button';
+import groupReports from '../lib/groupReports.js';
+import ReportsUnloading from './ReportUnloading.jsx';
+import ReportsCard from './ReportsCard.jsx';
 
-const ReportsList = ({ listTitle, listItems, active, onItemClick }) => {
-	const handleActive = (item) => {
-		if (active) {
-			return active(item);
-		}
-	};
-	const handleClick = (item) => {
-		if (onItemClick) {
-			return onItemClick(item);
-		}
-	};
+const ReportsList = ({ reports, groups, references }) => {
+	const groupedReports = groupReports(reports, groups);
 
 	return (
-		<Stack gap={1}>
-			<Typography
-				variant="M20"
-				color="var(--secondary)"
-			>
-				{listTitle}
-			</Typography>
-			<Stack
-				direction="row"
-				gap={1}
-				flexWrap="wrap"
-			>
-				{listItems.map((item, i) => (
-					<ButtonCard
+		<ReportsCard>
+			<Stack gap={2}>
+				{Object.entries(groupedReports).map(([group, reports], i) => (
+					<Stack
 						key={i}
-						active={handleActive(item)}
-						onClick={() => handleClick(item)}
+						gap={1}
 					>
-						<Typography variant="R16">{item.title}</Typography>
-					</ButtonCard>
+						{group && (
+							<Typography
+								variant="M20"
+								color="secondary"
+							>
+								{group}
+							</Typography>
+						)}
+						<Stack
+							direction="row"
+							gap={1}
+							flexWrap="wrap"
+						>
+							{reports.map((report, i) => (
+								<Button
+									sx={{ borderRadius: '8px' }}
+									key={i}
+									onClick={() => report.action()}
+									variant="card"
+								>
+									<Typography variant="R16">
+										{report.title}
+									</Typography>
+								</Button>
+							))}
+						</Stack>
+					</Stack>
+				))}
+
+				{references.map((reference, i) => (
+					<ReportsUnloading
+						key={i}
+						title={reference.title}
+					/>
 				))}
 			</Stack>
-		</Stack>
+		</ReportsCard>
 	);
 };
 

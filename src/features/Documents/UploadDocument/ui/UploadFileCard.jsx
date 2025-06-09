@@ -1,12 +1,18 @@
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import {
+	Card,
+	CardHeader,
+	CircularProgress,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { useUploadFilesMutation } from 'entities/Documents';
 import { useState } from 'react';
 import { CloseIcon } from 'shared/icons/Close';
 import { PaperClipIcon } from 'shared/icons/Paperclip';
 import { Button } from 'shared/ui/Button';
-import { TitledCard } from 'shared/ui/Card';
 import Input from 'shared/ui/Input';
+import { CircledTitle } from 'shared/ui/Card';
 
 const UploadFileCard = () => {
 	const [files, setFiles] = useState([]);
@@ -66,7 +72,7 @@ const UploadFileCard = () => {
 	};
 
 	return (
-		<TitledCard
+		<Card
 			sx={{ padding: 0 }}
 			circleSx={{
 				width: '407px',
@@ -76,6 +82,13 @@ const UploadFileCard = () => {
 				backgroundColor: 'var(--secondary)',
 			}}
 		>
+			<CardHeader
+				title="Добавить<br />новый документ"
+				/*slots={{
+					content: CircledTitle,
+				}}*/
+			/>
+
 			<Stack
 				justifyContent={!files?.length ? 'space-between' : 'start'}
 				minHeight="332px"
@@ -226,7 +239,7 @@ const UploadFileCard = () => {
 					</Box>
 				) : null}
 			</Stack>
-		</TitledCard>
+		</Card>
 	);
 };
 

@@ -5,16 +5,16 @@ const Circle = ({ width, height, size, sx, ...otherProps }) => {
 		<Box
 			width={width || size || '678px'}
 			height={height || size || '678px'}
-			sx={{
+			sx={(theme) => ({
 				position: 'absolute',
 				zIndex: 1,
 				borderRadius: '100%',
 				transition: 'all 0.3s ease',
-				background: 'primary.main',
+				background: theme.palette.primary.main,
 				...sx,
-			}}
+			})}
 			{...otherProps}
-		></Box>
+		/>
 	);
 };
 

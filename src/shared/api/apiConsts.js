@@ -15,6 +15,7 @@ export const apiEndpoints = {
 	USER_SERVICES: `/api/user-service/check-expiration/`,
 	DOWNLOAD_FILE: `/api/${version1}/hooks/downloadfile/`,
 	UPLOAD_FILE: `/api/${version1}/hooks/upload_user_file/`,
-	CHAT_ROOM: `chat/${version1}/chat/:b24_user_id/`,
-	CHAT_MESSAGES: `chat/${version1}/chat/:chat_room_id/messages/`,
+	CHAT_ROOM: `chat/${version1}/:b24_user_id/`,
+	CHAT_MESSAGES: `chat/${version1}/:chat_room_id/messages/`,
+	CHAT_LIST: `chat/${version1}/my-chats/`,
 };

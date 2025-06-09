@@ -1,28 +1,30 @@
-import { Box, Typography } from '@mui/material';
-import { TitledCard } from 'shared/ui/Card';
+import { Card, CardContent, CardHeader } from '@mui/material';
+import { CircledTitle } from 'shared/ui/CircledTitle';
+
+const gradient = 'linear-gradient(15deg, #514996, #FFF)';
 
 const ReportsCard = ({ reportsTitle, children, ...props }) => {
 	return (
-		<TitledCard
+		<Card
 			{...props}
 			sx={{ minHeight: '100%' }}
-			circleSx={{
-				background:
-					'linear-gradient(15deg, var(--secondary), var(--bg-additional-color))',
-				left: '-265px',
-			}}
 		>
-			<Typography
-				variant="M24"
-				mb={4}
-				position="relative"
-				zIndex={2}
-				color="var(--color-light-secondary)"
-			>
-				{reportsTitle || 'Отчеты'}
-			</Typography>
-			<Box pt={2}>{children}</Box>
-		</TitledCard>
+			<CardHeader
+				title={
+					<CircledTitle
+						title={reportsTitle || 'Отчеты'}
+						color="secondary.main"
+						slotProps={{
+							circle: {
+								sx: { background: gradient },
+							},
+						}}
+					/>
+				}
+			/>
+
+			<CardContent sx={{ pt: 2 }}>{children}</CardContent>
+		</Card>
 	);
 };
 

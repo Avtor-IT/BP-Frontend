@@ -1,4 +1,10 @@
-import { Box, Card, Stack, Typography } from '@mui/material';
+import {
+	Card,
+	CardContent,
+	IconButton,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { CheckSquareIcon } from 'shared/icons/CheckSquare';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import ExportIcon from 'shared/icons/Export';
@@ -45,26 +51,29 @@ const getTypeTitle = (type) => {
 
 const LetterCard = ({ letter, ...props }) => {
 	return (
-		<Box {...props}>
-			<Card
-				sx={{
-					color: 'tertiary.dark',
-					padding: '32px 24px 16px',
-					position: 'relative',
-				}}
-			>
-				{letter.type === 'draft' ? (
-					<EditSquareIcon
-						color="warning"
-						sx={iconSx}
-					/>
-				) : (
-					<CheckSquareIcon
-						color="success"
-						sx={iconSx}
-					/>
-				)}
+		<Card
+			{...props}
+			sx={{
+				color: 'tertiary.dark',
+				position: 'relative',
+				...props.sx,
+			}}
+		>
+			{letter.type === 'draft' ? (
+				<EditSquareIcon
+					color="warning"
+					sx={iconSx}
+				/>
+			) : (
+				<CheckSquareIcon
+					color="success"
+					sx={iconSx}
+				/>
+			)}
 
+			<CardContent
+				sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+			>
 				<Stack
 					direction="row"
 					justifyContent="space-between"
@@ -73,40 +82,49 @@ const LetterCard = ({ letter, ...props }) => {
 					<Typography variant="M20">{letter.date}</Typography>
 				</Stack>
 
-				<Stack
-					mt={2}
-					direction="row"
-					justifyContent="space-between"
-				>
-					<Typography variant="R16">Тема:</Typography>
-					<Typography variant="M16">{letter.topic}</Typography>
-				</Stack>
+				<Stack gap={3}>
+					<Stack gap={1}>
+						<Stack
+							direction="row"
+							justifyContent="space-between"
+						>
+							<Typography variant="R16">Тема:</Typography>
+							<Typography variant="M16">
+								{letter.topic}
+							</Typography>
+						</Stack>
 
-				<Stack
-					mt={1}
-					direction="row"
-					justifyContent="space-between"
-				>
-					<Typography variant="R16">Адресат:</Typography>
-					<Typography variant="M16">{letter.destination}</Typography>
-				</Stack>
+						<Stack
+							direction="row"
+							justifyContent="space-between"
+						>
+							<Typography variant="R16">Адресат:</Typography>
+							<Typography variant="M16">
+								{letter.destination}
+							</Typography>
+						</Stack>
+					</Stack>
 
-				<Stack
-					mt={3}
-					direction="row"
-					justifyContent="space-between"
-				>
 					<Stack
 						direction="row"
-						gap={1}
+						justifyContent="space-between"
 					>
-						<ImportIcon />
-						<ExportIcon />
+						<Stack
+							direction="row"
+							gap={1}
+						>
+							<IconButton sx={{ p: 0 }}>
+								<ImportIcon strokeWidth={1.5} />
+							</IconButton>
+							<IconButton sx={{ p: 0 }}>
+								<ExportIcon strokeWidth={1.5} />
+							</IconButton>
+						</Stack>
+						{getTypeTitle(letter.type)}
 					</Stack>
-					{getTypeTitle(letter.type)}
 				</Stack>
-			</Card>
-		</Box>
+			</CardContent>
+		</Card>
 	);
 };
 

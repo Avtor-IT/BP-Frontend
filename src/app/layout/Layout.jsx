@@ -1,85 +1,118 @@
-import { Container } from '@mui/material';
-import { Box, Grid, Stack } from '@mui/system';
+import { Container, IconButton } from '@mui/material';
+import { Grid, Stack } from '@mui/system';
 import { FallbackContent } from 'pages/FallbackPage';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import LogoText, { LogoIcon } from 'shared/ui/Logo';
-import { Header } from 'widgets/Header';
+import { MenuIcon } from 'shared/icons/Menu/index.js';
+import { useMinWidth } from 'shared/model';
+import { Logo } from 'shared/ui/Logo';
 import { LogoLink } from 'widgets/LogoLink';
 import { Navigation } from 'widgets/Navigation';
-import { SideMenu } from 'widgets/SideMenu';
+import { ChatBot } from 'features/ChatBot';
+import { NotificationButton } from 'entities/Notifications';
+import { User } from 'entities/User';
 
-export const Layout = () => (
-	<Container
-		fixed
-		maxWidth="xl"
-		sx={{ paddingTop: 4, height: '100vh' }}
-	>
-		<Stack
-			minHeight="100%"
-			gap={8}
+export const Layout = () => {
+	const breakpoints = useMinWidth();
+
+	return (
+		<Container
+			fixed
+			maxWidth="xxxl"
+			sx={{ paddingTop: 4, minHeight: '100vh' }}
 		>
-			{/* Header */}
-			<Grid
-				container
-				columns={7}
-				columnSpacing={2}
+			<Stack
+				minHeight="100%"
+				gap={{ xxxl: 8, xxl: 4, xs: 3 }}
 			>
-				<Grid size={1}>
-					<Stack
-						direction="row"
-						justifyContent="center"
-					>
+				{/* Header */}
+				<Grid
+					container
+					columns={{ xxl: 7, sx: 5 }}
+					columnSpacing={2}
+				>
+					<Grid size={{ xxxl: 1, lg: 'auto', xs: 'grow' }}>
 						<LogoLink>
 							<Stack
 								direction="row"
 								alignItems="center"
-								justifyContent="center"
-								spacing="16px"
+								gap={2}
+								sx={(theme) => ({
+									[theme.breakpoints.up('xxxl')]: {
+										paddingInline: 2,
+									},
+								})}
 							>
-								<LogoIcon />
-								<LogoText />
+								<Logo
+									sx={(theme) => ({
+										[theme.breakpoints.down('xl')]: {
+											width: 143,
+											height: 40,
+										},
+										width: 201,
+										height: 56,
+									})}
+								/>
 							</Stack>
 						</LogoLink>
-					</Stack>
-				</Grid>
-				<Grid size={6}>
-					<Header />
-				</Grid>
-			</Grid>
-
-			{/* Nav & Page content */}
-			<Grid
-				container
-				flexGrow={1}
-				columns={7}
-				columnSpacing={2}
-				rowSpacing={8}
-			>
-				<Grid size={1}>
-					<Stack
-						direction="row"
-						justifyContent="center"
+					</Grid>
+					<Grid
+						size={{ lg: 1, xs: 'grow' }}
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
 					>
-						<Box
-							paddingInline={2}
-							width="100%"
-						>
-							<SideMenu>
-								<Navigation />
-							</SideMenu>
-						</Box>
-					</Stack>
+						<ChatBot />
+					</Grid>
+
+					<Grid
+						size={'grow'}
+						sx={{
+							display: 'flex',
+							gap: 1,
+							justifyContent: 'end',
+							alignItems: 'center',
+						}}
+					>
+						<NotificationButton />
+
+						{breakpoints.lg ? (
+							<IconButton>
+								<MenuIcon />
+							</IconButton>
+						) : (
+							<>
+								<User />
+							</>
+						)}
+					</Grid>
 				</Grid>
+
+				{/* Nav & Page content */}
 				<Grid
-					size={6}
-					minHeight="100%"
+					container
+					flexGrow={1}
+					columns={{ xxl: 7, xs: 5 }}
+					columnSpacing={2}
+					rowSpacing={{ xxl: 8, xs: 4 }}
 				>
-					<Suspense fallback={<FallbackContent />}>
-						<Outlet />
-					</Suspense>
+					{!breakpoints.lg && (
+						<Grid size={{ xxl: 1, xs: 5 }}>
+							<Navigation />
+						</Grid>
+					)}
+					<Grid
+						size={6}
+						minHeight="100%"
+					>
+						<Suspense fallback={<FallbackContent />}>
+							<Outlet />
+						</Suspense>
+					</Grid>
 				</Grid>
-			</Grid>
-		</Stack>
-	</Container>
-);
+			</Stack>
+		</Container>
+	);
+};
