@@ -1,27 +1,21 @@
-import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	Typography,
-} from '@mui/material';
-import { Stack, useMediaQuery, useTheme } from '@mui/system';
-import ExportIcon from 'shared/icons/Export';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
 import ImportIcon from 'shared/icons/Import';
-import { RefreshIcon } from 'shared/icons/Refresh';
+import { useMaxWidth } from 'shared/model';
 import { CircledTitle } from 'shared/ui/CircledTitle';
+import TaxRefreshButton from './TaxRefreshButton';
 
 const TaxExtractCard = ({ ...props }) => {
-	const theme = useTheme();
-	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
-	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
-	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
+	const breakpoints = useMaxWidth();
 
 	return (
 		<Card
 			{...props}
-			sx={{ gap: downXl ? 2 : 3, ...props.sx }}
+			sx={{
+				gap: breakpoints.xl ? (breakpoints.lg ? 0 : 2) : 3,
+				paddingBlock: breakpoints.lg ? 2 : undefined,
+				...props.sx,
+			}}
 		>
 			<CardHeader
 				title={
@@ -30,32 +24,16 @@ const TaxExtractCard = ({ ...props }) => {
 						color="primary.light"
 					/>
 				}
-				sx={{ alignItems: 'start' }}
-				action={
-					!downXxl && (
-						<Button
-							variant="unstyled"
-							sx={{
-								maxWidth: downXxxl ? 105 : 'auto',
-								display: 'flex',
-								flexDirection: downXxxl
-									? 'column-reverse'
-									: 'row',
-								alignItems: downXxxl ? 'end' : 'center',
-								gap: 1,
-								color: 'tertiary.main',
-							}}
-						>
-							<Typography
-								variant="M16"
-								textAlign="end"
-							>
-								Запрос на обновление
-							</Typography>
-							<RefreshIcon />
-						</Button>
-					)
-				}
+				sx={{
+					alignItems: 'start',
+					paddingInline: breakpoints.lg ? 2 : undefined,
+				}}
+				action={breakpoints.xxl || <TaxRefreshButton />}
+				slotProps={{
+					title: {
+						variant: breakpoints.lg ? 'M20' : 'M24',
+					},
+				}}
 			/>
 
 			<CardContent
@@ -66,33 +44,8 @@ const TaxExtractCard = ({ ...props }) => {
 					flexGrow: 1,
 				}}
 			>
-				{downXxl && (
-					<Button
-						variant="unstyled"
-						sx={{
-							maxWidth: '50%',
-							display: 'flex',
-							flexDirection: downXl ? 'column' : 'row',
-							alignItems: downXl ? 'start' : 'end',
-							justifyContent: 'start',
-							gap: 1,
-							color: downXl ? 'primary.main' : 'tertiary.main',
-							'& .MuiButton-endIcon': { marginLeft: 0 },
-						}}
-						endIcon={
-							<Box sx={{ p: downXl ? 0 : 0.5 }}>
-								<RefreshIcon />
-							</Box>
-						}
-					>
-						<Typography
-							variant="M16"
-							maxWidth="105px"
-						>
-							Запрос на обновление
-						</Typography>
-					</Button>
-				)}
+				{breakpoints.xxl && !breakpoints.lg && <TaxRefreshButton />}
+
 				<Stack
 					sx={{ marginTop: 'auto' }}
 					direction="row"
@@ -100,41 +53,77 @@ const TaxExtractCard = ({ ...props }) => {
 					alignItems="end"
 				>
 					<Stack
-						color="tertiary.main"
-						gap={downXxxl ? 0.5 : 1}
+						direction="row"
+						alignItems="center"
+						gap={2}
 					>
-						<Typography
-							variant={downXxl ? (downXl ? 'M12' : 'M16') : 'R20'}
-							whiteSpace={downXxl ? 'normal' : 'nowrap'}
+						<Stack
+							color="tertiary.main"
+							gap={breakpoints.xxxl ? 0.5 : 1}
 						>
-							Последнее обновление
-						</Typography>
-						<Typography
-							color={downXl ? 'secondary.main' : undefined}
-							variant={downXxl ? (downXl ? 'R12' : 'R16') : 'M16'}
-						>
-							29.08.2024 в 10:00
-						</Typography>
+							<Typography
+								variant={
+									breakpoints.xxl
+										? breakpoints.xl && !breakpoints.lg
+											? 'M12'
+											: 'M16'
+										: 'R20'
+								}
+								whiteSpace={
+									breakpoints.xxl ? 'normal' : 'nowrap'
+								}
+								color={breakpoints.lg && 'textPrimary'}
+							>
+								{breakpoints.lg
+									? 'Обновлено'
+									: 'Последнее обновление'}
+							</Typography>
+							<Typography
+								color={
+									breakpoints.xl && !breakpoints.lg
+										? 'secondary.main'
+										: undefined
+								}
+								variant={
+									breakpoints.xxl
+										? breakpoints.xl
+											? breakpoints.lg
+												? 'M12'
+												: 'R12'
+											: 'R16'
+										: 'M16'
+								}
+							>
+								29.08.2024 в 10:00
+							</Typography>
+						</Stack>
+
+						{breakpoints.lg && <TaxRefreshButton />}
 					</Stack>
 
 					<Stack
-						direction={downXxxl ? 'column' : 'row'}
-						alignItems={downXxxl ? 'end' : 'center'}
-						gap={downXxxl ? 0.5 : 1}
+						direction={breakpoints.xxxl ? 'column' : 'row'}
+						alignItems={breakpoints.xxxl ? 'end' : 'center'}
+						gap={breakpoints.xxxl ? 0.5 : 1}
 					>
-						<Typography
-							textAlign="end"
-							variant={downXl ? 'M12' : 'M16'}
-							color="secondary"
-						>
-							Выписка за 29.08.2024
-						</Typography>
+						{breakpoints.lg || (
+							<Typography
+								textAlign="end"
+								variant={breakpoints.xl ? 'M12' : 'M16'}
+								color="secondary"
+							>
+								Выписка за 29.08.2024
+							</Typography>
+						)}
+
 						<Stack
 							direction="row"
 							gap={1}
 						>
-							<ExportIcon />
-							<ImportIcon />
+							<ImportIcon
+								strokeWidth={1.5}
+								color="tertiary"
+							/>
 						</Stack>
 					</Stack>
 				</Stack>

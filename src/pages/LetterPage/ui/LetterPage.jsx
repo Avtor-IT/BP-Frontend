@@ -1,11 +1,13 @@
-import { Stack, Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import {
 	LastLettersWidget,
+	LastLettersWidgetLg,
 	LettersFilter,
 	LettersList,
 	LettersSearch,
 	LettersSort,
 } from 'entities/Letter';
+import { BreakpointedComponent } from 'shared/model';
 import { CreateNewLetterCard } from 'widgets/CreateNewLetterCard';
 
 const LetterPage = () => {
@@ -13,30 +15,38 @@ const LetterPage = () => {
 		<Grid
 			container
 			columns={5}
-			columnSpacing={2}
-			rowSpacing={2}
-			paddingBottom={3}
+			rowSpacing={{ xxl: 9, xl: 7, md: 4, xs: 7 }}
 		>
 			<Grid
-				size={{ xxl: 3, xs: 5 }}
-				order={{ xxl: 1, xs: 2 }}
+				size={5}
+				container
+				columns={5}
+				columnSpacing={2}
+				rowSpacing={2}
 			>
-				<LastLettersWidget height="100%" />
-			</Grid>
-			<Grid
-				size={{ xxl: 2, xs: 5 }}
-				order={{ xxl: 2, xs: 1 }}
-			>
-				<CreateNewLetterCard sx={{ height: '100%' }} />
+				<Grid
+					size={{ xxl: 3, xs: 5 }}
+					order={{ xxl: 1, xs: 2 }}
+				>
+					<BreakpointedComponent
+						components={{
+							default: LastLettersWidget,
+							lg: LastLettersWidgetLg,
+						}}
+						componentProps={{ height: '100%' }}
+					/>
+				</Grid>
+				<Grid
+					size={{ xxl: 2, xs: 5 }}
+					order={{ xxl: 2, xs: 1 }}
+				>
+					<CreateNewLetterCard sx={{ height: '100%' }} />
+				</Grid>
 			</Grid>
 
-			<Grid
-				size={{ xxxl: 4, xs: 5 }}
-				order={3}
-			>
+			<Grid size={{ xxxl: 4, xs: 5 }}>
 				<Stack
-					paddingTop={{ xxl: 7, xl: 5, xs: 2 }}
-					gap={4}
+					gap={{ xl: 4, xs: 3 }}
 					alignItems="start"
 				>
 					<LettersSearch />

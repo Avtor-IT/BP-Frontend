@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
+import { api } from 'shared/api';
 
 const useChatWebSocket = ({ id, onopen, onmessage, onerror, onclose }) => {
 	const websocket = useMemo(() => {
-		const socket = new WebSocket(`ws://5.35.82.235/ws/chat/${id}/`);
+		const socket = api.WebSocket(`ws://5.35.82.235/ws/chat/${id}/`);
 		socket.onopen = () => {
 			if (onopen) onopen();
 		};

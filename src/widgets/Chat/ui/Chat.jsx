@@ -4,6 +4,7 @@ import { useChatWebSocket } from 'entities/Chat';
 import { useUser } from 'entities/User';
 import { useState } from 'react';
 import { useParams } from 'react-router';
+import { apiEndpoints } from 'shared/model';
 import ChatHistory from './ChatHistory';
 
 const Chat = ({ ...props }) => {
@@ -16,7 +17,9 @@ const Chat = ({ ...props }) => {
 	const socket = useChatWebSocket({
 		id,
 		onmessage: () => {
-			queryClient.invalidateQueries({ queryKey: ['messages', id] });
+			queryClient.invalidateQueries({
+				queryKey: [apiEndpoints.CHAT_MESSAGES, id],
+			});
 		},
 	});
 

@@ -10,7 +10,7 @@ const getMessages = async (chat_room_id) => {
 
 const useMessages = (chat_room_id) =>
 	useQuery({
-		queryKey: ['messages', chat_room_id],
+		queryKey: [apiEndpoints.CHAT_MESSAGES, chat_room_id],
 		queryFn: () => getMessages(chat_room_id),
 		enabled: Boolean(chat_room_id),
 	});

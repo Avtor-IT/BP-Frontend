@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import { CheckSquareIcon } from 'shared/icons/CheckSquare';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
-import ExportIcon from 'shared/icons/Export';
 import ImportIcon from 'shared/icons/Import';
+import { useMaxWidth } from 'shared/model';
 
 const iconSx = {
 	position: 'absolute',
@@ -50,6 +50,8 @@ const getTypeTitle = (type) => {
 };
 
 const LetterCard = ({ letter, ...props }) => {
+	const breakpoints = useMaxWidth();
+
 	return (
 		<Card
 			{...props}
@@ -78,8 +80,12 @@ const LetterCard = ({ letter, ...props }) => {
 					direction="row"
 					justifyContent="space-between"
 				>
-					<Typography variant="M20">{letter.num}</Typography>
-					<Typography variant="M20">{letter.date}</Typography>
+					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
+						{letter.num}
+					</Typography>
+					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
+						{letter.date}
+					</Typography>
 				</Stack>
 
 				<Stack gap={3}>
@@ -89,7 +95,9 @@ const LetterCard = ({ letter, ...props }) => {
 							justifyContent="space-between"
 						>
 							<Typography variant="R16">Тема:</Typography>
-							<Typography variant="M16">
+							<Typography
+								variant={breakpoints.xl ? 'M12' : 'M16'}
+							>
 								{letter.topic}
 							</Typography>
 						</Stack>
@@ -99,7 +107,9 @@ const LetterCard = ({ letter, ...props }) => {
 							justifyContent="space-between"
 						>
 							<Typography variant="R16">Адресат:</Typography>
-							<Typography variant="M16">
+							<Typography
+								variant={breakpoints.xl ? 'M12' : 'M16'}
+							>
 								{letter.destination}
 							</Typography>
 						</Stack>
@@ -115,9 +125,6 @@ const LetterCard = ({ letter, ...props }) => {
 						>
 							<IconButton sx={{ p: 0 }}>
 								<ImportIcon strokeWidth={1.5} />
-							</IconButton>
-							<IconButton sx={{ p: 0 }}>
-								<ExportIcon strokeWidth={1.5} />
 							</IconButton>
 						</Stack>
 						{getTypeTitle(letter.type)}

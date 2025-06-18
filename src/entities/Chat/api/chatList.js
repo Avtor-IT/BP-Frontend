@@ -9,7 +9,7 @@ const getChatList = () => {
 const useChatList = () =>
 	useQuery({
 		queryFn: getChatList,
-		queryKey: ['chat-list'],
+		queryKey: [apiEndpoints.CHAT_LIST],
 	});
 
 export default useChatList;

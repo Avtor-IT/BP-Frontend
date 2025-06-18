@@ -1,9 +1,8 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/system';
+import { Button, Stack, Typography } from '@mui/material';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import { RefreshIcon } from 'shared/icons/Refresh';
 import { TrashIcon } from 'shared/icons/Trash';
-import { useBreakpoint } from 'shared/model/index.js';
+import { useMaxWidth } from 'shared/model/index.js';
 
 const deleteAction = {
 	actionName: 'Удалить из списка',
@@ -43,10 +42,7 @@ const actionsByType = {
 };
 
 const LetterActions = ({ letter }) => {
-	const theme = useTheme();
-	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
-	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
-
+	const breakpoints = useMaxWidth();
 	const actions = actionsByType[letter.type];
 
 	return (
@@ -54,20 +50,23 @@ const LetterActions = ({ letter }) => {
 			gap={1}
 			justifyContent="space-between"
 			height="100%"
+			direction={breakpoints.md ? 'row' : 'column'}
 		>
-			<Stack
-				flexGrow={1}
-				sx={{
-					justifyContent: 'center',
-				}}
-			>
-				<Typography
-					variant="M20"
-					textAlign={downXxl && 'center'}
+			{breakpoints.md || (
+				<Stack
+					flexGrow={1}
+					sx={{
+						justifyContent: 'center',
+					}}
 				>
-					Действия
-				</Typography>
-			</Stack>
+					<Typography
+						variant="M20"
+						textAlign={breakpoints.xxl && 'center'}
+					>
+						Действия
+					</Typography>
+				</Stack>
+			)}
 
 			{actions.map((action, index) => (
 				<Button
@@ -80,13 +79,23 @@ const LetterActions = ({ letter }) => {
 						'& span': {
 							margin: 0,
 						},
+						borderRadius: breakpoints.xl ? 2 : undefined,
+						flex: breakpoints.md ? '1 1 50%' : undefined,
 					}}
 					startIcon={action.icon}
 				>
 					<Typography
-						variant={downXxxl ? (downXxl ? 'M12' : 'M16') : 'M20'}
+						variant={
+							breakpoints.xxxl
+								? breakpoints.xxl
+									? 'M12'
+									: 'M16'
+								: 'M20'
+						}
 					>
-						{downXxxl ? action.actionShortName : action.actionName}
+						{breakpoints.xxxl
+							? action.actionShortName
+							: action.actionName}
 					</Typography>
 				</Button>
 			))}

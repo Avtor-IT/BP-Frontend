@@ -40,15 +40,73 @@ instance.interceptors.request.use((config) => {
 });
 
 class Api {
+	_ACCESS_SESSIONSTORAGE = 'access';
+	_REFRESH_SESSIONSTORAGE = 'refresh';
+
+	_SessionAccessToken = () =>
+		sessionStorage.getItem(this._ACCESS_SESSIONSTORAGE);
+	_SessionRefreshToken = () =>
+		sessionStorage.getItem(this._REFRESH_SESSIONSTORAGE);
+	_UpdateSessionRefreshToken = (newToken) =>
+		sessionStorage.setItem(this._ACCESS_SESSIONSTORAGE, newToken);
+	_RemoveSession = () => {
+		sessionStorage.removeItem(this._ACCESS_SESSIONSTORAGE);
+		sessionStorage.removeItem(this._REFRESH_SESSIONSTORAGE);
+	};
+
+	_AuthHeader = () => ({
+		Authorization: 'Bearer ' + this._SessionAccessToken(),
+	});
+
+	_CheckAccessToken = async () => {
+		const access = this._SessionAccessToken();
+
+		if (access) {
+			await instance.post(`${apiEndpoints.JWT_VERIFY}`, {
+				token: access,
+			});
+		}
+	};
+
+	_ProccessAccessToken = async () => {
+		try {
+			await this._CheckAccessToken();
+		} catch (e) {
+			if (e.response.status === 401 && this._SessionRefreshToken()) {
+				return await this._ProccessRefreshToken();
+			}
+
+			this._RemoveSession();
+			return Promise.reject(e);
+		}
+	};
+
+	_ProccessRefreshToken = async () => {
+		try {
+			const response = await instance.post(
+				`${apiEndpoints.JWT_REFRESH}`,
+				{
+					refresh: this._SessionRefreshToken(),
+				}
+			);
+			this._UpdateSessionRefreshToken(response.data.access);
+
+			return response.data;
+		} catch (e) {
+			this._RemoveSession();
+			return Promise.reject(e);
+		}
+	};
+
 	Get = async (url, config = {}) => {
-		await this._GetAccessToken();
+		await this._ProccessAccessToken();
 
 		return instance
 			.get(url, {
 				...config,
 				headers: {
 					...config.headers,
-					Authorization: 'Bearer ' + sessionStorage.getItem('access'),
+					...this._AuthHeader(),
 				},
 			})
 			.then((response) => {
@@ -60,13 +118,14 @@ class Api {
 	};
 
 	Post = async (url, body, config = {}) => {
-		await this._GetAccessToken();
+		await this._ProccessAccessToken();
+
 		return instance
 			.post(url, body, {
 				...config,
 				headers: {
 					...config.headers,
-					Authorization: 'Bearer ' + sessionStorage.getItem('access'),
+					...this._AuthHeader(),
 				},
 			})
 			.then((response) => {
@@ -83,7 +142,7 @@ class Api {
 				...config,
 				headers: {
 					...config.headers,
-					Authorization: 'Bearer ' + sessionStorage.getItem('access'),
+					...this._AuthHeader(),
 				},
 				responseType: 'arraybuffer',
 			});
@@ -98,41 +157,8 @@ class Api {
 		}
 	};
 
-	_GetAccessToken = async () => {
-		try {
-			const access = sessionStorage.getItem('access');
-			return (
-				access &&
-				(await instance.post(`${apiEndpoints.JWT_VERIFY}`, {
-					token: access,
-				}))
-			);
-		} catch (e) {
-			if (
-				e.response.status === 401 &&
-				sessionStorage.getItem('refresh')
-			) {
-				return await this._RefreshToken();
-			}
-			sessionStorage.removeItem('access');
-			sessionStorage.removeItem('refresh');
-			return Promise.reject(e);
-		}
-	};
-
-	_RefreshToken = async () => {
-		try {
-			const response = await instance.post(
-				`${apiEndpoints.JWT_REFRESH}`,
-				{ refresh: sessionStorage.getItem('refresh') }
-			);
-			sessionStorage.setItem('access', response.data.access);
-			return response.data;
-		} catch (e) {
-			sessionStorage.removeItem('access');
-			sessionStorage.removeItem('refresh');
-			return Promise.reject(e);
-		}
+	WebSocket = (url) => {
+		return new WebSocket(url);
 	};
 }
 

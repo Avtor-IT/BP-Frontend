@@ -5,17 +5,16 @@ import {
 	CardContent,
 	CardHeader,
 	Skeleton,
+	Stack,
 	Typography,
 } from '@mui/material';
 
-import { Box, useMediaQuery, useTheme } from '@mui/system';
+import { Box } from '@mui/system';
 import { DownloadFile } from 'shared/icons/DownloadFile';
+import { useMaxWidth } from 'shared/model';
 
-const BillActionCard = ({ bill, loading, ...props }) => {
-	const theme = useTheme();
-	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
-	const downXxxl = useMediaQuery(theme.breakpoints.down('xxxl'));
-	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
+const BillActionCard = ({ loading, ...props }) => {
+	const breakpoints = useMaxWidth();
 
 	if (loading) {
 		return (
@@ -27,13 +26,69 @@ const BillActionCard = ({ bill, loading, ...props }) => {
 		);
 	}
 
+	if (breakpoints.lg) {
+		return (
+			<Stack
+				{...props}
+				alignItems="center"
+				marginTop={3}
+				gap={2}
+			>
+				<Typography
+					variant="M16"
+					color="tertiary"
+				>
+					Услуга завершена
+				</Typography>
+
+				<Stack
+					direction={breakpoints.md ? 'column' : 'row'}
+					justifyContent="space-between"
+					width="100%"
+					gap={breakpoints.md ? 3 : 0}
+				>
+					<Typography
+						variant="R16"
+						sx={{
+							maxWidth: 176,
+							borderLeft: '2px solid',
+							borderColor: 'tertiary.main',
+							color: 'tertiary.main',
+							paddingLeft: 1,
+						}}
+					>
+						Все этапы успешно завершены.
+					</Typography>
+
+					<Button
+						color="secondary"
+						variant="card"
+						startIcon={<DownloadFile color="secondary" />}
+						sx={{
+							borderRadius: 2,
+							paddingBlock: 1,
+						}}
+					>
+						<Typography
+							variant="M16"
+							whiteSpace="nowrap"
+							color="secondary"
+						>
+							Оставить отзыв
+						</Typography>
+					</Button>
+				</Stack>
+			</Stack>
+		);
+	}
+
 	return (
 		<Card
-			{...props}
 			sx={{
-				flexDirection: downXxl && 'row',
+				flexDirection: breakpoints.xxl && 'row',
 				justifyContent: 'space-between',
-				paddingBlock: '16px',
+				paddingBlock: 2,
+				marginTop: 2,
 				...props.sx,
 			}}
 		>
@@ -47,15 +102,15 @@ const BillActionCard = ({ bill, loading, ...props }) => {
 				}}
 				sx={{
 					paddingBottom: 0,
-					whiteSpace: downXxl ? 'nowrap' : undefined,
+					whiteSpace: breakpoints.xxl ? 'nowrap' : undefined,
 					paddingRight: 0,
 				}}
 			/>
 			<CardContent
 				sx={{
 					paddingTop: 2,
-					paddingBottom: downXxl ? 2 : 3,
-					padding: downXl ? 0 : undefined,
+					paddingBottom: breakpoints.xxl ? 2 : 3,
+					padding: breakpoints.xl ? 0 : undefined,
 					display: 'flex',
 					alignItems: 'center',
 				}}
@@ -71,7 +126,10 @@ const BillActionCard = ({ bill, loading, ...props }) => {
 				</Box>
 			</CardContent>
 			<CardActions
-				sx={{ paddingTop: 0, paddingLeft: downXxl ? 0 : undefined }}
+				sx={{
+					paddingTop: 0,
+					paddingLeft: breakpoints.xxl ? 0 : undefined,
+				}}
 			>
 				<Button
 					fullWidth
@@ -81,8 +139,8 @@ const BillActionCard = ({ bill, loading, ...props }) => {
 					sx={{ borderRadius: 2 }}
 				>
 					<Typography
-						variant={downXxxl ? 'M16' : 'M20'}
-						whiteSpace={downXl && 'nowrap'}
+						variant={breakpoints.xxxl ? 'M16' : 'M20'}
+						whiteSpace={breakpoints.xl && 'nowrap'}
 						color="secondary"
 					>
 						Оставить отзыв

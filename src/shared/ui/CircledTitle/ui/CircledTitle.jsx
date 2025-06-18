@@ -8,16 +8,23 @@ const circle = {
 	borderRadius: '100%',
 };
 
-const positioned = {
-	right: '-85%',
-	left: '-75%',
-	bottom: '0',
+const positioned = (fullWidth) => ({
+	right: fullWidth ? '-50%' : '-85%',
+	left: fullWidth ? '-95%' : '-75%',
+	bottom: 0,
 	zIndex: 1,
 	position: 'absolute',
 	transform: `translate(${OFFSET_X}, ${OFFSET_Y})`,
-};
+});
 
-const CircledTitle = ({ title, color, textColor, slotProps, ...props }) => {
+const CircledTitle = ({
+	title,
+	color,
+	textColor,
+	slotProps,
+	fullWidth,
+	...props
+}) => {
 	return (
 		<Box
 			{...props}
@@ -25,6 +32,7 @@ const CircledTitle = ({ title, color, textColor, slotProps, ...props }) => {
 				position: 'relative',
 				display: 'inline-block',
 				marginBottom: OFFSET_Y,
+				width: fullWidth ? '100%' : undefined,
 				...props.sx,
 			}}
 		>
@@ -32,7 +40,7 @@ const CircledTitle = ({ title, color, textColor, slotProps, ...props }) => {
 				{...slotProps?.circle}
 				sx={{
 					...circle,
-					...positioned,
+					...positioned(fullWidth),
 					backgroundColor: color || 'primary.main',
 					...slotProps?.circle?.sx,
 				}}

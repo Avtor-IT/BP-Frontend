@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { useMaxWidth } from 'shared/model';
 
 const DocsToApprove = ({ ...props }) => {
+	const breakpoints = useMaxWidth();
+
 	return (
 		<Card
 			{...props}
@@ -17,8 +20,8 @@ const DocsToApprove = ({ ...props }) => {
 				}}
 			>
 				<Typography
-					color="var(--tertiary)"
-					variant="R20"
+					color="tertiary"
+					variant={breakpoints.md ? 'R16' : 'R20'}
 					sx={{
 						display: 'block',
 					}}

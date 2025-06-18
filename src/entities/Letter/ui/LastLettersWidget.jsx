@@ -1,14 +1,14 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
-import LettersSlider from './LettersSlider';
+import LettersSlider from './slider/LettersSlider';
 
-const LastLettersWidget = ({ ...props }) => {
+const LastLettersWidget = (props) => {
 	return (
 		<Card
 			{...props}
 			sx={{
 				paddingRight: 0,
-				paddingBottom: '16px',
+				paddingBottom: 2,
 				position: 'relative',
 				...props.sx,
 			}}
@@ -28,7 +28,7 @@ const LastLettersWidget = ({ ...props }) => {
 					size={'grow'}
 					sx={{
 						overflowX: 'clip',
-						paddingInline: 1,
+						// paddingInline: 1,
 					}}
 				>
 					<LettersSlider />

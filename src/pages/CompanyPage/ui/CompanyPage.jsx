@@ -1,25 +1,26 @@
-import { Grid, Stack, useMediaQuery, useTheme } from '@mui/system';
-import { DocumentsWidget, TaxExtractCard } from 'entities/Documents';
+import { Typography } from '@mui/material';
+import { Grid, Stack } from '@mui/system';
+import { BillCard, useBills } from 'entities/Bill';
+import {
+	DocumentsLink,
+	DocumentsSlider,
+	TaxExtractCard,
+} from 'entities/Documents';
+import { useMemo } from 'react';
+import { useMaxWidth } from 'shared/model';
 import { CompanyCard } from 'widgets/CompanyCard';
 import { DocumentTemplateCard } from 'widgets/DocumentTemplate';
-import { useBills } from 'entities/Bill';
-import { Fragment, useMemo } from 'react';
-import { BillCard, BillActionCard } from 'entities/Bill';
-import { Typography } from '@mui/material';
-import { BillCardMobile } from 'entities/Bill';
 
 const CompanyPage = () => {
-	const theme = useTheme();
-	const upXxxl = useMediaQuery(theme.breakpoints.up('xxxl'));
-	const downXxl = useMediaQuery(theme.breakpoints.down('xxl'));
 	const { data: bills, isLoading, isError } = useBills();
+	const breakpoints = useMaxWidth();
 
 	const billList = useMemo(() => {
 		if (bills) return bills;
 		return Array.from({ length: 4 });
 	}, [bills]);
 
-	const mock_documents = [
+	const mockDocuments = [
 		{ title: 'Справка №1' },
 		{ title: 'Справка №2' },
 		{ title: 'Справка №3' },
@@ -40,14 +41,17 @@ const CompanyPage = () => {
 			>
 				<Grid
 					container
-					size={{ xxxl: 4, xs: 3 }}
+					size={{ xxxl: 4, lg: 3, xs: 5 }}
 					columns={{ xxxl: 4, xs: 3 }}
 					spacing={2}
-					sx={{ minHeight: upXxxl ? 'none' : 900 }}
+					sx={{
+						minHeight:
+							breakpoints.xxxl && !breakpoints.lg ? 900 : 'none',
+					}}
 				>
 					<Grid
 						size={{ xxxl: 2, xs: 3 }}
-						sx={{ minHeight: 192 }}
+						sx={{ minHeight: breakpoints.lg ? 181 : 192 }}
 					>
 						<CompanyCard
 							sx={{ height: '100%' }}
@@ -55,31 +59,41 @@ const CompanyPage = () => {
 						/>
 					</Grid>
 
-					{upXxxl && (
-						<Grid size={{ xxxl: 2, xs: 3 }}>
+					{breakpoints.xxxl || (
+						<Grid size={2}>
 							<TaxExtractCard sx={{ height: '100%' }} />
 						</Grid>
 					)}
 
 					<Grid size={{ xxxl: 2, xs: 3 }}>
-						<DocumentsWidget
-							title="Мои документы"
-							documents={mock_documents}
-							sx={{ minHeight: 337 }}
-						/>
+						{breakpoints.lg ? (
+							<DocumentsLink title={'Перейти в мои документы'} />
+						) : (
+							<DocumentsSlider
+								title="Мои документы"
+								documents={mockDocuments}
+								sx={{ minHeight: 337 }}
+							/>
+						)}
 					</Grid>
 					<Grid size={{ xxxl: 2, xs: 3 }}>
-						<DocumentsWidget
-							title="Рабочие документы"
-							documents={mock_documents}
-							sx={{ minHeight: 337 }}
-						/>
+						{breakpoints.lg ? (
+							<DocumentsLink
+								title={'Перейти в рабочие документы'}
+							/>
+						) : (
+							<DocumentsSlider
+								title="Рабочие документы"
+								documents={mockDocuments}
+								sx={{ minHeight: 337 }}
+							/>
+						)}
 					</Grid>
 				</Grid>
 
 				<Grid
-					size={{ xxxl: 1, xs: 2 }}
-					sx={{ minHeight: upXxxl ? 545 : 'none' }}
+					size={{ xxxl: 1, lg: 2, xs: 5 }}
+					sx={{ minHeight: breakpoints.xxxl ? 'none' : 545 }}
 				>
 					<Stack
 						gap={2}
@@ -87,7 +101,11 @@ const CompanyPage = () => {
 					>
 						<DocumentTemplateCard sx={{ flexGrow: 1 }} />
 
-						{!upXxxl && <TaxExtractCard sx={{ height: 337 }} />}
+						{breakpoints.xxxl && (
+							<TaxExtractCard
+								sx={{ height: breakpoints.lg ? 'auto' : 337 }}
+							/>
+						)}
 					</Stack>
 				</Grid>
 			</Grid>
@@ -97,44 +115,20 @@ const CompanyPage = () => {
 				<Grid
 					container
 					columns={5}
+					rowSpacing={2}
 				>
-					<Grid
-						container
-						size={{ xxxl: 4, xs: 5 }}
-						columns={{ xxxl: 4, xs: 5 }}
-						spacing={2}
-					>
-						{billList.map((bill, i) =>
-							downXxl ? (
-								<Grid
-									size={5}
-									key={i}
-								>
-									<BillCardMobile
-										bill={bill}
-										loading={isLoading}
-									/>
-								</Grid>
-							) : (
-								<Fragment key={i}>
-									<Grid size={{ xxxl: 3, xs: 4 }}>
-										<BillCard
-											sx={{ height: '100%' }}
-											bill={bill}
-											loading={isLoading}
-										/>
-									</Grid>
-									<Grid size={1}>
-										<BillActionCard
-											sx={{ height: '100%' }}
-											bill={bill}
-											loading={isLoading}
-										/>
-									</Grid>
-								</Fragment>
-							)
-						)}
-					</Grid>
+					{billList.map((bill, i) => (
+						<Grid
+							size={{ xxxl: 4, xs: 5 }}
+							key={i}
+						>
+							<BillCard
+								loading={isLoading}
+								bill={bill}
+								key={i}
+							/>
+						</Grid>
+					))}
 				</Grid>
 			) : (
 				<Typography variant="h5">

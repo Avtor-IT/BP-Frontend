@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { useMaxWidth } from 'shared/model';
 
 const Taxes = ({ ...props }) => {
+	const breakpoints = useMaxWidth();
+
 	return (
 		<Card
 			{...props}
@@ -29,7 +32,7 @@ const Taxes = ({ ...props }) => {
 						display: 'block',
 					}}
 					color="tertiary"
-					variant="R20"
+					variant={breakpoints.md ? 'R16' : 'R20'}
 				>
 					Пока налоговой отчётности нет
 				</Typography>

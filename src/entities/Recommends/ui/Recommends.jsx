@@ -1,15 +1,14 @@
 import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { useEffect, useRef, useState } from 'react';
+import Slider from 'react-slick';
+import { useBreakpoint, useMaxWidth } from 'shared/model';
+import { Circle } from 'shared/ui/Card';
+import { useRecommendsQuery } from '../hooks/useRecommendsQuery';
+import RecommendsSlide from './slider/RecommendsSlide.jsx';
+import './slider/RecommendsSlider.scss';
 import SlickArrowLeft from './slider/SlickArrowLeft';
 import SlickArrowRight from './slider/SlickArrowRight';
-import { useRecommendsQuery } from '../hooks/useRecommendsQuery';
-import Slider from 'react-slick';
-import { useBreakpoint, useMinWidth } from 'shared/model';
-import { Circle } from 'shared/ui/Card';
-import './slider/RecommendsSlider.scss';
-import RecommendsSlide from './slider/RecommendsSlide.jsx';
-import Badge from '@mui/material/Badge';
 
 /*
  * Отсюда брал
@@ -24,7 +23,7 @@ const slidesBreakpoints = { xxxl: 4, xxl: 3 };
 
 const Recommends = (props) => {
 	const breakpoint = useBreakpoint();
-	const breakpoints = useMinWidth();
+	const breakpoints = useMaxWidth();
 
 	const slidesToShow = slidesBreakpoints[breakpoint] || 1;
 

@@ -4,15 +4,14 @@ import {
 	ServiceAnchorList,
 	ServiceWidgetList,
 } from 'entities/Service/index.js';
-import { useMinWidth } from 'shared/model/index.js';
+import { useMaxWidth } from 'shared/model/index.js';
 import SectionTitle from 'shared/ui/SectionTitle';
 import { CompanyCard } from 'widgets/CompanyCard';
 import { MyManager } from 'widgets/ManagerCard';
 import { Notifications } from 'widgets/Notifications';
-import { Recommends } from 'entities/Recommends';
 
 const MainPage = () => {
-	const breakpoints = useMinWidth();
+	const breakpoints = useMaxWidth();
 
 	return (
 		<Stack gap={3}>
@@ -58,12 +57,12 @@ const MainPage = () => {
 					<Notifications sx={{ height: '100%' }} />
 				</Grid>
 
-				<Grid
+				{/* <Grid
 					size={5}
 					order={4}
 				>
 					<Recommends sx={{ minHeight: '337px' }} />
-				</Grid>
+				</Grid> */}
 			</Grid>
 
 			{!breakpoints.xxl && <SectionTitle>Мои услуги</SectionTitle>}

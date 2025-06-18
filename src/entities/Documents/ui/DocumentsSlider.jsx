@@ -125,7 +125,7 @@ const DocumentSlide = ({ document, ...props }) => (
 	</Card>
 );
 
-const DocumentsWidget = ({ title, documents, ...props }) => {
+const DocumentsSlider = ({ title, documents, ...props }) => {
 	const theme = useTheme();
 	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
 
@@ -211,4 +211,4 @@ const DocumentsWidget = ({ title, documents, ...props }) => {
 	);
 };
 
-export default DocumentsWidget;
+export default DocumentsSlider;

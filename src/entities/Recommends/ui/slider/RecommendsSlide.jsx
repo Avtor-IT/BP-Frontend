@@ -1,9 +1,9 @@
 import { Card, CardHeader, Typography } from '@mui/material';
-import { useMinWidth } from 'shared/model/index.js';
-import { TextBox } from 'shared/ui/TextBox/index.js';
+import { useMaxWidth } from 'shared/model';
+import { TextBox } from 'shared/ui/TextBox';
 
 const RecommendsSlide = (props) => {
-	const breakpoints = useMinWidth();
+	const breakpoints = useMaxWidth();
 
 	return (
 		<Card

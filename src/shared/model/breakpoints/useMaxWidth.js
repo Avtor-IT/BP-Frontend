@@ -2,7 +2,7 @@ import { useTheme } from '@mui/system';
 import { useEffect, useRef, useState } from 'react';
 import { areMapsEqual } from 'shared/lib';
 
-const useMinWidth = () => {
+const useMaxWidth = () => {
 	const theme = useTheme();
 	const breakpoints = { ...theme.breakpoints.values };
 
@@ -43,4 +43,4 @@ const useMinWidth = () => {
 	return sizes;
 };
 
-export default useMinWidth;
+export default useMaxWidth;

@@ -1,28 +1,28 @@
 import { Container, IconButton } from '@mui/material';
 import { Grid, Stack } from '@mui/system';
+import { NotificationButton } from 'entities/Notifications';
+import { User } from 'entities/User';
+import { ChatBot } from 'features/ChatBot';
 import { FallbackContent } from 'pages/FallbackPage';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import { MenuIcon } from 'shared/icons/Menu/index.js';
-import { useMinWidth } from 'shared/model';
-import { Logo } from 'shared/ui/Logo';
+import { MenuIcon } from 'shared/icons/Menu';
+import { useMaxWidth } from 'shared/model';
+import { Logo, LogoIcon } from 'shared/ui/Logo';
 import { LogoLink } from 'widgets/LogoLink';
 import { Navigation } from 'widgets/Navigation';
-import { ChatBot } from 'features/ChatBot';
-import { NotificationButton } from 'entities/Notifications';
-import { User } from 'entities/User';
 
 export const Layout = () => {
-	const breakpoints = useMinWidth();
+	const breakpoints = useMaxWidth();
 
 	return (
 		<Container
 			fixed
 			maxWidth="xxxl"
-			sx={{ paddingTop: 4, minHeight: '100vh' }}
 		>
 			<Stack
-				minHeight="100%"
+				minHeight="100vh"
+				paddingTop={4}
 				gap={{ xxxl: 8, xxl: 4, xs: 3 }}
 			>
 				{/* Header */}
@@ -43,16 +43,20 @@ export const Layout = () => {
 									},
 								})}
 							>
-								<Logo
-									sx={(theme) => ({
-										[theme.breakpoints.down('xl')]: {
-											width: 143,
-											height: 40,
-										},
-										width: 201,
-										height: 56,
-									})}
-								/>
+								{breakpoints.md ? (
+									<LogoIcon sx={{ width: 40, height: 40 }} />
+								) : (
+									<Logo
+										sx={(theme) => ({
+											[theme.breakpoints.down('xl')]: {
+												width: 143,
+												height: 40,
+											},
+											width: 201,
+											height: 56,
+										})}
+									/>
+								)}
 							</Stack>
 						</LogoLink>
 					</Grid>

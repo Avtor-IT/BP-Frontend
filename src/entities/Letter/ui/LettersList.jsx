@@ -72,16 +72,23 @@ const LettersList = () => {
 				<Grid
 					key={i}
 					container
-					columns={{ xxxl: 4, xs: 5 }}
+					columns={{ xxxl: 4, lg: 5, md: 3, xs: 2 }}
 					columnSpacing={2}
+					rowSpacing={1}
 				>
 					<Grid size={{ xxxl: 1, xs: 2 }}>
 						<LetterCard letter={letter} />
 					</Grid>
-					<Grid size={2}>
+					<Grid
+						size={{ lg: 2, xs: 3 }}
+						order={{ lg: 2, xs: 3 }}
+					>
 						<LetterText />
 					</Grid>
-					<Grid size={1}>
+					<Grid
+						size={{ md: 1, xs: 2 }}
+						order={{ lg: 3, xs: 2 }}
+					>
 						<LetterActions letter={letter} />
 					</Grid>
 				</Grid>

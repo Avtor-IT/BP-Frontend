@@ -4,7 +4,6 @@ import {
 	CardActions,
 	CardContent,
 	CardHeader,
-	Modal,
 	Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -33,76 +32,71 @@ const pages = [
 	/>,
 ];
 
-const CreateNewLetterModal = ({ open, onClose }) => {
+const CreateNewLetterModal = () => {
 	const [page, setPage] = useState(0);
 
 	return (
-		<Modal
-			open={open}
-			onClose={onClose}
-		>
-			<ModalBody minWidth="786px">
-				<Card>
-					<CardHeader
-						title="Форма конструктора письма"
-						action={
-							<Typography variant="M20">
-								{page + 1}/{pages.length}
+		<ModalBody minWidth="786px">
+			<Card>
+				<CardHeader
+					title="Форма конструктора письма"
+					action={
+						<Typography variant="M20">
+							{page + 1}/{pages.length}
+						</Typography>
+					}
+				/>
+
+				<CardContent>{pages[page]}</CardContent>
+
+				<CardActions sx={{ justifyContent: 'end' }}>
+					{page !== 0 && (
+						<Button
+							sx={{ padding: '16px 32px' }}
+							color="secondary"
+							variant="contained"
+							onClick={() => setPage((prev) => prev - 1)}
+						>
+							<Typography
+								variant="M20"
+								lineHeight={1}
+							>
+								Назад
 							</Typography>
-						}
-					/>
-
-					<CardContent>{pages[page]}</CardContent>
-
-					<CardActions sx={{ justifyContent: 'end' }}>
-						{page !== 0 && (
-							<Button
-								sx={{ padding: '16px 32px' }}
-								color="secondary"
-								variant="contained"
-								onClick={() => setPage((prev) => prev - 1)}
+						</Button>
+					)}
+					{page + 1 !== pages.length && (
+						<Button
+							sx={{ padding: '16px 32px' }}
+							color="secondary"
+							variant="contained"
+							onClick={() => setPage((prev) => prev + 1)}
+						>
+							<Typography
+								variant="M20"
+								lineHeight={1}
 							>
-								<Typography
-									variant="M20"
-									lineHeight={1}
-								>
-									Назад
-								</Typography>
-							</Button>
-						)}
-						{page + 1 !== pages.length && (
-							<Button
-								sx={{ padding: '16px 32px' }}
-								color="secondary"
-								variant="contained"
-								onClick={() => setPage((prev) => prev + 1)}
+								Далее
+							</Typography>
+						</Button>
+					)}
+					{page + 1 === pages.length && (
+						<Button
+							sx={{ padding: '16px 32px' }}
+							color="secondary"
+							variant="contained"
+						>
+							<Typography
+								variant="M20"
+								lineHeight={1}
 							>
-								<Typography
-									variant="M20"
-									lineHeight={1}
-								>
-									Далее
-								</Typography>
-							</Button>
-						)}
-						{page + 1 === pages.length && (
-							<Button
-								sx={{ padding: '16px 32px' }}
-								color="secondary"
-								variant="contained"
-							>
-								<Typography
-									variant="M20"
-									lineHeight={1}
-								>
-									Отправить
-								</Typography>
-							</Button>
-						)}
-					</CardActions>
-				</Card>
-			</ModalBody>
-		</Modal>
+								Отправить
+							</Typography>
+						</Button>
+					)}
+				</CardActions>
+			</Card>
+		</ModalBody>
 	);
 };
 

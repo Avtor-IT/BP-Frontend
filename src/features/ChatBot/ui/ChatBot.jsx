@@ -1,14 +1,17 @@
-import SearchIcon from 'shared/icons/Search';
 import { Button, Input, InputAdornment } from '@mui/material';
-import { useMinWidth } from 'shared/model';
+import SearchIcon from 'shared/icons/Search';
+import { useMaxWidth } from 'shared/model';
 
 export const ChatBot = () => {
-	const breakpoints = useMinWidth();
+	const breakpoints = useMaxWidth();
 
 	return breakpoints.lg ? (
 		<Button
 			variant="card"
-			sx={{ paddingBlock: 1.5, minWidth: 'auto' }}
+			sx={{
+				paddingBlock: 1.5,
+				minWidth: breakpoints.md ? 'min(100px, 100%)' : 'auto',
+			}}
 		>
 			<SearchIcon
 				fontSize="small"

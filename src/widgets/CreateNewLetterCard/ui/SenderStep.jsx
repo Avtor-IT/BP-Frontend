@@ -1,6 +1,7 @@
 import {
 	Box,
-	Button,
+	Card,
+	CardHeader,
 	FormControlLabel,
 	FormGroup,
 	Grid,
@@ -99,22 +100,38 @@ const SenderStep = ({ ...props }) => {
 									alignItems="center"
 									gap={3}
 								>
-									<Button
+									<Card
 										className={cls.letterInput}
 										variant="card"
-										sx={{ borderRadius: 1 }}
+										sx={{
+											borderRadius: 1,
+											paddingBlock: 2,
+											position: 'relative',
+											minHeight: 70,
+										}}
 									>
-										<Typography
-											variant="M16"
-											color="#000"
-										>
-											{background.title}
-										</Typography>
-
-										<IconButton sx={{ p: 0 }}>
-											<ExpandIcon fontSize="small" />
-										</IconButton>
-									</Button>
+										<CardHeader
+											action={
+												<IconButton sx={{ p: 0 }}>
+													<ExpandIcon fontSize="small" />
+												</IconButton>
+											}
+											title={background.title}
+											sx={{ paddingInline: 2 }}
+											slotProps={{
+												title: {
+													variant: 'M16',
+												},
+												action: {
+													sx: {
+														position: 'absolute',
+														top: 8,
+														right: 8,
+													},
+												},
+											}}
+										/>
+									</Card>
 
 									<IconButton>
 										<CheckCircleIcon />

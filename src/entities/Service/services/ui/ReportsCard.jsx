@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@mui/material';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 
-const gradient = 'linear-gradient(15deg, #514996, #FFF)';
+const gradient = 'linear-gradient(15deg, #514996 10%, #FFF 40%)';
 
 const ReportsCard = ({ reportsTitle, children, ...props }) => {
 	return (
@@ -14,6 +14,7 @@ const ReportsCard = ({ reportsTitle, children, ...props }) => {
 					<CircledTitle
 						title={reportsTitle || 'Отчеты'}
 						color="secondary.main"
+						fullWidth
 						slotProps={{
 							circle: {
 								sx: { background: gradient },

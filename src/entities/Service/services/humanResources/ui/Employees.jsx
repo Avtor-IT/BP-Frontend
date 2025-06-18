@@ -1,6 +1,9 @@
 import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { useMaxWidth } from 'shared/model';
 
 const Employees = ({ ...props }) => {
+	const breakpoints = useMaxWidth();
+
 	return (
 		<Card
 			{...props}
@@ -29,7 +32,7 @@ const Employees = ({ ...props }) => {
 						display: 'block',
 					}}
 					color="tertiary"
-					variant="R20"
+					variant={breakpoints.md ? 'R16' : 'R20'}
 				>
 					Информации о сотрудниках пока нет
 				</Typography>
