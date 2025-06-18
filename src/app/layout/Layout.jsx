@@ -1,8 +1,8 @@
 import { Container, IconButton } from '@mui/material';
 import { Grid, Stack } from '@mui/system';
+import { ChatBot } from 'entities/ChatBot';
 import { NotificationButton } from 'entities/Notifications';
 import { User } from 'entities/User';
-import { ChatBot } from 'features/ChatBot';
 import { FallbackContent } from 'pages/FallbackPage';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';

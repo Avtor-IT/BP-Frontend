@@ -59,11 +59,11 @@ const CompanyPage = () => {
 						/>
 					</Grid>
 
-					{breakpoints.xxxl || (
+					{!breakpoints.xxxl ? (
 						<Grid size={2}>
 							<TaxExtractCard sx={{ height: '100%' }} />
 						</Grid>
-					)}
+					) : null}
 
 					<Grid size={{ xxxl: 2, xs: 3 }}>
 						{breakpoints.lg ? (
@@ -101,11 +101,11 @@ const CompanyPage = () => {
 					>
 						<DocumentTemplateCard sx={{ flexGrow: 1 }} />
 
-						{breakpoints.xxxl && (
+						{breakpoints.xxxl ? (
 							<TaxExtractCard
 								sx={{ height: breakpoints.lg ? 'auto' : 337 }}
 							/>
-						)}
+						) : null}
 					</Stack>
 				</Grid>
 			</Grid>

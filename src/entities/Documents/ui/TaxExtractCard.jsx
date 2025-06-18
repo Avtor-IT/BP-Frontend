@@ -28,7 +28,7 @@ const TaxExtractCard = ({ ...props }) => {
 					alignItems: 'start',
 					paddingInline: breakpoints.lg ? 2 : undefined,
 				}}
-				action={breakpoints.xxl || <TaxRefreshButton />}
+				action={!breakpoints.xxl ? <TaxRefreshButton /> : null}
 				slotProps={{
 					title: {
 						variant: breakpoints.lg ? 'M20' : 'M24',
@@ -72,7 +72,9 @@ const TaxExtractCard = ({ ...props }) => {
 								whiteSpace={
 									breakpoints.xxl ? 'normal' : 'nowrap'
 								}
-								color={breakpoints.lg && 'textPrimary'}
+								color={
+									breakpoints.lg ? 'textPrimary' : undefined
+								}
 							>
 								{breakpoints.lg
 									? 'Обновлено'
@@ -106,7 +108,7 @@ const TaxExtractCard = ({ ...props }) => {
 						alignItems={breakpoints.xxxl ? 'end' : 'center'}
 						gap={breakpoints.xxxl ? 0.5 : 1}
 					>
-						{breakpoints.lg || (
+						{!breakpoints.lg ? (
 							<Typography
 								textAlign="end"
 								variant={breakpoints.xl ? 'M12' : 'M16'}
@@ -114,7 +116,7 @@ const TaxExtractCard = ({ ...props }) => {
 							>
 								Выписка за 29.08.2024
 							</Typography>
-						)}
+						) : null}
 
 						<Stack
 							direction="row"
