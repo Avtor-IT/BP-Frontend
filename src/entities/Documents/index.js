@@ -1,15 +1,4 @@
-export { default as useDownloadMutation } from './hooks/useDownloadMutation';
-export { default as useGetBlob } from './hooks/useGetBlob';
-export { default as useGetBlobUrl } from './hooks/useGetBlobUrl';
-export { default as useGetCompanyDocuments } from './hooks/useGetCompanyDocuments';
-export { default as useGetFolderChildren } from './hooks/useGetFolderChildren';
-export { default as useGetPersonalDocuments } from './hooks/useGetPersonalDocuments';
-export { default as useOpenMutation } from './hooks/useOpenMutation';
-export { default as useUploadFilesMutation } from './hooks/useUploadFileMutation';
-export { default as humanFileSize } from './lib/humanFileSize';
-export { default as DocumentModal } from './ui/DocumentModal';
+export { default as CompanyDocuments } from './ui/company-documents/CompanyDocuments';
 export { default as DocumentsLink } from './ui/DocumentsLink';
 export { default as DocumentsSlider } from './ui/DocumentsSlider';
-export { default as DownloadDocumentButton } from './ui/DownloadDocumentButton';
-export { default as ExportDocumentButton } from './ui/ExportDocumentButton';
 export { default as TaxExtractCard } from './ui/TaxExtractCard';

@@ -1,15 +1,15 @@
 import { Typography } from '@mui/material';
 import { Grid, Stack } from '@mui/system';
 import { BillCard, useBills } from 'entities/Bill';
+import { CompanyCard } from 'entities/Company';
 import {
 	DocumentsLink,
 	DocumentsSlider,
 	TaxExtractCard,
 } from 'entities/Documents';
+import { LetterheadCard } from 'entities/Letter';
 import { useMemo } from 'react';
 import { useMaxWidth } from 'shared/model';
-import { CompanyCard } from 'widgets/CompanyCard';
-import { DocumentTemplateCard } from 'widgets/DocumentTemplate';
 
 const CompanyPage = () => {
 	const { data: bills, isLoading, isError } = useBills();
@@ -59,11 +59,11 @@ const CompanyPage = () => {
 						/>
 					</Grid>
 
-					{!breakpoints.xxxl ? (
+					{!breakpoints.xxxl && (
 						<Grid size={2}>
 							<TaxExtractCard sx={{ height: '100%' }} />
 						</Grid>
-					) : null}
+					)}
 
 					<Grid size={{ xxxl: 2, xs: 3 }}>
 						{breakpoints.lg ? (
@@ -99,13 +99,12 @@ const CompanyPage = () => {
 						gap={2}
 						height="100%"
 					>
-						<DocumentTemplateCard sx={{ flexGrow: 1 }} />
-
-						{breakpoints.xxxl ? (
+						<LetterheadCard sx={{ flexGrow: 1 }} />
+						{breakpoints.xxxl && (
 							<TaxExtractCard
 								sx={{ height: breakpoints.lg ? 'auto' : 337 }}
 							/>
-						) : null}
+						)}
 					</Stack>
 				</Grid>
 			</Grid>

@@ -1,8 +1,16 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
+import { useMaxWidth } from 'shared/model';
+import LastLettersWidgetLg from './LastLettersWidgetLg';
 import LettersSlider from './slider/LettersSlider';
 
 const LastLettersWidget = (props) => {
+	const breakpoints = useMaxWidth();
+
+	if (breakpoints.lg) {
+		return <LastLettersWidgetLg {...props} />;
+	}
+
 	return (
 		<Card
 			{...props}

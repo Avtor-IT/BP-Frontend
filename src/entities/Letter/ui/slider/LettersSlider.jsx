@@ -2,7 +2,7 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import Slider from 'react-slick';
 import { useMaxWidth } from 'shared/model';
 import useLetters from '../../api/getLetters';
-import LetterCard from '../LetterCard';
+import LetterCard from '../letter-item/LetterCard';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 

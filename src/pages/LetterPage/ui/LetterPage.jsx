@@ -1,14 +1,9 @@
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
 	LastLettersWidget,
-	LastLettersWidgetLg,
-	LettersFilter,
-	LettersList,
-	LettersSearch,
-	LettersSort,
+	LetterConstructorCard,
+	LettersListWidget,
 } from 'entities/Letter';
-import { LetterConstructorCard } from 'features/GenerateLetter';
-import { BreakpointedComponent } from 'shared/model';
 
 const LetterPage = () => {
 	return (
@@ -28,13 +23,7 @@ const LetterPage = () => {
 					size={{ xxl: 3, xs: 5 }}
 					order={{ xxl: 1, xs: 2 }}
 				>
-					<BreakpointedComponent
-						components={{
-							default: LastLettersWidget,
-							lg: LastLettersWidgetLg,
-						}}
-						componentProps={{ height: '100%' }}
-					/>
+					<LastLettersWidget height="100%" />
 				</Grid>
 				<Grid
 					size={{ xxl: 2, xs: 5 }}
@@ -45,22 +34,7 @@ const LetterPage = () => {
 			</Grid>
 
 			<Grid size={{ xxxl: 4, xs: 5 }}>
-				<Stack
-					gap={{ xl: 4, xs: 3 }}
-					alignItems="start"
-				>
-					<LettersSearch />
-
-					<Stack
-						direction="row"
-						gap={1}
-					>
-						<LettersSort />
-						<LettersFilter />
-					</Stack>
-
-					<LettersList />
-				</Stack>
+				<LettersListWidget />
 			</Grid>
 		</Grid>
 	);

@@ -1,14 +1,11 @@
 import { Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
-import {
-	ServiceAnchorList,
-	ServiceWidgetList,
-} from 'entities/Service/index.js';
-import { useMaxWidth } from 'shared/model/index.js';
+import { CompanyCard } from 'entities/Company';
+import { ManagerCard } from 'entities/Manager';
+import { Notifications } from 'entities/Notifications';
+import { ServiceAnchorList, ServiceListWidget } from 'entities/Service';
+import { useMaxWidth } from 'shared/model';
 import SectionTitle from 'shared/ui/SectionTitle';
-import { CompanyCard } from 'widgets/CompanyCard';
-import { MyManager } from 'widgets/ManagerCard';
-import { Notifications } from 'widgets/Notifications';
 
 const MainPage = () => {
 	const breakpoints = useMaxWidth();
@@ -38,7 +35,7 @@ const MainPage = () => {
 						order={{ xxxl: 3, lg: 2, xs: 5 }}
 						sx={{ minHeight: '192px' }}
 					>
-						<MyManager sx={{ height: '100%' }} />
+						<ManagerCard sx={{ height: '100%' }} />
 					</Grid>
 				)}
 
@@ -71,8 +68,8 @@ const MainPage = () => {
 				<Typography variant="M20">Быстрый переход</Typography>
 			)}
 
-			<ServiceAnchorList />
-			<ServiceWidgetList />
+			{breakpoints.xl && <ServiceAnchorList />}
+			<ServiceListWidget />
 		</Stack>
 	);
 };

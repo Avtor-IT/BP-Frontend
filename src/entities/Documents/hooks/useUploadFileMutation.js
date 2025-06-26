@@ -7,7 +7,7 @@ const useUploadFilesMutation = () =>
 			Promise.allSettled(
 				files.map((file) => uploadFile(file.name, file.content))
 			),
-		mutationKey: ['uploadFile'],
+		mutationKey: ['upload file'],
 	});
 
 export default useUploadFilesMutation;

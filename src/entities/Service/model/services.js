@@ -5,19 +5,19 @@ import UsersIcon from 'shared/icons/Users';
 const services = {
 	1: {
 		title: 'Бухгалтерское обслуживание',
-		component: lazy(() => import('../services/accounting')),
+		component: lazy(() => import('../ui/accounting/Accounting')),
 		htmlId: 'accounting',
 		icon: CoinsIcon,
 	},
 	2: {
 		title: 'Кадровое дело',
-		component: lazy(() => import('../services/humanResources')),
+		component: lazy(() => import('../ui/human-resources/HumanResources')),
 		htmlId: 'human-resources',
 		icon: UsersIcon,
 	},
 	3: {
 		title: 'Юридическая поддержка',
-		component: lazy(() => import('../services/legalSupport')),
+		component: lazy(() => import('../ui/legal-support/LegalSupport')),
 		htmlId: 'legal-support',
 		icon: UsersIcon,
 	},

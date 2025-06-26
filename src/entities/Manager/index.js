@@ -1,1 +1,2 @@
-export { useManager } from './api/getManager.js';
+export { useManager } from './api/getManager';
+export { ManagerCard } from './ui/ManagerCard';

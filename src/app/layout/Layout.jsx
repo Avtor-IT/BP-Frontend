@@ -5,11 +5,11 @@ import { NotificationButton } from 'entities/Notifications';
 import { User } from 'entities/User';
 import { FallbackContent } from 'pages/FallbackPage';
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { MenuIcon } from 'shared/icons/Menu';
 import { useMaxWidth } from 'shared/model';
+import { AppRoutes, RoutePath } from 'shared/router';
 import { Logo, LogoIcon } from 'shared/ui/Logo';
-import { LogoLink } from 'widgets/LogoLink';
 import { Navigation } from 'widgets/Navigation';
 
 export const Layout = () => {
@@ -32,7 +32,7 @@ export const Layout = () => {
 					columnSpacing={2}
 				>
 					<Grid size={{ xxxl: 1, lg: 'auto', xs: 'grow' }}>
-						<LogoLink>
+						<Link to={RoutePath[AppRoutes.MAIN]}>
 							<Stack
 								direction="row"
 								alignItems="center"
@@ -58,7 +58,7 @@ export const Layout = () => {
 									/>
 								)}
 							</Stack>
-						</LogoLink>
+						</Link>
 					</Grid>
 					<Grid
 						size={{ lg: 1, xs: 'grow' }}

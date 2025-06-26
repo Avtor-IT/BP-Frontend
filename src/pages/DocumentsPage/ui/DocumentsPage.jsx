@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material';
 import { Box, Grid, Stack } from '@mui/system';
-import { UploadFileCard } from 'features/Documents/UploadDocument';
+import { CompanyDocuments } from 'entities/Documents';
 import { Card } from 'shared/ui/Card';
-import { CompanyDocuments } from 'widgets/CompanyDocuments';
 
 const DocumentsPage = () => {
 	return (
@@ -40,9 +39,7 @@ const DocumentsPage = () => {
 						</Stack>
 					</Card>
 				</Grid>
-				<Grid size={1}>
-					<UploadFileCard />
-				</Grid>
+				<Grid size={1}>{/* <UploadFileCard /> */}</Grid>
 			</Grid>
 			<CompanyDocuments marginTop={4} />
 		</Box>
