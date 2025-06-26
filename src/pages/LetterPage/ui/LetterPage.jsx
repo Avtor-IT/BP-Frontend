@@ -7,8 +7,8 @@ import {
 	LettersSearch,
 	LettersSort,
 } from 'entities/Letter';
+import { LetterConstructorCard } from 'features/GenerateLetter';
 import { BreakpointedComponent } from 'shared/model';
-import { CreateNewLetterCard } from 'widgets/CreateNewLetterCard';
 
 const LetterPage = () => {
 	return (
@@ -40,7 +40,7 @@ const LetterPage = () => {
 					size={{ xxl: 2, xs: 5 }}
 					order={{ xxl: 2, xs: 1 }}
 				>
-					<CreateNewLetterCard sx={{ height: '100%' }} />
+					<LetterConstructorCard sx={{ height: '100%' }} />
 				</Grid>
 			</Grid>
 

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import AddSquareIcon from 'shared/icons/AddSquare';
 import { useMaxWidth } from 'shared/model';
 import { CircledTitle } from 'shared/ui/CircledTitle';
-import CreateNewLetterModal from './CreateNewLetterModal';
+import LetterConstructorModal from './LetterConstructorModal';
 
-const CreateNewLetterCard = ({ ...props }) => {
+const LetterConstructorCard = ({ ...props }) => {
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 
@@ -67,13 +67,13 @@ const CreateNewLetterCard = ({ ...props }) => {
 				open={open}
 				onClose={handleClose}
 			>
-				{/* div wrapper instead of using forwardRef */}
+				{/* div wrapper instead of using forwardRef inside the inner component */}
 				<div>
-					<CreateNewLetterModal />
+					<LetterConstructorModal />
 				</div>
 			</Modal>
 		</>
 	);
 };
 
-export default CreateNewLetterCard;
+export default LetterConstructorCard;

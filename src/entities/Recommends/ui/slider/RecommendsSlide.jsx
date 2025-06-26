@@ -1,6 +1,6 @@
 import { Card, CardHeader, Typography } from '@mui/material';
 import { useMaxWidth } from 'shared/model';
-import { TextBox } from 'shared/ui/TextBox';
+import { FadedScrollBox } from 'shared/ui/Scrollable';
 
 const RecommendsSlide = (props) => {
 	const breakpoints = useMaxWidth();
@@ -20,7 +20,7 @@ const RecommendsSlide = (props) => {
 				slotProps={{ title: { variant: 'M20' } }}
 				sx={{ paddingInline: breakpoints.md ? 2 : undefined }}
 			/>
-			<TextBox
+			<FadedScrollBox
 				height="100%"
 				offsetX={breakpoints.md ? 2 : undefined}
 			>
@@ -29,7 +29,7 @@ const RecommendsSlide = (props) => {
 					бизнеса. Ознакомьтесь с новыми ставками и правилами расчета
 					налога, чтобы оптимизировать налоговые отчисления.
 				</Typography>
-			</TextBox>
+			</FadedScrollBox>
 		</Card>
 	);
 };

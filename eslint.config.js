@@ -72,6 +72,7 @@ export default [
 					argsIgnorePattern: '^_',
 					caughtErrors: 'all',
 					caughtErrorsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
 				},
 			],
 			'prettier/prettier': [

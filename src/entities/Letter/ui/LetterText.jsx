@@ -1,7 +1,7 @@
 import { Card, IconButton, Stack, Typography } from '@mui/material';
 import { ExpandIcon } from 'shared/icons/Expand';
 import { useMaxWidth } from 'shared/model';
-import { TextBox } from 'shared/ui/TextBox';
+import { FadedScrollBox } from 'shared/ui/Scrollable';
 
 const LetterText = () => {
 	const breakpoints = useMaxWidth();
@@ -38,7 +38,7 @@ const LetterText = () => {
 				</Stack>
 
 				{breakpoints.lg || (
-					<TextBox flexGrow={1}>
+					<FadedScrollBox flexGrow={1}>
 						<Typography
 							variant="M16"
 							color="tertiary.main"
@@ -53,7 +53,7 @@ const LetterText = () => {
 							quasi harum consequuntur, repudiandae, quam itaque
 							accusamus, possimus illo soluta incidunt.
 						</Typography>
-					</TextBox>
+					</FadedScrollBox>
 				)}
 			</Stack>
 		</Card>

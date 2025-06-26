@@ -12,7 +12,6 @@ import { CloseIcon } from 'shared/icons/Close';
 import { PaperClipIcon } from 'shared/icons/Paperclip';
 import { Button } from 'shared/ui/Button';
 import Input from 'shared/ui/Input';
-import { CircledTitle } from 'shared/ui/Card';
 
 const UploadFileCard = () => {
 	const [files, setFiles] = useState([]);
@@ -82,12 +81,7 @@ const UploadFileCard = () => {
 				backgroundColor: 'var(--secondary)',
 			}}
 		>
-			<CardHeader
-				title="Добавить<br />новый документ"
-				/*slots={{
-					content: CircledTitle,
-				}}*/
-			/>
+			<CardHeader title="Добавить<br />новый документ" />
 
 			<Stack
 				justifyContent={!files?.length ? 'space-between' : 'start'}

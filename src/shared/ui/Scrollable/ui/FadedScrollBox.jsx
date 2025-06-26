@@ -6,7 +6,7 @@ const gradientBg = (
 	endColor = 'rgba(255, 255, 255, 0)'
 ) => `linear-gradient(${deg}deg, ${startColor} 0%, ${endColor} 100%);`;
 
-const TextBox = ({ children, offsetX = 3, offsetY = 2, ...props }) => {
+const FadedScrollBox = ({ children, offsetX = 3, offsetY = 2, ...props }) => {
 	return (
 		<Box
 			overflow="hidden"
@@ -63,4 +63,4 @@ const TextBox = ({ children, offsetX = 3, offsetY = 2, ...props }) => {
 	);
 };
 
-export default TextBox;
+export default FadedScrollBox;
