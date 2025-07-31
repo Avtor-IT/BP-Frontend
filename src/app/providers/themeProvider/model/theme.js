@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { palette, typography } from 'shared/mui';
+import { cardShadow, palette, typography } from 'shared/mui';
 import components from './components';
 
 export const theme = createTheme({
@@ -17,4 +17,5 @@ export const theme = createTheme({
 	typography,
 	components,
 	palette,
+	cardShadow,
 });

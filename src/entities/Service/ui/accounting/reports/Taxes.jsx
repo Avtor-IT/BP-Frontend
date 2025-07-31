@@ -1,43 +1,18 @@
-import { Card, CardContent, CardHeader, Typography } from '@mui/material';
-import { useMaxWidth } from 'shared/model';
+import { useTaxes } from 'entities/Tax';
+import LoadReport from '../../LoadReport';
+import TaxReport from './TaxReport';
 
-const Taxes = ({ ...props }) => {
-	const breakpoints = useMaxWidth();
-
+const Taxes = () => {
 	return (
-		<Card
-			{...props}
-			sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				height: '100%',
+		<LoadReport
+			reportTitle="Налоги и&nbsp;взносы"
+			query={useTaxes}
+			description={{
+				error: 'Ошибка загрузки налоговой отчётности',
+				empty: 'Пока налоговой отчётности нет',
 			}}
-		>
-			<CardHeader title="Налоги и&nbsp;взносы" />
-
-			<CardContent
-				sx={{
-					position: 'relative',
-					flexGrow: 1,
-				}}
-			>
-				<Typography
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: '100%',
-						textAlign: 'center',
-						display: 'block',
-					}}
-					color="tertiary"
-					variant={breakpoints.md ? 'R16' : 'R20'}
-				>
-					Пока налоговой отчётности нет
-				</Typography>
-			</CardContent>
-		</Card>
+			renderReport={(data) => <TaxReport taxes={data} />}
+		/>
 	);
 };
 

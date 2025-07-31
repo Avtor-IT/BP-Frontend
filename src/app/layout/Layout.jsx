@@ -19,6 +19,7 @@ export const Layout = () => {
 		<Container
 			fixed
 			maxWidth="xxxl"
+			sx={{ '@media (min-width: 1366px)': { paddingInline: 4 } }}
 		>
 			<Stack
 				minHeight="100vh"
@@ -61,18 +62,19 @@ export const Layout = () => {
 						</Link>
 					</Grid>
 					<Grid
-						size={{ lg: 1, xs: 'grow' }}
+						// size={{ lg: 1, xs: 'grow' }}
+						size={'grow'}
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'center',
+							justifyContent: breakpoints.lg ? 'center' : 'start',
 						}}
 					>
 						<ChatBot />
 					</Grid>
 
 					<Grid
-						size={'grow'}
+						size={'auto'}
 						sx={{
 							display: 'flex',
 							gap: 1,

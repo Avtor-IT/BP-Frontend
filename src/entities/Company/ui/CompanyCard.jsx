@@ -1,4 +1,11 @@
-import { Card, CardHeader, Skeleton, Typography } from '@mui/material';
+import {
+	Box,
+	Card,
+	CardContent,
+	CardHeader,
+	Skeleton,
+	Typography,
+} from '@mui/material';
 import { Stack } from '@mui/system';
 import { useCompanies } from 'entities/Company';
 import { useMemo } from 'react';
@@ -8,8 +15,12 @@ import { CopyBtn } from 'shared/ui/Button';
 import { Circle, ErrorCard } from 'shared/ui/Card';
 import CompanyBalanceCard from './CompanyBalanceCard';
 import CompanyTitle from './CompanyTitle';
+import { CircledTitle } from 'shared/ui/CircledTitle';
+import { createAdditioinalSx } from 'shared/mui';
+import { useMaxWidth } from 'shared/model';
 
 export const CompanyCard = ({ documents = true, ...props }) => {
+	const breakpoints = useMaxWidth();
 	const { data: companies, isError, isLoading } = useCompanies();
 
 	const selectedCompany = useMemo(() => {
@@ -47,88 +58,143 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 				</Link>
 			}
 			{...props}
+			sx={createAdditioinalSx(
+				{
+					position: 'relative',
+					paddingTop: breakpoints.xl ? 3 : undefined,
+				},
+				props.sx
+			)}
 		>
-			<CardHeader title={selectedCompany?.['TITLE']} />
+			<CardHeader
+				title={
+					<CircledTitle
+						title={selectedCompany?.['TITLE']}
+						color="primary.main"
+						fullWidth={breakpoints.lg}
+						slotProps={{
+							content: {
+								sx: breakpoints.xl
+									? { width: 158, display: 'inline-block' }
+									: {
+											width: 184,
+											display: 'inline-block',
+											whiteSpace: 'nowrap',
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+									  },
+							},
+							circle: {
+								sx: {
+									bottom: breakpoints.lg ? 10 : 0,
+								},
+							},
+						}}
+					/>
+				}
+			/>
 
-			<Stack
-				height="100%"
-				direction="row"
-				alignItems="stretch"
-				justifyContent="space-between"
+			<CardContent
+				sx={{
+					height: '100%',
+					display: 'flex',
+					alignItems: 'stretch',
+					justifyContent: 'space-between',
+				}}
 			>
-				<Stack
-					flexGrow={1}
-					justifyContent="space-between"
-				>
-					{documents ? (
-						<Stack
-							flexGrow={1}
-							justifyContent="end"
+				{documents ? (
+					<Stack
+						alignItems="end"
+						justifyContent="end"
+					>
+						<Typography
+							variant="R20"
+							sx={{
+								zIndex: '1',
+								position: 'relative',
+								display: 'flex',
+								justifyContent: 'end',
+								alignContent: 'end',
+							}}
+							component={Link}
+							to={`${RoutePath[AppRoutes.COMPANY]}/${
+								selectedCompany?.['TITLE']
+							}/documents`}
+							state={{ company: selectedCompany }}
 						>
 							<Circle
-								style={{ left: -238, top: 112 }}
 								sx={{
-									background:
-										'linear-gradient(157deg, rgba(81,73,150,1) 0%, rgba(255,255,255,1) 100%) !important',
+									backgroundColor: 'secondary.main',
+									left: '-155%',
+									right: '-150%',
+									width: 'auto',
+									top: '-100%',
+									bottom: '-50%',
+									zIndex: 1,
 								}}
 							/>
-							<Typography
-								variant="R20"
-								style={{ zIndex: '1', color: '#fff' }}
+							<Box
+								component="span"
+								sx={{
+									zIndex: 2,
+									position: 'relative',
+									color: '#FFF',
+								}}
 							>
-								<Link
-									to={`${RoutePath[AppRoutes.COMPANY]}/${
-										selectedCompany?.['TITLE']
-									}/documents`}
-									state={{ company: selectedCompany }}
-								>
-									Мои документы
-								</Link>
-							</Typography>
-						</Stack>
-					) : (
-						<Stack
-							gap="4px"
-							justifyContent="end"
-							flexGrow={1}
-						>
-							{/* INN */}
-							<CopyBtn textToCopy="0276142588">
-								<Stack
-									direction="row"
-									gap={1}
-									alignItems="center"
-									color="var(--tertiary)"
-									{...props}
-								>
-									<Typography variant="R20">ИНН:</Typography>
-									<Typography variant="R16">
-										0276142588
-									</Typography>
-								</Stack>
-							</CopyBtn>
+								Мои документы
+							</Box>
+						</Typography>
+					</Stack>
+				) : (
+					<Stack
+						gap="4px"
+						justifyContent="end"
+						flexGrow={1}
+					>
+						{/* INN */}
+						<CopyBtn textToCopy="0276142588">
+							<Stack
+								direction="row"
+								gap={1}
+								alignItems="center"
+								color="var(--tertiary)"
+								{...props}
+							>
+								<Typography variant="R20">ИНН:</Typography>
+								<Typography variant="R16">
+									0276142588
+								</Typography>
+							</Stack>
+						</CopyBtn>
 
-							{/* KPP */}
-							<CopyBtn textToCopy="12345678">
-								<Stack
-									direction="row"
-									gap={1}
-									alignItems="center"
-									color="var(--tertiary)"
-									{...props}
-								>
-									<Typography variant="R20">КПП:</Typography>
-									<Typography variant="R16">
-										12345678
-									</Typography>
-								</Stack>
-							</CopyBtn>
-						</Stack>
-					)}
-				</Stack>
+						{/* KPP */}
+						<CopyBtn textToCopy="12345678">
+							<Stack
+								direction="row"
+								gap={1}
+								alignItems="center"
+								color="var(--tertiary)"
+								{...props}
+							>
+								<Typography variant="R20">КПП:</Typography>
+								<Typography variant="R16">12345678</Typography>
+							</Stack>
+						</CopyBtn>
+					</Stack>
+				)}
 
-				<CompanyBalanceCard />
-			</Stack>
+				{!breakpoints.lg && (
+					<CompanyBalanceCard
+						sx={{
+							position: 'absolute',
+							top: breakpoints.xl ? 24 : 32,
+							right: 24,
+							bottom: 16,
+							zIndex: 999,
+						}}
+					/>
+				)}
+			</CardContent>
 		</Card>
 	);
 };

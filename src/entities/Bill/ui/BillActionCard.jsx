@@ -88,7 +88,7 @@ const BillActionCard = ({ loading, ...props }) => {
 				flexDirection: breakpoints.xxl && 'row',
 				justifyContent: 'space-between',
 				paddingBlock: 2,
-				marginTop: 2,
+				marginTop: breakpoints.xxl && 2,
 				...props.sx,
 			}}
 		>

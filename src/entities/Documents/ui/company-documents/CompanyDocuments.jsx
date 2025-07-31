@@ -53,7 +53,7 @@ const CompanyDocuments = ({ ...props }) => {
 				container
 				columns={3}
 			>
-				<Grid size={2}>
+				<Grid size={{ xxxl: 2, xs: 3 }}>
 					<DocumentList company={company} />
 				</Grid>
 			</Grid>

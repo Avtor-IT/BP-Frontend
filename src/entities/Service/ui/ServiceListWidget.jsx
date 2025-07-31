@@ -6,7 +6,7 @@ import useGetUserServices from '../hooks/useGetUserServices';
 import services from '../model/services';
 
 const ServiceListWidget = () => {
-	const { data: userServices } = useGetUserServices();
+	const { data: userServices, isLoading, isError } = useGetUserServices();
 	const breakpoints = useMaxWidth();
 
 	const activeServices = useMemo(() => {
@@ -15,7 +15,21 @@ const ServiceListWidget = () => {
 		}
 	}, [userServices]);
 
-	if (!activeServices?.length) return null;
+	if (isLoading) {
+		return (
+			<Skeleton
+				variant="rounded"
+				width="100%"
+				height="500px"
+			/>
+		);
+	}
+
+	if (isError) {
+		return 'Ошибка при загрузке услуг.';
+	}
+
+	if (!activeServices.length) return null;
 
 	return activeServices.map(({ service: id }) => {
 		const service = services[id];
@@ -37,16 +51,18 @@ const ServiceListWidget = () => {
 					sx={{ transform: 'translate(-100%, -50%)' }}
 				>
 					<service.icon
-						width={247}
-						height={247}
-						stroke="var(--tertiary)"
+						sx={{
+							width: 247,
+							height: 247,
+							color: 'tertiary.main',
+						}}
 						strokeWidth={20}
 					/>
 				</Box>
 
 				<Stack
 					gap={{ xl: 4, lg: 3, xs: 4 }}
-					marginBlock="54px"
+					marginBottom="54px"
 					minHeight="520px"
 				>
 					<Typography

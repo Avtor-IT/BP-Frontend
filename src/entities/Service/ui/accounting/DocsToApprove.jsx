@@ -1,35 +1,26 @@
-import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+// eslint-disable-next-line no-restricted-imports
+import LoadDocs from 'entities/Documents/@X/Service/LoadDocs';
+// eslint-disable-next-line no-restricted-imports
+import DocsList from 'entities/Documents/@X/Service/DocsList';
+import useDocsToApprove from '../../api/accounting/getDocsToApprove';
 import { useMaxWidth } from 'shared/model';
 
-const DocsToApprove = ({ ...props }) => {
+const DocsToApprove = () => {
 	const breakpoints = useMaxWidth();
 
 	return (
-		<Card
-			{...props}
-			sx={{ display: 'flex', flexDirection: 'column', ...props.sx }}
-		>
-			<CardHeader title="Документы на&nbsp;утверждение" />
-
-			<CardContent
-				sx={{
-					flexGrow: 1,
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
-				<Typography
-					color="tertiary"
-					variant={breakpoints.md ? 'R16' : 'R20'}
-					sx={{
-						display: 'block',
-					}}
-				>
-					Документов нет
-				</Typography>
-			</CardContent>
-		</Card>
+		<LoadDocs
+			cardTitle="Документы на утверждение"
+			sx={breakpoints.xxxl ? { gap: 4 } : undefined}
+			renderDocs={(data) => (
+				<DocsList
+					direction={breakpoints.xxxl ? 'row' : undefined}
+					documents={data}
+					limit={3}
+				/>
+			)}
+			query={useDocsToApprove}
+		/>
 	);
 };
 

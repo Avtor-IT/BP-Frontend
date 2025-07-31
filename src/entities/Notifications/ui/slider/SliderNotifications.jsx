@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import Slider from 'react-slick';
 import CheckCircle from 'shared/icons/CheckCircle';
 import cls from '../notifications.module.scss';
-import './SliderNotifications.scss';
 
 const SliderNotifications = ({
 	navDots,
@@ -20,7 +19,10 @@ const SliderNotifications = ({
 	};
 
 	return (
-		<Box className={`${cls.sliderNotifications} slider-container`}>
+		<Box
+			className={`${cls.sliderNotifications} slider-container`}
+			sx={{ '& .slick-list': { overflow: 'visible' } }}
+		>
 			<Slider
 				{...settings}
 				asNavFor={navDots}

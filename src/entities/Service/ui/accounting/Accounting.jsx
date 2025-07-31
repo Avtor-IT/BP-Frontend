@@ -5,13 +5,15 @@ import {
 	groups,
 	useAccountingReports,
 } from '../../model/accounting/accountingReports';
-import ReportsList from '../ReportsList';
+import ReportsListCard from '../ReportsListCard';
 import DocsEcp from './DocsECP';
 import DocsToApprove from './DocsToApprove';
 import Taxes from './reports/Taxes';
+import { useMaxWidth } from 'shared/model';
 
 const Accounting = ({ ...props }) => {
-	const report = useAccountingReportStore.use.report();
+	const breakpoints = useMaxWidth();
+	const selectedReport = useAccountingReportStore.use.report();
 	const reports = useAccountingReports();
 
 	return (
@@ -22,30 +24,40 @@ const Accounting = ({ ...props }) => {
 			alignItems="stretch"
 			{...props}
 		>
-			{report ? (
-				<Grid size={{ lg: 'grow', xs: 5 }}>
-					<report.component />
+			<>
+				<Grid size={{ xxxl: 1, lg: 2, xs: 5 }}>
+					<ReportsListCard
+						reports={reports}
+						groups={groups}
+						references={accountingReferences}
+						slotProps={{
+							reportButton: (report) =>
+								report.title === selectedReport?.title
+									? {
+											variant: 'outlined',
+									  }
+									: {
+											sx: {
+												border: '1px solid transparent',
+											},
+									  },
+						}}
+					/>
 				</Grid>
-			) : (
-				<>
-					<Grid size={{ xxxl: 1, lg: 2, xs: 5 }}>
-						<ReportsList
-							reports={reports}
-							groups={groups}
-							references={accountingReferences}
-						/>
-					</Grid>
-					<Grid size={{ xxxl: 2, lg: 3, xs: 5 }}>
-						<Taxes />
-					</Grid>
-					<Grid size={{ xxxl: 1, xs: 5 }}>
-						<DocsEcp sx={{ height: '100%' }} />
-					</Grid>
-					<Grid size={{ xxxl: 1, xs: 5 }}>
-						<DocsToApprove sx={{ height: '100%' }} />
-					</Grid>
-				</>
-			)}
+
+				<Grid size={{ xxxl: 2, lg: 3, xs: 5 }}>
+					{selectedReport ? <selectedReport.component /> : <Taxes />}
+				</Grid>
+				<Grid size={{ xxxl: 1, xs: 5 }}>
+					<DocsEcp
+						direction={breakpoints.xxxl ? 'row' : 'column'}
+						sx={{ height: '100%' }}
+					/>
+				</Grid>
+				<Grid size={{ xxxl: 1, xs: 5 }}>
+					<DocsToApprove sx={{ height: '100%' }} />
+				</Grid>
+			</>
 		</Grid>
 	);
 };

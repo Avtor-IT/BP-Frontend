@@ -20,7 +20,10 @@ const palette = {
 	},
 	background: {
 		default: '#FFFFFF',
+		light: '#E8E8E8',
+		dark: '#F9F9F9FF',
 		paper: '#FFFFFF',
+		contrast: '#EAE7FF',
 	},
 	textPrimary: {
 		default: '#3D3F4C',

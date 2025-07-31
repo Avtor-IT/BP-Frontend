@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import CoinsIcon from 'shared/icons/Coins';
+import { ScalesIcon } from 'shared/icons/Scales';
 import UsersIcon from 'shared/icons/Users';
 
 const services = {
@@ -11,7 +12,9 @@ const services = {
 	},
 	2: {
 		title: 'Кадровое дело',
-		component: lazy(() => import('../ui/human-resources/HumanResources')),
+		component: lazy(() =>
+			import('../ui/human-resources/HumanResourcesWidget')
+		),
 		htmlId: 'human-resources',
 		icon: UsersIcon,
 	},
@@ -19,7 +22,7 @@ const services = {
 		title: 'Юридическая поддержка',
 		component: lazy(() => import('../ui/legal-support/LegalSupport')),
 		htmlId: 'legal-support',
-		icon: UsersIcon,
+		icon: ScalesIcon,
 	},
 };
 

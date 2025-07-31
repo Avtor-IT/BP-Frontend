@@ -39,7 +39,7 @@ const components = {
 		styleOverrides: {
 			tooltipPlacementTop: {
 				fontSize: '1rem',
-				background: 'var(--tertiary)',
+				background: 'tertiary.main',
 			},
 		},
 	},
@@ -76,15 +76,21 @@ const components = {
 					},
 					{
 						props: { variant: 'card' },
-						style: ({ theme, _ownerState }) => ({
-							...typography['M20'],
-							...cardShadow,
-							'&:hover': {
+						style: ({ theme, ownerState }) => {
+							return {
+								...typography['M20'],
 								...cardShadow,
-							},
-							color: theme.palette['textSecondary'].default,
-							padding: '16px',
-						}),
+								'&:hover': {
+									...cardShadow,
+									backgroundColor:
+										theme.palette.background.dark,
+								},
+								color: theme.palette[
+									ownerState.color || 'primary'
+								].main,
+								padding: '16px',
+							};
+						},
 					},
 					{
 						props: { variant: 'contained' },

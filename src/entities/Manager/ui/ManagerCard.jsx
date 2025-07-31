@@ -1,25 +1,26 @@
 import {
-	Button,
 	Card,
 	CardContent,
+	CardHeader,
 	IconButton,
 	Skeleton,
 	Stack,
 	Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { CallIcon } from 'shared/icons/Call';
 import CopyIcon from 'shared/icons/Copy';
 import MailIcon from 'shared/icons/Mail';
-import MessageIcon from 'shared/icons/Message';
 import { formatPhoneNumber } from 'shared/lib';
-import { AppRoutes, RoutePath } from 'shared/router';
 import AvatarManager from 'shared/ui/AvatarManager';
 import { CopyBtn } from 'shared/ui/Button';
 import { ErrorCard } from 'shared/ui/Card';
 import { useManager } from '../api/getManager';
+import { createAdditioinalSx } from 'shared/mui';
+import { useMaxWidth } from 'shared/model';
+import ManagerActions from './ManagerActions';
+import ManagerActionsMobile from './ManagerActions.mobile';
 
-export const ManagerCard = ({ ...props }) => {
+export const ManagerCard = ({ showPic = true, ...props }) => {
+	const breakpoints = useMaxWidth();
 	const { data: manager, isLoading, isError } = useManager();
 
 	if (isLoading)
@@ -34,57 +35,82 @@ export const ManagerCard = ({ ...props }) => {
 
 	if (manager) {
 		return (
-			<Card {...props}>
+			<Card
+				{...props}
+				sx={createAdditioinalSx(
+					{
+						gap: 2,
+						paddingBottom: breakpoints.xxl
+							? breakpoints.xl
+								? '48px'
+								: '16px'
+							: undefined,
+						position: 'relative',
+						paddingTop: breakpoints.xl ? 3 : undefined,
+					},
+					props.sx
+				)}
+			>
+				<CardHeader
+					title="Мой менеджер"
+					slotProps={{
+						title: { variant: breakpoints.xl ? 'M20' : 'M24' },
+					}}
+					action={
+						<IconButton>
+							<Stack
+								direction="row"
+								alignItems="center"
+								gap={0.5}
+								color="primary.main"
+							>
+								<Typography variant="R16">3</Typography>
+								<MailIcon fontSize="small" />
+							</Stack>
+						</IconButton>
+					}
+				/>
+
 				<CardContent sx={{ height: '100%' }}>
 					<Stack
-						direction="row"
+						direction={breakpoints.xl ? 'column' : 'row'}
+						gap={1}
 						justifyContent="space-between"
 						height="100%"
 					>
 						<Stack
-							justifyContent="space-between"
-							height="100%"
+							direction="row"
+							gap={2}
+							alignItems="center"
 						>
-							<Typography variant="M24">Мой менеджер</Typography>
-
-							<Stack
-								direction="row"
-								alignItems="center"
-								gap={2}
-							>
+							{showPic && (
 								<AvatarManager
 									src={manager['PERSONAL_PHOTO']}
 								/>
-								<Typography
-									variant="M16"
-									style={{ lineHeight: '1.3' }}
-								>
-									{manager['LAST_NAME']}
-									<br />
-									{manager['NAME']}
-									<br />
-									{manager['SECOND_NAME']}
-								</Typography>
-							</Stack>
+							)}
+							<Typography
+								variant={breakpoints.xxxl ? 'R16' : 'M16'}
+								sx={{
+									lineHeight: '1.3',
+									paddingBottom:
+										breakpoints.xxxl && !breakpoints.xxl
+											? '42px'
+											: undefined,
+								}}
+							>
+								{manager['LAST_NAME']}
+								<br />
+								{manager['NAME']}
+								<br />
+								{manager['SECOND_NAME']}
+							</Typography>
 						</Stack>
 
 						<Stack
-							justifyContent="space-between"
+							justifyContent="end"
 							alignItems="end"
 							height="100%"
 						>
-							<IconButton>
-								<Stack
-									direction="row"
-									alignItems="center"
-									gap={0.5}
-									color="primary.main"
-								>
-									<Typography variant="R16">3</Typography>
-									<MailIcon fontSize="small" />
-								</Stack>
-							</IconButton>
-
 							<Stack
 								gap={2}
 								alignItems="end"
@@ -97,7 +123,18 @@ export const ManagerCard = ({ ...props }) => {
 											alignItems="center"
 											direction="row"
 										>
-											<Typography variant="R20">
+											<Typography
+												variant={
+													breakpoints.xxxl
+														? 'R16'
+														: 'R20'
+												}
+												color={
+													breakpoints.xxl
+														? 'secondary.main'
+														: undefined
+												}
+											>
 												{formatPhoneNumber(
 													manager['WORK_PHONE']
 												)}
@@ -107,47 +144,13 @@ export const ManagerCard = ({ ...props }) => {
 									</CopyBtn>
 								) : null}
 
-								<Stack
-									direction="row"
-									gap={3}
-								>
-									<Button
-										component={Link}
-										to={RoutePath[AppRoutes.MAIN]}
-										variant="unstyled"
-									>
-										<Stack
-											direction="row"
-											alignItems="center"
-											gap={1}
-										>
-											<Typography variant="R16">
-												Заказать звонок
-											</Typography>
-											<CallIcon strokeWidth={1.5} />
-										</Stack>
-									</Button>
-									<Button
-										component={Link}
-										to={RoutePath[AppRoutes.MAIN]}
-										variant="unstyled"
-									>
-										<Stack
-											direction="row"
-											alignItems="center"
-											gap={1}
-										>
-											<Typography variant="R16">
-												Написать
-											</Typography>
-											<MessageIcon strokeWidth={1.5} />
-										</Stack>
-									</Button>
-								</Stack>
+								{!breakpoints.xxl && <ManagerActions />}
 							</Stack>
 						</Stack>
 					</Stack>
 				</CardContent>
+
+				{breakpoints.xxl && <ManagerActionsMobile />}
 			</Card>
 		);
 	}

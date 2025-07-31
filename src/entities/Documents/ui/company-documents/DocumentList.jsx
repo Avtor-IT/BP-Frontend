@@ -1,4 +1,4 @@
-import { Input, Typography } from '@mui/material';
+import { Button, Input, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -8,8 +8,12 @@ import useGetCompanyDocuments from '../../hooks/useGetCompanyDocuments';
 import useDocumentsFilterStore from '../../model/documentsFilterStore';
 import FilesList from './file/FilesList';
 import Folder from './folder/Folder';
+import { Tab, Tabs } from 'shared/mui/Tabs';
+import { typography } from 'shared/mui';
+import { useMaxWidth } from 'shared/model';
 
 const DocumentList = ({ company, ...otherProps }) => {
+	const breakpoints = useMaxWidth();
 	const { companyTitle, '*': urlPath } = useParams();
 	const navigate = useNavigate();
 	const { data: documents, isLoading, error } = useGetCompanyDocuments();
@@ -87,15 +91,47 @@ const DocumentList = ({ company, ...otherProps }) => {
 	}
 
 	return (
-		<Box {...otherProps}>
-			<Box>
-				<Input
-					inputProps={{ placeholder: 'Поиск' }}
-					variant="card-styled"
-					mb={4}
-					onInput={(e) => setSearch(e.target.value)}
-				/>
-			</Box>
+		<Stack
+			gap={4}
+			{...otherProps}
+		>
+			<Stack
+				direction={breakpoints.md ? 'column' : 'row'}
+				gap={2}
+			>
+				<Button
+					color="secondary"
+					variant="contained"
+					sx={{
+						borderRadius: 2,
+						typography: 'M20',
+						p: 2,
+						flexGrow: breakpoints.lg ? 1 : undefined,
+					}}
+				>
+					Моя компания
+				</Button>
+				<Button
+					color="secondary"
+					variant="outlined"
+					sx={{
+						borderRadius: 2,
+						typography: 'M20',
+						p: 2,
+						flexGrow: breakpoints.lg ? 1 : undefined,
+					}}
+				>
+					Рабочие документы
+				</Button>
+			</Stack>
+
+			<Input
+				inputProps={{ placeholder: 'Поиск' }}
+				variant="card"
+				mb={4}
+				onInput={(e) => setSearch(e.target.value)}
+				fullWidth
+			/>
 			<Stack
 				gap={2}
 				paddingBottom={2}
@@ -118,7 +154,7 @@ const DocumentList = ({ company, ...otherProps }) => {
 					</Card>
 				) : null}
 			</Stack>
-		</Box>
+		</Stack>
 	);
 };
 

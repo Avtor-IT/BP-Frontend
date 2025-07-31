@@ -1,13 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import uploadFile from '../api/uploadFile';
 
-const useUploadFilesMutation = () =>
+const useUploadFileMutation = () =>
 	useMutation({
-		mutationFn: (files) =>
-			Promise.allSettled(
-				files.map((file) => uploadFile(file.name, file.content))
-			),
+		mutationFn: async ({ name, base64 }) => await uploadFile(name, base64),
 		mutationKey: ['upload file'],
 	});
 
-export default useUploadFilesMutation;
+export default useUploadFileMutation;

@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
-import { CompanyCard } from 'entities/Company';
+import { CompanyBalanceCard, CompanyCard } from 'entities/Company';
 import { ManagerCard } from 'entities/Manager';
 import { Notifications } from 'entities/Notifications';
 import { ServiceAnchorList, ServiceListWidget } from 'entities/Service';
@@ -29,13 +29,26 @@ const MainPage = () => {
 					<CompanyCard sx={{ height: '100%' }} />
 				</Grid>
 
+				{breakpoints.lg && (
+					<Grid
+						size={5}
+						order={2}
+						sx={{ minHeight: 104 }}
+					>
+						<CompanyBalanceCard sx={{ height: '100%' }} />
+					</Grid>
+				)}
+
 				{!breakpoints.lg && (
 					<Grid
 						size={2}
 						order={{ xxxl: 3, lg: 2, xs: 5 }}
 						sx={{ minHeight: '192px' }}
 					>
-						<ManagerCard sx={{ height: '100%' }} />
+						<ManagerCard
+							showPic={!breakpoints.xxxl}
+							sx={{ height: '100%' }}
+						/>
 					</Grid>
 				)}
 
@@ -58,17 +71,17 @@ const MainPage = () => {
 					size={5}
 					order={4}
 				>
-					<Recommends sx={{ minHeight: '337px' }} />
+					<LegislationChanges sx={{ minHeight: '337px' }} />
 				</Grid> */}
 			</Grid>
 
-			{!breakpoints.xxl && <SectionTitle>Мои услуги</SectionTitle>}
+			{!breakpoints.xxxl && <SectionTitle>Мои услуги</SectionTitle>}
 
 			{breakpoints.lg && (
 				<Typography variant="M20">Быстрый переход</Typography>
 			)}
 
-			{breakpoints.xl && <ServiceAnchorList />}
+			{breakpoints.xxl && <ServiceAnchorList />}
 			<ServiceListWidget />
 		</Stack>
 	);

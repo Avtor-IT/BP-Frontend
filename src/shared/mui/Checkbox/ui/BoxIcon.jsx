@@ -20,8 +20,8 @@ export const BoxIconStyled = styled('span')(({ theme }) => ({
 	},
 }));
 
-const BoxIcon = () => {
-	return <BoxIconStyled />;
+const BoxIcon = (props) => {
+	return <BoxIconStyled {...props} />;
 };
 
 export default BoxIcon;
