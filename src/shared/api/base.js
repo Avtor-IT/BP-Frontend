@@ -157,8 +157,24 @@ class Api {
 		}
 	};
 
-	WebSocket = (url) => {
-		return new WebSocket(url);
+	WebSocket = async (uri, config = {}) => {
+		await this._ProccessAccessToken();
+
+		const base = new URL(instance.defaults.baseURL);
+		const protocol = base.protocol === 'https:' ? 'wss:' : 'ws:';
+
+		let path = uri;
+		// urlParams
+		if (config.urlParams) {
+			Object.entries(config.urlParams).forEach(([k, v]) => {
+				path = path.replace(`:${k}`, encodeURIComponent(v));
+			});
+		}
+
+		const wsUrl = new URL(path, `${protocol}//${base.host}`);
+		wsUrl.searchParams.append('token', this._SessionAccessToken());
+
+		return new WebSocket(wsUrl.href);
 	};
 }
 

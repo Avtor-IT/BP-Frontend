@@ -1,5 +1,5 @@
 import { Grid } from '@mui/system';
-import { Chat } from 'widgets/Chat';
+import { Chat } from 'entities/Chat';
 
 const ChatPage = () => {
 	return (

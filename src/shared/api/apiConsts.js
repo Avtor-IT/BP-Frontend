@@ -18,4 +18,5 @@ export const apiEndpoints = {
 	CHAT_ROOM: `chat/${version1}/:b24_user_id/`,
 	CHAT_MESSAGES: `chat/${version1}/:chat_room_id/messages/`,
 	CHAT_LIST: `chat/${version1}/my-chats/`,
+	ROOM_WEBSOCKET: '/ws/chat/:chat_id/',
 };

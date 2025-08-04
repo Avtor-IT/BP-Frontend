@@ -46,13 +46,15 @@ const ManagerActionsMobile = () => {
 					</IconButton>
 				}
 				sx={
-					breakpoints.xl && {
-						p: 1,
-						borderTop: '1px solid',
-						borderColor: 'background.light',
-						borderRadius: 0,
-						flexGrow: 1,
-					}
+					breakpoints.xl
+						? {
+								p: 1,
+								borderTop: '1px solid',
+								borderColor: 'background.light',
+								borderRadius: 0,
+								flexGrow: 1,
+						  }
+						: undefined
 				}
 			>
 				{!breakpoints.xl && (
@@ -80,14 +82,16 @@ const ManagerActionsMobile = () => {
 					</IconButton>
 				}
 				sx={
-					breakpoints.xl && {
-						p: 1,
-						borderTop: '1px solid',
-						borderColor: 'background.light',
-						borderRadius: 0,
-						flexGrow: 1,
-						marginLeft: '0 !important',
-					}
+					breakpoints.xl
+						? {
+								p: 1,
+								borderTop: '1px solid',
+								borderColor: 'background.light',
+								borderRadius: 0,
+								flexGrow: 1,
+								marginLeft: '0 !important',
+						  }
+						: undefined
 				}
 			>
 				{!breakpoints.xl && (

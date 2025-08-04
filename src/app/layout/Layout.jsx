@@ -62,7 +62,6 @@ export const Layout = () => {
 						</Link>
 					</Grid>
 					<Grid
-						// size={{ lg: 1, xs: 'grow' }}
 						size={'grow'}
 						sx={{
 							display: 'flex',
@@ -97,6 +96,9 @@ export const Layout = () => {
 				</Grid>
 
 				{/* Nav & Page content */}
+
+				{breakpoints.xxl && !breakpoints.lg && <Navigation />}
+
 				<Grid
 					container
 					flexGrow={1}
@@ -104,14 +106,14 @@ export const Layout = () => {
 					columnSpacing={2}
 					rowSpacing={{ xxl: 8, xs: 4 }}
 				>
-					{!breakpoints.lg && (
-						<Grid size={{ xxl: 1, xs: 5 }}>
+					{!breakpoints.xxl && (
+						<Grid size={1}>
 							<Navigation />
 						</Grid>
 					)}
 					<Grid
 						size={6}
-						minHeight="100%"
+						minHeight={!breakpoints.xxl ? '100%' : undefined}
 					>
 						<Suspense fallback={<FallbackContent />}>
 							<Outlet />

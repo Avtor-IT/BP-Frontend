@@ -1,7 +1,7 @@
 import { ListItemButton, ListItemText, Skeleton } from '@mui/material';
-import { useRoom } from 'entities/Chat';
 import { useManager } from 'entities/Manager';
 import { Link } from 'react-router-dom';
+import useRoom from '../api/getRoom';
 
 const ManagerDialog = () => {
 	const {

@@ -1,8 +1,13 @@
 import { Box, Stack } from '@mui/material';
+import { forwardRef } from 'react';
 
-const ScrollBox = ({ children, slotProps, ...props }) => {
+const ScrollBox = forwardRef(function ScrollBox(
+	{ children, slotProps, ...props },
+	ref
+) {
 	return (
 		<Box
+			ref={ref}
 			flexGrow={1}
 			position="relative"
 			{...props}
@@ -22,6 +27,6 @@ const ScrollBox = ({ children, slotProps, ...props }) => {
 			</Stack>
 		</Box>
 	);
-};
+});
 
 export default ScrollBox;

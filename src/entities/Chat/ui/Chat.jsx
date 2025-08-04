@@ -1,11 +1,18 @@
-import { Box, Button, Stack, TextField } from '@mui/material';
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { useChatWebSocket } from 'entities/Chat';
 import { useUser } from 'entities/User';
 import { useState } from 'react';
 import { useParams } from 'react-router';
-import { apiEndpoints } from 'shared/model';
 import ChatHistory from './ChatHistory';
+import { useChatWS } from '../api/chatWebSocket';
+import { apiEndpoints } from 'shared/model';
 
 const Chat = ({ ...props }) => {
 	const { id } = useParams();
@@ -14,13 +21,18 @@ const Chat = ({ ...props }) => {
 
 	const { data: user, isLoading, isError } = useUser();
 
-	const socket = useChatWebSocket({
+	// @TODO: optimistic updates
+	const invalidateChatMessages = () => {
+		queryClient.invalidateQueries([apiEndpoints.CHAT_MESSAGES, id]);
+	};
+
+	const {
+		data: socket,
+		isLoading: isChatLoading,
+		isError: isChatError,
+	} = useChatWS({
 		id,
-		onmessage: () => {
-			queryClient.invalidateQueries({
-				queryKey: [apiEndpoints.CHAT_MESSAGES, id],
-			});
-		},
+		onmessage: invalidateChatMessages,
 	});
 
 	const handleMessageChange = (event) => {
@@ -32,13 +44,41 @@ const Chat = ({ ...props }) => {
 
 		const msg = {
 			message,
-			sender_type: 'user',
 			contactId: user.contactId,
 		};
 
 		socket.send(JSON.stringify(msg));
 		setMessage('');
 	};
+
+	if (isLoading || isChatLoading) {
+		<Stack
+			height="100%"
+			paddingBottom={4}
+			justifyContent="center"
+			alignItems="center"
+			{...props}
+		>
+			<CircularProgress />
+		</Stack>;
+	}
+
+	if (isError || isChatError) {
+		<Stack
+			height="100%"
+			paddingBottom={4}
+			justifyContent="center"
+			alignItems="center"
+			{...props}
+		>
+			<Typography
+				variant="M20"
+				color="error"
+			>
+				Ошибка при подключении к комнате
+			</Typography>
+		</Stack>;
+	}
 
 	return (
 		<Box
@@ -50,25 +90,9 @@ const Chat = ({ ...props }) => {
 				height="100%"
 				justifyContent="end"
 				gap={2}
-				maxHeight="800px"
+				maxHeight="100%"
 			>
-				<Box
-					position={'relative'}
-					width="100%"
-					flexGrow={1}
-					overflow="hidden"
-				>
-					<ChatHistory
-						id={id}
-						sx={{
-							overflowY: 'auto',
-							position: 'absolute',
-							height: '100%',
-							width: '100%',
-							paddingInline: 2,
-						}}
-					/>
-				</Box>
+				<ChatHistory id={id} />
 
 				<form onSubmit={sendMessage}>
 					<Stack
