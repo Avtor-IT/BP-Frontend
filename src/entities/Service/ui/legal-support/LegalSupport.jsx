@@ -1,5 +1,4 @@
 import { Grid } from '@mui/system';
-import { Card } from 'shared/ui/Card';
 import LegalSupportReports from './LegalSupportReports';
 import DocsEcp from './DocsECP';
 import DocsToApprove from './DocsToApprove';
@@ -13,9 +12,7 @@ const LegalSupport = () => {
 			flexGrow={1}
 		>
 			<Grid size={5}>
-				<Card height="100%">
-					<LegalSupportReports />
-				</Card>
+				<LegalSupportReports />
 			</Grid>
 			<Grid size={5}>
 				<Grid

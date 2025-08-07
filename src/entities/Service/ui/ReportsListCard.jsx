@@ -12,7 +12,7 @@ import groupReports from '../lib/groupReports';
 import ReportOrders from './ReportOrders';
 import { createAdditioinalSx } from 'shared/mui';
 
-const gradient = 'linear-gradient(15deg, #514996 10%, #FFF 40%)';
+export const gradient = 'linear-gradient(15deg, #514996 10%, #FFF 40%)';
 
 const ReportsListCard = ({ reports, groups, references, slotProps }) => {
 	const breakpoints = useMaxWidth();
