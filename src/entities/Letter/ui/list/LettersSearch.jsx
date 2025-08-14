@@ -8,15 +8,11 @@ const LettersSearch = () => {
 		<Input
 			placeholder="Поиск"
 			fullWidth
-			sx={(theme) => ({
-				'& .MuiInputBase-input::placeholder': breakpoints.xl
-					? {
-							...theme.typography['M16'],
-					  }
-					: { ...theme.typography['M20'] },
+			sx={{
 				p: breakpoints.xl ? 1 : undefined,
+				typography: breakpoints.xl ? 'R16' : 'R20',
 				borderRadius: breakpoints.xl ? 2 : undefined,
-			})}
+			}}
 			variant="card"
 		/>
 	);

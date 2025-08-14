@@ -52,7 +52,7 @@ const LetterActions = ({ letter }) => {
 			height="100%"
 			direction={breakpoints.md ? 'row' : 'column'}
 		>
-			{breakpoints.md || (
+			{!breakpoints.md ? (
 				<Stack
 					flexGrow={1}
 					sx={{
@@ -66,7 +66,7 @@ const LetterActions = ({ letter }) => {
 						Действия
 					</Typography>
 				</Stack>
-			)}
+			) : null}
 
 			{actions.map((action, index) => (
 				<Button

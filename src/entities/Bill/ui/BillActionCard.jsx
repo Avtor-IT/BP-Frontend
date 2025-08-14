@@ -85,10 +85,10 @@ const BillActionCard = ({ loading, ...props }) => {
 	return (
 		<Card
 			sx={{
-				flexDirection: breakpoints.xxl && 'row',
+				flexDirection: breakpoints.xxl ? 'row' : 'column',
 				justifyContent: 'space-between',
 				paddingBlock: 2,
-				marginTop: breakpoints.xxl && 2,
+				marginTop: breakpoints.xxl ? 2 : undefined,
 				...props.sx,
 			}}
 		>
@@ -140,7 +140,7 @@ const BillActionCard = ({ loading, ...props }) => {
 				>
 					<Typography
 						variant={breakpoints.xxxl ? 'M16' : 'M20'}
-						whiteSpace={breakpoints.xl && 'nowrap'}
+						whiteSpace={breakpoints.xl ? 'nowrap' : undefined}
 						color="secondary"
 					>
 						Оставить отзыв

@@ -1,30 +1,14 @@
-import { Button, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import { UpDownIcon } from 'shared/icons/UpDown';
-import { useMaxWidth } from 'shared/model';
 
 const LettersSort = () => {
-	const breakpoints = useMaxWidth();
-
 	return (
 		<Button
 			variant="card"
-			sx={{ borderRadius: '8px' }}
+			sx={{ borderRadius: '8px', color: 'tertiary.dark', gap: 1 }}
+			endIcon={<UpDownIcon sx={{ strokeWidth: 2 }} />}
 		>
-			<Stack
-				direction="row"
-				gap={2}
-				alignItems="center"
-				sx={(theme) =>
-					breakpoints.xl
-						? {
-								...theme.typography['M16'],
-						  }
-						: { ...theme.typography['M20'] }
-				}
-			>
-				Дата
-				<UpDownIcon />
-			</Stack>
+			Дата
 		</Button>
 	);
 };

@@ -9,13 +9,7 @@ const LettersFilter = () => {
 			label="Состояние"
 			variant="filled"
 			value="all"
-			sx={(theme) =>
-				breakpoints.xl
-					? {
-							...theme.typography['M16'],
-					  }
-					: { ...theme.typography['M20'] }
-			}
+			sx={{ typography: breakpoints.xl ? 'M16' : 'M20' }}
 		>
 			<MenuItem value="all">Состояние</MenuItem>
 			<MenuItem value="formed">Сформировано</MenuItem>

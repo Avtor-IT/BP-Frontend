@@ -6,10 +6,11 @@ const url = {
 	broadcast: 'http://0.0.0.0:8000',
 	local: 'http://127.0.0.1:8000',
 	vps: 'http://5.35.82.235',
+	ssl: 'https://xn--24-6kcduamh0cckkold.xn--p1ai',
 };
 
 const instance = axios.create({
-	baseURL: url.vps,
+	baseURL: url.ssl,
 });
 
 // Add urlParams config property

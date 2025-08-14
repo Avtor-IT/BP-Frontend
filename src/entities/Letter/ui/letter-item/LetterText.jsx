@@ -37,7 +37,7 @@ const LetterText = () => {
 					</IconButton>
 				</Stack>
 
-				{breakpoints.lg || (
+				{!breakpoints.lg ? (
 					<FadedScrollBox flexGrow={1}>
 						<Typography
 							variant="M16"
@@ -54,7 +54,7 @@ const LetterText = () => {
 							accusamus, possimus illo soluta incidunt.
 						</Typography>
 					</FadedScrollBox>
-				)}
+				) : null}
 			</Stack>
 		</Card>
 	);

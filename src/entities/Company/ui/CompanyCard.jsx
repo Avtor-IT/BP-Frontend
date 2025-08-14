@@ -14,7 +14,6 @@ import { AppRoutes, RoutePath } from 'shared/router';
 import { CopyBtn } from 'shared/ui/Button';
 import { Circle, ErrorCard } from 'shared/ui/Card';
 import CompanyBalanceCard from './CompanyBalanceCard';
-import CompanyTitle from './CompanyTitle';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 import { createAdditioinalSx } from 'shared/mui';
 import { useMaxWidth } from 'shared/model';
@@ -29,15 +28,6 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 		}
 	}, [companies]);
 
-	if (isError) {
-		return (
-			<ErrorCard
-				text={`Ошибка при загрузке компании`}
-				{...props}
-			/>
-		);
-	}
-
 	if (isLoading) {
 		return (
 			<Skeleton
@@ -47,16 +37,17 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 		);
 	}
 
+	if (isError || !selectedCompany) {
+		return (
+			<ErrorCard
+				text={`Ошибка при загрузке компании`}
+				{...props}
+			/>
+		);
+	}
+
 	return (
 		<Card
-			title={
-				<Link
-					style={{ zIndex: 1 }}
-					to={RoutePath[AppRoutes.COMPANY]}
-				>
-					<CompanyTitle title={selectedCompany?.['TITLE']} />
-				</Link>
-			}
 			{...props}
 			sx={createAdditioinalSx(
 				{
