@@ -13,16 +13,16 @@ import cls from '../Input.module.scss';
 import FormSection from './FormSection';
 
 const backgrounds = [
-	{ title: 'Название фона', id: 1 },
-	{ title: 'Название фона', id: 2 },
-	{ title: 'Название фона', id: 3 },
-	{ title: 'Название фона', id: 4 },
-	{ title: 'Название фона', id: 5 },
-	{ title: 'Название фона', id: 6 },
-	{ title: 'Название фона', id: 7 },
-	{ title: 'Название фона', id: 8 },
-	{ title: 'Название фона', id: 9 },
-	{ title: 'Название фона', id: 10 },
+	{ title: 'Название шаблона', id: 1 },
+	{ title: 'Название шаблона', id: 2 },
+	{ title: 'Название шаблона', id: 3 },
+	{ title: 'Название шаблона', id: 4 },
+	{ title: 'Название шаблона', id: 5 },
+	{ title: 'Название шаблона', id: 6 },
+	{ title: 'Название шаблона', id: 7 },
+	{ title: 'Название шаблона', id: 8 },
+	{ title: 'Название шаблона', id: 9 },
+	{ title: 'Название шаблона', id: 10 },
 ];
 
 const SenderStep = ({ config, ...props }) => {

@@ -66,13 +66,13 @@ const PersonalStep = ({ config, ...props }) => {
 			columns={2}
 			columnSpacing={3}
 		>
-			<Grid size={1}>
+			<Grid size={2}>
 				<FormSection
 					section="personal"
 					config={config}
 				/>
 			</Grid>
-			<Grid size={1}>
+			{/* <Grid size={1}>
 				<Stack
 					gap={2}
 					height="100%"
@@ -145,7 +145,7 @@ const PersonalStep = ({ config, ...props }) => {
 						</ScrollBox>
 					</Stack>
 				</Stack>
-			</Grid>
+			</Grid> */}
 		</Grid>
 	);
 };

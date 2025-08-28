@@ -5,7 +5,8 @@ import {
 	IconButton,
 	Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useRoom } from 'entities/Chat';
+import { generatePath, Link } from 'react-router-dom';
 import { CallIcon } from 'shared/icons/Call';
 import MessageIcon from 'shared/icons/Message';
 import { useMaxWidth } from 'shared/model';
@@ -19,8 +20,9 @@ const mobileSx = {
 	right: 0,
 };
 
-const ManagerActionsMobile = () => {
+const ManagerActionsMobile = ({ manager }) => {
 	const breakpoints = useMaxWidth();
+	const { data: room, isPending, isError } = useRoom(manager?.ID);
 
 	return (
 		<CardActions
@@ -71,7 +73,14 @@ const ManagerActionsMobile = () => {
 
 			<Button
 				component={Link}
-				to={RoutePath[AppRoutes.MAIN]}
+				to={
+					room
+						? generatePath(RoutePath[AppRoutes.CHAT], {
+								id: room.id,
+						  })
+						: '/'
+				}
+				disabled={isPending || isError}
 				variant="unstyled"
 				endIcon={
 					<IconButton sx={{ p: 0 }}>

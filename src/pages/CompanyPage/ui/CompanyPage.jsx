@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { Grid, Stack } from '@mui/system';
 import { BillCard, useBills } from 'entities/Bill';
-import { CompanyCard } from 'entities/Company';
+import { CompanyCard, useCompanies } from 'entities/Company';
 import {
 	DocumentsLink,
 	DocumentsSlider,
@@ -19,6 +19,7 @@ import { useMemo } from 'react';
 import { ArrowIconDown } from 'shared/icons/Arrow';
 import { UpDownIcon } from 'shared/icons/UpDown';
 import { useMaxWidth } from 'shared/model';
+import { RoutePath, AppRoutes } from 'shared/router';
 
 const CompanyPage = () => {
 	const { data: bills, isLoading, isError } = useBills();
@@ -35,6 +36,18 @@ const CompanyPage = () => {
 		{ title: 'Справка №3' },
 		{ title: 'Справка №4' },
 	];
+
+	const {
+		data: companies,
+		isError: _isCompanuesError,
+		isLoading: _isCompaniesLoading,
+	} = useCompanies();
+
+	const selectedCompany = useMemo(() => {
+		if (companies) {
+			return companies[0];
+		}
+	}, [companies]);
 
 	return (
 		<Stack
@@ -82,6 +95,9 @@ const CompanyPage = () => {
 								title="Мои документы"
 								documents={mockDocuments}
 								sx={{ minHeight: 337 }}
+								linkTo={`${RoutePath[AppRoutes.COMPANY]}/${
+									selectedCompany?.['TITLE']
+								}/documents`}
 							/>
 						)}
 					</Grid>
@@ -95,6 +111,9 @@ const CompanyPage = () => {
 								title="Рабочие документы"
 								documents={mockDocuments}
 								sx={{ minHeight: 337 }}
+								linkTo={`${RoutePath[AppRoutes.COMPANY]}/${
+									selectedCompany?.['TITLE']
+								}/documents`}
 							/>
 						)}
 					</Grid>

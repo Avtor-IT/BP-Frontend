@@ -1,10 +1,13 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useRoom } from 'entities/Chat';
+import { generatePath, Link } from 'react-router-dom';
 import { CallIcon } from 'shared/icons/Call';
 import MessageIcon from 'shared/icons/Message';
 import { AppRoutes, RoutePath } from 'shared/router';
 
-const ManagerActions = () => {
+const ManagerActions = ({ manager }) => {
+	const { data: room, isPending, isError } = useRoom(manager?.ID);
+
 	return (
 		<Stack
 			direction="row"
@@ -26,7 +29,14 @@ const ManagerActions = () => {
 			</Button>
 			<Button
 				component={Link}
-				to={RoutePath[AppRoutes.MAIN]}
+				disabled={isPending || isError}
+				to={
+					room
+						? generatePath(RoutePath[AppRoutes.CHAT], {
+								id: room.id,
+						  })
+						: '/'
+				}
 				variant="unstyled"
 			>
 				<Stack

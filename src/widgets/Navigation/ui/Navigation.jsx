@@ -83,7 +83,7 @@ export const Navigation = ({ ...props }) => {
 				icon: <Document />,
 			},
 			{
-				title: 'Обучение',
+				title: 'Чаты',
 				link: RoutePath[AppRoutes.TUTORIAL],
 				icon: <OfficeIcon />,
 			},

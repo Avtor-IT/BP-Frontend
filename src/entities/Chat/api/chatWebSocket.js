@@ -1,12 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
+import { useRef } from 'react';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 
-export const useChatWS = ({ id, onopen, onmessage, onerror, onclose }) =>
-	useQuery({
+export const useChatWS = ({ roomId, onopen, onmessage, onerror, onclose }) => {
+	const connection = useRef(false);
+
+	return useQuery({
 		queryFn: async () => {
+			if (connection.current) return;
+
 			const socket = await api.WebSocket(apiEndpoints.ROOM_WEBSOCKET, {
-				urlParams: { chat_id: id },
+				urlParams: { chat_id: roomId },
 			});
 			socket.onopen = () => {
 				if (onopen) onopen();
@@ -22,7 +27,12 @@ export const useChatWS = ({ id, onopen, onmessage, onerror, onclose }) =>
 				if (onclose) onclose();
 			};
 
+			connection.current = true;
+
 			return socket;
 		},
-		queryKey: ['websocket chat ' + id],
+		queryKey: [apiEndpoints.ROOM_WEBSOCKET + roomId],
+		staleTime: Infinity,
+		retry: false,
 	});
+};

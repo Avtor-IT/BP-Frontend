@@ -42,7 +42,9 @@ const DestinationStep = ({ config, ...props }) => {
 					gap={3}
 					height="100%"
 				>
-					<Typography variant="M20">Фирменный бланк</Typography>
+					<Typography variant="M20">
+						Автозаполнение адресата
+					</Typography>
 					<ScrollBox>
 						{destinations.map((destination) => (
 							<Stack

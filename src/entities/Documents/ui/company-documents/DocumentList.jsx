@@ -8,8 +8,6 @@ import useGetCompanyDocuments from '../../hooks/useGetCompanyDocuments';
 import useDocumentsFilterStore from '../../model/documentsFilterStore';
 import FilesList from './file/FilesList';
 import Folder from './folder/Folder';
-import { Tab, Tabs } from 'shared/mui/Tabs';
-import { typography } from 'shared/mui';
 import { useMaxWidth } from 'shared/model';
 
 const DocumentList = ({ company, ...otherProps }) => {

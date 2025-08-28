@@ -4,7 +4,7 @@ import { Dialogs } from 'entities/Chat';
 const TutorialPage = () => {
 	return (
 		<Stack>
-			<Typography variant="M40">Tutorial page</Typography>
+			<Typography variant="M40">Чаты</Typography>
 			<Dialogs />
 		</Stack>
 	);

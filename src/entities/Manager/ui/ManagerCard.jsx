@@ -144,13 +144,15 @@ export const ManagerCard = ({ showPic = true, ...props }) => {
 									</CopyBtn>
 								) : null}
 
-								{!breakpoints.xxl && <ManagerActions />}
+								{!breakpoints.xxl && (
+									<ManagerActions manager={manager} />
+								)}
 							</Stack>
 						</Stack>
 					</Stack>
 				</CardContent>
 
-				{breakpoints.xxl && <ManagerActionsMobile />}
+				{breakpoints.xxl && <ManagerActionsMobile manager={manager} />}
 			</Card>
 		);
 	}

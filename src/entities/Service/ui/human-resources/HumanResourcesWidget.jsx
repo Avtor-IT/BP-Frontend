@@ -13,6 +13,9 @@ import LoadDetailedEmployeeInfo from './LoadDetailedEmployeeInfo';
 import LoadEmployees from './LoadEmployees';
 import ReportList from './ReportList';
 import AddEmployee from './AddEmployee';
+import { Recommendations } from '../recommends/Recommendations';
+import { useActualRecommendation } from '../../api/human-resources/getActualRecommendation';
+import { useRecommendationsHistory } from '../../api/human-resources/getReccommendationsHistory';
 
 const HumanResources = () => {
 	const breakpoints = useMaxWidth();
@@ -89,6 +92,15 @@ const HumanResources = () => {
 				<Grid size={{ xxxl: 1, xs: 5 }}>
 					<DocsToApprove sx={{ height: '100%' }} />
 				</Grid>
+
+				<Grid size="grow">
+					<Recommendations
+						useActualRecommendationQuery={useActualRecommendation}
+						useRecommendationsHistoryQuery={
+							useRecommendationsHistory
+						}
+					/>
+				</Grid>
 			</Grid>
 		);
 	}
@@ -130,6 +142,15 @@ const HumanResources = () => {
 				<Grid size={3}>
 					<LoadDetailedEmployeeInfo minHeight="605px" />
 				</Grid>
+
+				<Grid size="grow">
+					<Recommendations
+						useActualRecommendationQuery={useActualRecommendation}
+						useRecommendationsHistoryQuery={
+							useRecommendationsHistory
+						}
+					/>
+				</Grid>
 			</Grid>
 		);
 	}
@@ -149,6 +170,12 @@ const HumanResources = () => {
 			</Grid>
 			<Grid size={{ xxxl: 1, xs: 5 }}>
 				<DocsToApprove sx={{ height: '100%' }} />
+			</Grid>
+			<Grid size="grow">
+				<Recommendations
+					useActualRecommendationQuery={useActualRecommendation}
+					useRecommendationsHistoryQuery={useRecommendationsHistory}
+				/>
 			</Grid>
 		</Grid>
 	);

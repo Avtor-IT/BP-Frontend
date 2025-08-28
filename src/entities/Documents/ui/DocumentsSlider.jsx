@@ -10,6 +10,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/system';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import AddSquareIcon from 'shared/icons/AddSquare';
 import { ArrowInCircle } from 'shared/icons/ArrowInCircle';
@@ -17,7 +18,11 @@ import ExportIcon from 'shared/icons/Export';
 import ImportIcon from 'shared/icons/Import';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 
-const SlickArrowLeft = ({ slideCount, currentSlide, ...props }) => {
+const SlickArrowLeft = ({
+	slideCount: _slideCount,
+	currentSlide,
+	...props
+}) => {
 	return (
 		<IconButton
 			{...props}
@@ -125,7 +130,7 @@ const DocumentSlide = ({ document, ...props }) => (
 	</Card>
 );
 
-const DocumentsSlider = ({ title, documents, ...props }) => {
+const DocumentsSlider = ({ title, documents, linkTo, ...props }) => {
 	const theme = useTheme();
 	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
 
@@ -198,7 +203,11 @@ const DocumentsSlider = ({ title, documents, ...props }) => {
 			</CardContent>
 
 			<CardActions sx={{ marginTop: 'auto' }}>
-				<Button variant="unstyled">
+				<Button
+					variant="unstyled"
+					component={Link}
+					to={linkTo}
+				>
 					<Typography
 						variant="M16"
 						color="textSecondary"
