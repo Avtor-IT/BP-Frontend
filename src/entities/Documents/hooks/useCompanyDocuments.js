@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import getCompanyDocuments from '../api/getCompanyDocuments';
+import { apiEndpoints } from 'shared/model';
 
-const useGetCompanyDocuments = () =>
+const useCompanyDocuments = () =>
 	useQuery({
-		queryKey: ['documents', 'company'],
+		queryKey: [apiEndpoints.DOCUMENTS, 'company'],
 		queryFn: getCompanyDocuments,
 		select: (data) => data.documents,
 		retry: false,
 	});
 
-export default useGetCompanyDocuments;
+export default useCompanyDocuments;

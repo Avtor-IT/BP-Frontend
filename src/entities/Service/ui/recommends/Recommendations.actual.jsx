@@ -1,7 +1,9 @@
 import { CircularProgress, Typography } from '@mui/material';
 import { RecommendationItem } from './Recommendation.item';
+import { useMaxWidth } from 'shared/model';
 
 export const RecommendationsActual = ({ useActualRecommendationQuery }) => {
+	const breakpoints = useMaxWidth();
 	const {
 		data: actualRecommendation,
 		isLoading,
@@ -31,12 +33,28 @@ export const RecommendationsActual = ({ useActualRecommendationQuery }) => {
 		<RecommendationItem
 			recommendation={actualRecommendation}
 			sx={{
-				display: '-webkit-box',
-				WebkitLineClamp: 1,
-				WebkitBoxOrient: 'vertical',
-				overflow: 'hidden',
-				textOverflow: 'ellipsis',
-				maxHeight: '2rem',
+				alignItems: breakpoints.md ? 'center' : undefined,
+				gap: breakpoints.lg ? 2 : undefined,
+			}}
+			slotProps={{
+				typography: {
+					sx: {
+						display: '-webkit-box',
+						WebkitLineClamp: breakpoints.xxxl
+							? breakpoints.lg
+								? 4
+								: 2
+							: 1,
+						WebkitBoxOrient: 'vertical',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxHeight: breakpoints.xxxl
+							? breakpoints.lg
+								? '6.5rem'
+								: '3.5rem'
+							: '2rem',
+					},
+				},
 			}}
 		/>
 	);

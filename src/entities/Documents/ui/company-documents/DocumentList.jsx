@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { AppRoutes, RoutePath } from 'shared/router';
 import { Card } from 'shared/ui/Card';
-import useGetCompanyDocuments from '../../hooks/useGetCompanyDocuments';
+import useCompanyDocuments from '../../hooks/useCompanyDocuments';
 import useDocumentsFilterStore from '../../model/documentsFilterStore';
 import FilesList from './file/FilesList';
 import Folder from './folder/Folder';
@@ -14,7 +14,7 @@ const DocumentList = ({ company, ...otherProps }) => {
 	const breakpoints = useMaxWidth();
 	const { companyTitle, '*': urlPath } = useParams();
 	const navigate = useNavigate();
-	const { data: documents, isLoading, error } = useGetCompanyDocuments();
+	const { data: documents, isLoading, error } = useCompanyDocuments();
 	const { search } = useDocumentsFilterStore.use.filters();
 	const setSearch = useDocumentsFilterStore.use.setSearch();
 

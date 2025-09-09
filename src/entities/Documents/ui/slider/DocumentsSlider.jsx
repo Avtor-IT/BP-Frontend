@@ -6,6 +6,7 @@ import {
 	CardContent,
 	CardHeader,
 	IconButton,
+	Skeleton,
 	Stack,
 	Typography,
 } from '@mui/material';
@@ -17,6 +18,8 @@ import { ArrowInCircle } from 'shared/icons/ArrowInCircle';
 import ExportIcon from 'shared/icons/Export';
 import ImportIcon from 'shared/icons/Import';
 import { CircledTitle } from 'shared/ui/CircledTitle';
+import useDownloadMutation from '../../hooks/useDownloadMutation';
+import { DocumentSlide } from './DocumentSlide';
 
 const SlickArrowLeft = ({
 	slideCount: _slideCount,
@@ -89,50 +92,17 @@ const SlickArrowRight = ({
 	</IconButton>
 );
 
-const DocumentSlide = ({ document, ...props }) => (
-	<Card
-		{...props}
-		sx={{ width: 190, height: 150, ...props.sx }}
-	>
-		<CardContent
-			sx={{
-				flexGrow: 1,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				color: 'textSecondary.default',
-			}}
-		>
-			<Typography variant="R16">{document.title}</Typography>
-
-			<Stack
-				direction="row"
-				justifyContent="end"
-			>
-				<IconButton
-					sx={{ p: 0.5 }}
-					onClick={(e) => {
-						e.stopPropagation(); // prevent sliding list
-					}}
-				>
-					<ExportIcon strokeWidth={1.5} />
-				</IconButton>
-				<IconButton
-					sx={{ p: 0.5 }}
-					onClick={(e) => {
-						e.stopPropagation(); // prevent sliding list
-					}}
-				>
-					<ImportIcon strokeWidth={1.5} />
-				</IconButton>
-			</Stack>
-		</CardContent>
-	</Card>
-);
-
-const DocumentsSlider = ({ title, documents, linkTo, ...props }) => {
+const DocumentsSlider = ({
+	title,
+	documents,
+	linkTo,
+	loading,
+	headerAction,
+	...props
+}) => {
 	const theme = useTheme();
 	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
+	const { mutate: download } = useDownloadMutation();
 
 	const slidesToShow = downXl ? 1 : 2;
 	const settings = {
@@ -150,10 +120,19 @@ const DocumentsSlider = ({ title, documents, linkTo, ...props }) => {
 		nextArrow: <SlickArrowRight slidesToShow={slidesToShow} />,
 	};
 
+	if (loading) {
+		return (
+			<Skeleton
+				{...props}
+				variant="rounded"
+			/>
+		);
+	}
+
 	return (
 		<Card
-			{...props}
 			sx={{ gap: 2, ...props.sx }}
+			{...props}
 		>
 			<CardHeader
 				title={
@@ -175,34 +154,64 @@ const DocumentsSlider = ({ title, documents, linkTo, ...props }) => {
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
-							gap: 1,
 							color: 'textPrimary.default',
 						}}
+						endIcon={<AddSquareIcon />}
+						onClick={headerAction}
 					>
 						<Typography variant="M16">Добавить</Typography>
-						<AddSquareIcon />
 					</Button>
 				}
 			/>
 
 			<CardContent
 				sx={{
+					flexGrow: 1,
+					display: 'flex',
 					'& .slick-list': { overflow: 'visible' },
+					'& .slick-track': { minWidth: '100%' },
 				}}
 			>
-				<Slider {...settings}>
-					{documents.map((document, i) => (
-						<Box
-							paddingRight={i === documents.length - 1 ? '0' : 1}
-							key={i}
+				{documents.length ? (
+					<Slider {...settings}>
+						{documents.map((document, i) => (
+							<Box
+								paddingRight={
+									i === documents.length - 1 ? '0' : 1
+								}
+								key={i}
+							>
+								<DocumentSlide
+									document={document}
+									onImport={(d) =>
+										download({
+											url: document.DOWNLOAD_URL,
+											params: {
+												filename: document.NAME,
+											},
+										})
+									}
+								/>
+							</Box>
+						))}
+					</Slider>
+				) : (
+					<Stack
+						justifyContent="center"
+						alignItems="center"
+						width="100%"
+					>
+						<Typography
+							variant="R20"
+							color="textSecondary"
 						>
-							<DocumentSlide document={document} />
-						</Box>
-					))}
-				</Slider>
+							Документов пока нет.
+						</Typography>
+					</Stack>
+				)}
 			</CardContent>
 
-			<CardActions sx={{ marginTop: 'auto' }}>
+			<CardActions>
 				<Button
 					variant="unstyled"
 					component={Link}

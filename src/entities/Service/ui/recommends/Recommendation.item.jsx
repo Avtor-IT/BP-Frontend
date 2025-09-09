@@ -1,8 +1,11 @@
 import { IconButton, Stack, Typography } from '@mui/material';
 import CheckCircleIcon from 'shared/icons/CheckCircle';
 import { RecommendationsHistory } from './Recommendations.history';
+import { useMaxWidth } from 'shared/model';
 
-export const RecommendationItem = ({ recommendation, ...props }) => {
+export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
+	const breakpoints = useMaxWidth();
+
 	return (
 		<Stack
 			direction="row"
@@ -10,11 +13,13 @@ export const RecommendationItem = ({ recommendation, ...props }) => {
 			alignItems="start"
 			width="100%"
 			gap={6}
+			{...slotProps?.root}
+			{...props}
 		>
 			<Typography
-				variant="L20"
+				variant={breakpoints.xs ? 'L16' : 'L20'}
 				paddingBlock={1}
-				{...props}
+				{...slotProps?.typography}
 			>
 				{recommendation.description}
 			</Typography>

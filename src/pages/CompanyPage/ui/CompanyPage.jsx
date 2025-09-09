@@ -1,6 +1,8 @@
 import {
 	Box,
 	Button,
+	Card,
+	CardContent,
 	Input,
 	MenuItem,
 	Select,
@@ -14,8 +16,10 @@ import {
 	DocumentsSlider,
 	TaxExtractCard,
 } from 'entities/Documents';
+import useCompanyDocuments from 'entities/Documents/hooks/useCompanyDocuments';
 import { LetterheadCard } from 'entities/Letter';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router';
 import { ArrowIconDown } from 'shared/icons/Arrow';
 import { UpDownIcon } from 'shared/icons/UpDown';
 import { useMaxWidth } from 'shared/model';
@@ -24,6 +28,7 @@ import { RoutePath, AppRoutes } from 'shared/router';
 const CompanyPage = () => {
 	const { data: bills, isLoading, isError } = useBills();
 	const breakpoints = useMaxWidth();
+	const navigate = useNavigate();
 
 	const billList = useMemo(() => {
 		if (bills) return bills;
@@ -31,11 +36,22 @@ const CompanyPage = () => {
 	}, [bills]);
 
 	const mockDocuments = [
-		{ title: 'Справка №1' },
-		{ title: 'Справка №2' },
-		{ title: 'Справка №3' },
-		{ title: 'Справка №4' },
+		{ NAME: 'Справка №1' },
+		{ NAME: 'Справка №2' },
+		{ NAME: 'Справка №3' },
+		{ NAME: 'Справка №4' },
 	];
+
+	const {
+		data: companyDocuments,
+		isLoading: isCompanyDocumentsLoading,
+		isError: isCompanyDocumentsError,
+	} = useCompanyDocuments();
+
+	const companyFiles = useMemo(() => {
+		if (companyDocuments)
+			return companyDocuments.filter((d) => d.TYPE === 'file');
+	}, [companyDocuments]);
 
 	const {
 		data: companies,
@@ -90,14 +106,34 @@ const CompanyPage = () => {
 					<Grid size={{ xxxl: 2, xs: 3 }}>
 						{breakpoints.lg ? (
 							<DocumentsLink title={'Перейти в мои документы'} />
+						) : isCompanyDocumentsError ? (
+							<Card
+								sx={{
+									height: '100%',
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+							>
+								<Typography variant="M20">
+									Ошибка при загрузке документов
+								</Typography>
+							</Card>
 						) : (
 							<DocumentsSlider
 								title="Мои документы"
-								documents={mockDocuments}
+								loading={isCompanyDocumentsLoading}
+								documents={companyFiles}
 								sx={{ minHeight: 337 }}
 								linkTo={`${RoutePath[AppRoutes.COMPANY]}/${
 									selectedCompany?.['TITLE']
 								}/documents`}
+								headerAction={() =>
+									navigate(
+										`${RoutePath[AppRoutes.COMPANY]}/${
+											selectedCompany?.['TITLE']
+										}/documents`
+									)
+								}
 							/>
 						)}
 					</Grid>
@@ -114,6 +150,13 @@ const CompanyPage = () => {
 								linkTo={`${RoutePath[AppRoutes.COMPANY]}/${
 									selectedCompany?.['TITLE']
 								}/documents`}
+								headerAction={() =>
+									navigate(
+										`${RoutePath[AppRoutes.COMPANY]}/${
+											selectedCompany?.['TITLE']
+										}/documents`
+									)
+								}
 							/>
 						)}
 					</Grid>
