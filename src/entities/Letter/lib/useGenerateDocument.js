@@ -18,5 +18,5 @@ export const useGeneratePdf = () =>
 export const useGenerateHtml = () =>
 	useMutation({
 		mutationFn: generateHTML,
-		mutationKey: ['generate pdf'],
+		mutationKey: ['generate html'],
 	});

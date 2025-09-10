@@ -3,18 +3,43 @@ import {
 	Document,
 	Footer,
 	Header,
+	HorizontalPositionRelativeFrom,
 	ImageRun,
 	Packer,
 	PageOrientation,
 	Paragraph,
-	TabStopType,
+	Table,
+	TableBorders,
+	TableCell,
+	TableRow,
 	TextRun,
+	TextWrappingType,
+	VerticalAlign,
+	VerticalPositionRelativeFrom,
+	WidthType,
 } from 'docx';
 import saveAs from 'file-saver';
 
-export const generateAndDownloadDocx = async ({ documentName, ...params }) => {
-	const docxBlob = await generateDocx(params);
+const mmToEMU = (mm) => Math.round(mm * 36000);
 
+const loadImage = async (url) => {
+	const response = await fetch(url);
+	const data = await response.arrayBuffer();
+	const type = response.headers.get('Content-Type');
+
+	return { data, type };
+};
+
+export const generateAndDownloadDocx = async ({ documentName, ...params }) => {
+	const companyLogo = await loadImage(params.companyLogo);
+	const signature = await loadImage(params.signature);
+	const print = await loadImage(params.print);
+	const docxBlob = await generateDocx({
+		...params,
+		companyLogo,
+		signature,
+		print,
+	});
 	saveAs(docxBlob, `${documentName}.docx`);
 };
 
@@ -29,8 +54,9 @@ export const generateDocx = async (params) => {
 		personalPosition,
 		personalInitials,
 		personalPhone,
-		date,
-		companyLogo = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Felis_silvestris_silvestris.jpg/500px-Felis_silvestris_silvestris.jpg',
+		companyLogo,
+		signature,
+		print,
 	} = params;
 
 	const font = 'Times New Roman';
@@ -43,36 +69,29 @@ export const generateDocx = async (params) => {
 		top: 1134, // 20mm in tweepes (1mm = 56.7tweepes)
 		right: 1134, // 20mm
 		bottom: 1134, // 20mm
-		left: 1701, // 30mm
+		left: 1134, // 20mm
 		header: 720,
 		footer: 720,
 		gutter: 0,
 	};
 
-	/* Company logo example */
-	const response = await fetch(companyLogo);
-	let imageBuffer = await response.arrayBuffer();
-	let type = response.headers.get('Content-Type');
-
-	const headerImage =
-		imageBuffer &&
-		new ImageRun({
-			data: imageBuffer,
-			type: type.split('/')[1],
-			transformation: {
-				width: 100,
-				height: 100,
+	const companyLogoImage = new ImageRun({
+		data: companyLogo.data,
+		type: companyLogo.type.split('/')[1],
+		transformation: {
+			width: 100,
+			height: 100,
+		},
+		floating: {
+			behindDocument: true,
+			horizontalPosition: {
+				offset: 3597 * 80, // 80mm
 			},
-			floating: {
-				behindDocument: true,
-				horizontalPosition: {
-					offset: 3597 * 80, // 80mm
-				},
-				verticalPosition: {
-					offset: 3597 * 80, // 80mm
-				},
+			verticalPosition: {
+				offset: 3597 * 80, // 80mm
 			},
-		});
+		},
+	});
 
 	const header = new Header({
 		children: [
@@ -80,7 +99,7 @@ export const generateDocx = async (params) => {
 				alignment: AlignmentType.RIGHT,
 				spacing: { after: 720 },
 				children: [
-					...(headerImage ? [headerImage] : []),
+					...(companyLogoImage ? [companyLogoImage] : []),
 					new TextRun({
 						text: companyName,
 						font,
@@ -110,51 +129,103 @@ export const generateDocx = async (params) => {
 		],
 	});
 
-	const footer = new Footer({
-		children: [
-			new Paragraph({
-				tabStops: [
-					{
-						type: TabStopType.RIGHT,
-						position: 9072, // 160mm
-					},
-				],
-				children: [
-					new TextRun({
-						text: personalPosition,
-						font,
-						size: fontSize * 2,
-						bold: true,
-					}),
-					new TextRun({
-						text: '\t',
-					}),
-					new TextRun({
-						text: personalInitials,
-						font,
-						size: fontSize * 2,
-						bold: true,
-					}),
-				],
-				spacing: { after: 400 },
-			}),
+	const signatureImage = new ImageRun({
+		data: signature.data,
+		type: signature.type.split('/')[1],
+		transformation: { width: 100, height: 100 },
+	});
 
-			new Paragraph({
+	const printImage = new ImageRun({
+		data: print.data,
+		type: print.type.split('/')[1],
+		transformation: { width: 120, height: 120 },
+		floating: {
+			horizontalPosition: {
+				offset: -mmToEMU(25),
+				relative: HorizontalPositionRelativeFrom.RIGHT_MARGIN,
+			},
+			verticalPosition: {
+				offset: mmToEMU(4),
+				relative: VerticalPositionRelativeFrom.BOTTOM_MARGIN,
+			},
+			wrap: { type: TextWrappingType.NONE },
+			zIndex: 0,
+			behindDocument: true,
+			allowOverlap: true,
+		},
+	});
+
+	const footerTable = new Table({
+		width: {
+			size: 100,
+			type: WidthType.PERCENTAGE,
+		},
+		alignment: AlignmentType.LEFT,
+		borders: TableBorders.NONE,
+		rows: [
+			new TableRow({
 				children: [
-					new TextRun({
-						text: personalPhone,
-						font,
-						size: fontSize * 2,
+					new TableCell({
+						width: { size: 40, type: WidthType.PERCENTAGE },
+						verticalAlign: VerticalAlign.TOP,
+						children: [
+							new Paragraph({
+								children: [
+									new TextRun({
+										text: personalPosition,
+										font,
+										size: fontSize * 2,
+										bold: true,
+									}),
+								],
+							}),
+							new Paragraph({
+								children: [
+									new TextRun({
+										text: personalPhone,
+										font,
+										size: fontSize * 2,
+									}),
+								],
+							}),
+						],
 					}),
-					new TextRun({
-						text: date,
-						font,
-						size: fontSize * 2,
-						break: 1,
+
+					new TableCell({
+						width: { size: 20, type: WidthType.PERCENTAGE },
+						verticalAlign: VerticalAlign.CENTER,
+						children: [
+							new Paragraph({
+								children: [signatureImage],
+								alignment: AlignmentType.CENTER,
+							}),
+						],
+					}),
+
+					new TableCell({
+						width: { size: 40, type: WidthType.PERCENTAGE },
+						verticalAlign: VerticalAlign.TOP,
+						children: [
+							new Paragraph({
+								children: [
+									new TextRun({
+										text: personalInitials,
+										font,
+										size: fontSize * 2,
+										bold: true,
+									}),
+								],
+								alignment: AlignmentType.RIGHT,
+							}),
+						],
 					}),
 				],
 			}),
 		],
+	});
+
+	const footer = new Footer({
+		children: [footerTable, new Paragraph({ children: [printImage] })],
 	});
 
 	const content = [
@@ -172,7 +243,7 @@ export const generateDocx = async (params) => {
 		}),
 		new Paragraph({
 			alignment: AlignmentType.JUSTIFIED,
-			children: [new TextRun({ text: text, font, size: fontSize * 2 })],
+			children: [new TextRun({ text, font, size: fontSize * 2 })],
 			indent: { firstLine: indent },
 			spacing: { line: lineSpacing * 240 }, // 240 tweepes per pk
 		}),

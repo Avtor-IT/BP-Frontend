@@ -6,6 +6,7 @@ import {
 	getDefaultValues,
 	letterFormConfig,
 } from '../../model/generator-config/letterFormConfig';
+import { defaultFields } from 'entities/Letter/model/generator-config/defaultFields';
 
 const initValues = {
 	sender: {
@@ -63,7 +64,7 @@ const LetterConstructorModal = () => {
 				(acc, curr) => Object.assign(acc, curr),
 				{}
 			);
-			action(fields);
+			action({ ...defaultFields, ...fields });
 		} catch (e) {
 			console.error('error while submit:', e);
 		}

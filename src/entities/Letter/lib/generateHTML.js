@@ -9,8 +9,9 @@ export const generateHTML = (params) => {
 		personalPosition,
 		personalInitials,
 		personalPhone,
-		date,
-		companyLogo = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Felis_silvestris_silvestris.jpg/500px-Felis_silvestris_silvestris.jpg',
+		companyLogo,
+		signature,
+		print,
 	} = params;
 
 	const font = 'Times New Roman';
@@ -21,7 +22,7 @@ export const generateHTML = (params) => {
 	const pageMargin = {
 		top: 10,
 		right: 10,
-		bottom: 10,
+		bottom: 20,
 		left: 15,
 	};
 	const pageWidth = '210mm';
@@ -41,7 +42,6 @@ export const generateHTML = (params) => {
             <div style="display: flex; align-items: flex-start; justify-content: space-between;">
                 <img 
 					src="${companyLogo}" 
-					alt="Company Logo" 
 					style="
 						width: 100px; 
 						height: 100px; 
@@ -90,13 +90,45 @@ export const generateHTML = (params) => {
             font-family: '${font}'; 
             font-size: ${fontSize}px; 
             line-height: 1.5;
+            position: relative;
         ">
-            <div style="display: flex; width: 100%; justify-content: space-between; margin-bottom: 5px;">
+            <div style="
+                display: flex; 
+                width: 100%; 
+                justify-content: space-between; 
+                margin-bottom: 5px; 
+                position: relative; 
+                z-index: 2; 
+                font-weight: bold;
+            ">
                 <strong>${personalPosition}</strong> 
                 <strong>${personalInitials}</strong>
             </div>
             <div>${personalPhone}</div>
-            <div>${date}</div>
+
+            <img 
+                src='${signature}' 
+                style="
+                    width: 100px;
+                    height: 100px;
+                    position: absolute;
+                    left: 50%;
+                    top: -10px;
+                    transform: translateX(-50%);
+                "
+            />
+
+            <img 
+                src='${print}' 
+                style="
+                    width: 100px;
+                    height: 100px;
+                    position: absolute;
+                    right: calc(${pageMargin.right}mm - 40px);
+                    top: 15px;
+                    z-index: 0;
+                "
+            />
         </div>
     `;
 
