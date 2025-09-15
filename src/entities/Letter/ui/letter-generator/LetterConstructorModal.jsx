@@ -6,7 +6,7 @@ import {
 	getDefaultValues,
 	letterFormConfig,
 } from '../../model/generator-config/letterFormConfig';
-import { defaultFields } from 'entities/Letter/model/generator-config/defaultFields';
+import { defaultFields } from '../../model/generator-config/defaultFields';
 
 const initValues = {
 	sender: {

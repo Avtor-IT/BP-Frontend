@@ -1,38 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 
-export const useChatWS = ({ roomId, onopen, onmessage, onerror, onclose }) => {
-	const connection = useRef(false);
+export const useChatWS = ({ roomId }) => {
+	const [url, setUrl] = useState();
+	const socket = useWebSocket(url, undefined, Boolean(url));
 
-	return useQuery({
-		queryFn: async () => {
-			if (connection.current) return;
+	useEffect(() => {
+		(async () => {
+			const wsurl = await api.getWebSocketUrl(
+				apiEndpoints.ROOM_WEBSOCKET,
+				{
+					urlParams: { chat_id: roomId },
+				}
+			);
 
-			const socket = await api.WebSocket(apiEndpoints.ROOM_WEBSOCKET, {
-				urlParams: { chat_id: roomId },
-			});
-			socket.onopen = () => {
-				if (onopen) onopen();
-			};
-			socket.onmessage = (event) => {
-				if (onmessage) onmessage(event);
-			};
-			socket.onerror = (error) => {
-				console.error('WebSocket error:', error);
-				if (onerror) onerror(error);
-			};
-			socket.onclose = () => {
-				if (onclose) onclose();
-			};
+			setUrl(wsurl);
+		})();
+	}, [roomId]);
 
-			connection.current = true;
-
-			return socket;
-		},
-		queryKey: [apiEndpoints.ROOM_WEBSOCKET + roomId],
-		staleTime: Infinity,
-		retry: false,
-	});
+	return {
+		...socket,
+		isConnecting:
+			socket.readyState === ReadyState.CONNECTING ||
+			socket.readyState === ReadyState.CLOSING,
+		isClosed:
+			socket.readyState === ReadyState.CLOSED ||
+			socket.readyState === ReadyState.UNINSTANTIATED,
+	};
 };

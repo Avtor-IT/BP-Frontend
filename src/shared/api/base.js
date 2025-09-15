@@ -21,7 +21,6 @@ instance.interceptors.request.use((config) => {
 
 	const currentUrl = new URL(config.url, config.baseURL);
 
-	// @ts-ignore
 	Object.entries(config.urlParams || {}).forEach(([k, v]) => {
 		currentUrl.pathname = currentUrl.pathname.replace(
 			`:${k}`,
@@ -158,13 +157,14 @@ class Api {
 		}
 	};
 
-	WebSocket = async (uri, config = {}) => {
+	getWebSocketUrl = async (uri, config = {}) => {
 		await this._ProccessAccessToken();
 
 		const base = new URL(instance.defaults.baseURL);
 		const protocol = base.protocol === 'https:' ? 'wss:' : 'ws:';
 
 		let path = uri;
+
 		// urlParams
 		if (config.urlParams) {
 			Object.entries(config.urlParams).forEach(([k, v]) => {
@@ -175,7 +175,11 @@ class Api {
 		const wsUrl = new URL(path, `${protocol}//${base.host}`);
 		wsUrl.searchParams.append('token', this._SessionAccessToken());
 
-		return new WebSocket(wsUrl.href);
+		return wsUrl.href;
+	};
+
+	WebSocket = async (uri, config = {}) => {
+		return new WebSocket(await this.getWebSocketUrl(uri, config));
 	};
 }
 
