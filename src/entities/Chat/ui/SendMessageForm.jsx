@@ -67,7 +67,7 @@ const SendMessageForm = ({ roomId }) => {
 
 		const msg = {
 			message,
-			contactId: user.contactId,
+			sender_id: user.contactId,
 		};
 
 		sendWSMessage(JSON.stringify(msg));

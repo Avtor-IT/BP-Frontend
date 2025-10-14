@@ -10,6 +10,7 @@ const useChatList = () =>
 	useQuery({
 		queryFn: getChatList,
 		queryKey: [apiEndpoints.CHAT_LIST],
+		staleTime: Infinity,
 	});
 
 export default useChatList;

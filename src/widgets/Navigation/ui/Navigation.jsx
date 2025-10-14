@@ -84,7 +84,7 @@ export const Navigation = ({ ...props }) => {
 			},
 			{
 				title: 'Чаты',
-				link: RoutePath[AppRoutes.TUTORIAL],
+				link: RoutePath[AppRoutes.CHATS],
 				icon: <OfficeIcon />,
 			},
 		],

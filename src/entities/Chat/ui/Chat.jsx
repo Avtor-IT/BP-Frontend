@@ -1,11 +1,8 @@
 import { Box, Stack } from '@mui/material';
-import { useParams } from 'react-router';
 import ChatHistory from './ChatHistory';
 import SendMessageForm from './SendMessageForm';
 
-const Chat = ({ ...props }) => {
-	const { id: roomId } = useParams();
-
+const Chat = ({ roomId, ...props }) => {
 	return (
 		<Box
 			height="100%"

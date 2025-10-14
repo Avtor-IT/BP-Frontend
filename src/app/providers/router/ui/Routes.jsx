@@ -45,8 +45,11 @@ const Routes = () => {
 					element: <TutorialPage />,
 				},
 				{
-					path: RoutePath[AppRoutes.CHAT],
-					element: <ChatPage />,
+					path: RoutePath[AppRoutes.CHATS],
+					children: [
+						{ index: true, element: <ChatPage /> },
+						{ path: ':id', element: <ChatPage /> },
+					],
 				},
 				{
 					path: RoutePath[AppRoutes.NOT_FOUND],

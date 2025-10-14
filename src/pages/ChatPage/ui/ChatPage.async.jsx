@@ -1,3 +1,3 @@
 import { lazy } from 'react';
 
-export const ChatPageAsync = lazy(() => import('./ChatPage.jsx'));
+export const ChatListPageAsync = lazy(() => import('./ChatListPage.jsx'));

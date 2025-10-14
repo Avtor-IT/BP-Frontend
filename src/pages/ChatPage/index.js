@@ -1,1 +1,1 @@
-export { ChatPageAsync as ChatPage } from './ui/ChatPage.async';
+export { ChatListPageAsync as ChatPage } from './ui/ChatPage.async';
