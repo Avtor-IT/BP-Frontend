@@ -1,6 +1,6 @@
 import { CircularProgress, ListItem, ListItemText } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
-import { VirtualizedList } from './VirtualizedList';
+import { VirtualizedList } from 'shared/ui/VirtualizedList';
 
 const LOAD_OFFSET = 60;
 

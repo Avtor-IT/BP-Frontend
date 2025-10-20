@@ -1,23 +1,93 @@
-import { Button, Grid, IconButton, Stack, Typography } from '@mui/material';
-import CheckCircleIcon from 'shared/icons/CheckCircle';
-import { ScrollBox } from 'shared/ui/Scrollable';
+import { Button, Grid, Stack, Typography } from '@mui/material';
 import cls from '../Input.module.scss';
 import FormSection from './FormSection';
+import { ListLoader } from './ListLoader';
+// eslint-disable-next-line no-restricted-imports
+import useLetters from 'entities/Letter/api/getLetters';
+import { useFormContext } from 'react-hook-form';
+import { VirtualizedList } from 'shared/ui/VirtualizedList';
 
-const templates = [
-	{
-		id: 1,
-		text: 'template1',
-	},
-	{
-		id: 2,
-		text: 'template2',
-	},
-	{
-		id: 3,
-		text: 'template3',
-	},
-];
+const SubjectList = () => {
+	const { setValue, trigger } = useFormContext();
+
+	return (
+		<ListLoader
+			query={useLetters}
+			render={(letters) => {
+				return (
+					<VirtualizedList
+						list={letters}
+						itemHeight={60}
+						renderItem={(letter) => {
+							const apply = async () => {
+								setValue('letter.subject', letter.subject);
+								await trigger();
+							};
+
+							return (
+								<Stack
+									key={letter.id}
+									direction="row"
+									justifyContent="space-between"
+									alignItems="center"
+									gap={3}
+								>
+									<Button
+										className={cls.letterInput}
+										variant="card"
+										onClick={apply}
+									>
+										<Typography
+											variant="R16"
+											color="#000"
+											overflow="hidden"
+											textOverflow="ellipsis"
+											whiteSpace="nowrap"
+										>
+											{letter.subject}
+										</Typography>
+									</Button>
+								</Stack>
+							);
+						}}
+					/>
+
+					// <ScrollBox>
+					// 	{letters.map((letter) => {
+					// 		const apply = async () => {
+					// 			setValue('letter.subject', letter.subject);
+					// 			await trigger();
+					// 		};
+
+					// 		return (
+					// 			<Stack
+					// 				key={letter.id}
+					// 				direction="row"
+					// 				justifyContent="space-between"
+					// 				alignItems="center"
+					// 				gap={3}
+					// 			>
+					// 				<Button
+					// 					className={cls.letterInput}
+					// 					variant="card"
+					// 					onClick={apply}
+					// 				>
+					// 					<Typography
+					// 						variant="R16"
+					// 						color="#000"
+					// 					>
+					// 						{letter.subject}
+					// 					</Typography>
+					// 				</Button>
+					// 			</Stack>
+					// 		);
+					// 	})}
+					// </ScrollBox>
+				);
+			}}
+		/>
+	);
+};
 
 const LetterStep = ({ config, ...props }) => {
 	return (
@@ -41,33 +111,8 @@ const LetterStep = ({ config, ...props }) => {
 					<Typography variant="M20">
 						Автозаполнение темы письма
 					</Typography>
-					<ScrollBox>
-						{templates.map((destination) => (
-							<Stack
-								key={destination.id}
-								direction="row"
-								justifyContent="space-between"
-								alignItems="center"
-								gap={3}
-							>
-								<Button
-									className={cls.letterInput}
-									variant="card"
-								>
-									<Typography
-										variant="R16"
-										color="#000"
-									>
-										{destination.text}
-									</Typography>
-								</Button>
 
-								<IconButton>
-									<CheckCircleIcon />
-								</IconButton>
-							</Stack>
-						))}
-					</ScrollBox>
+					<SubjectList />
 				</Stack>
 			</Grid>
 		</Grid>

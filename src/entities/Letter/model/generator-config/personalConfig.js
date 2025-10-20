@@ -16,12 +16,12 @@ export const personal = {
 		personalPhone: {
 			label: 'Телефон',
 			type: 'tel',
-			validation: {
-				pattern: {
-					value: /^[+]?[\d\s()-]+$/,
-					message: 'Некорректный формат телефона',
-				},
-			},
+			// validation: {
+			// 	pattern: {
+			// 		value: /^[+]?[\d\s()-]+$/,
+			// 		message: 'Некорректный формат телефона',
+			// 	},
+			// },
 		},
 		date: { label: 'Дата письма', type: 'text' },
 	},

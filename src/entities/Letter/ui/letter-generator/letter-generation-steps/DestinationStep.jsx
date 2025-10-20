@@ -1,27 +1,86 @@
-import { Button, Grid, IconButton, Stack, Typography } from '@mui/material';
-import CheckCircleIcon from 'shared/icons/CheckCircle';
-import { ScrollBox } from 'shared/ui/Scrollable';
+import { Button, Grid, Stack, Typography } from '@mui/material';
 import cls from '../Input.module.scss';
 import FormSection from './FormSection';
+import { ListLoader } from './ListLoader';
+// eslint-disable-next-line no-restricted-imports
+import useLetters from 'entities/Letter/api/getLetters';
+import { useFormContext } from 'react-hook-form';
+import { VirtualizedList } from 'shared/ui/VirtualizedList';
 
-const destinations = [
-	{
-		text: 'Название документа 1, Номер письма, номер письма ответа, Дата, должность ФИО',
-		id: 1,
-	},
-	{
-		text: 'Название документа 1, Номер письма, номер письма ответа, Дата, должность ФИОНазвание документа 1, Номер письма, номер письма ответа, Дата, должность ФИО',
-		id: 2,
-	},
-	{
-		text: 'Название документа 1, Номер письма, номер письма ответа, Дата, должность ФИОНазвание документа 1, Номер письма, номер письма ответа, Дата, должность ФИО',
-		id: 3,
-	},
-	{
-		text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Autem aliquid rem consequatur provident culpa? Alias earum perspiciatis ducimus quod ipsa. Amet cupiditate eveniet voluptatibus in qui corporis officiis corrupti repudiandae.',
-		id: 4,
-	},
-];
+const AutocompleteList = () => {
+	const { setValue, trigger } = useFormContext();
+
+	return (
+		<ListLoader
+			query={useLetters}
+			render={(letters) => {
+				return (
+					<VirtualizedList
+						list={letters}
+						itemHeight={60}
+						renderItem={(letter) => {
+							const destination = letter.content.destination;
+							const renderedText = Object.values(destination)
+								.filter(Boolean)
+								.join(', ');
+
+							const apply = async () => {
+								setValue(
+									'destination.documentName',
+									destination.documentName || ''
+								);
+								setValue(
+									'destination.accountingNo',
+									destination.accountingNo || ''
+								);
+								setValue(
+									'destination.answerNo',
+									destination.answerNo || ''
+								);
+								setValue(
+									'destination.destinationJob',
+									destination.destinationJob || ''
+								);
+								setValue(
+									'destination.destinationInitials',
+									destination.destinationInitials || ''
+								);
+
+								await trigger();
+							};
+
+							return (
+								<Stack
+									key={letter.id}
+									direction="row"
+									justifyContent="space-between"
+									alignItems="center"
+									gap={3}
+								>
+									<Button
+										className={cls.letterInput}
+										variant="card"
+										onClick={apply}
+									>
+										<Typography
+											variant="R16"
+											color="#000"
+											overflow="hidden"
+											textOverflow="ellipsis"
+											whiteSpace="nowrap"
+										>
+											{renderedText}
+										</Typography>
+									</Button>
+								</Stack>
+							);
+						}}
+					/>
+				);
+			}}
+		/>
+	);
+};
 
 const DestinationStep = ({ config, ...props }) => {
 	return (
@@ -45,33 +104,7 @@ const DestinationStep = ({ config, ...props }) => {
 					<Typography variant="M20">
 						Автозаполнение адресата
 					</Typography>
-					<ScrollBox>
-						{destinations.map((destination) => (
-							<Stack
-								key={destination.id}
-								direction="row"
-								justifyContent="space-between"
-								alignItems="center"
-								gap={3}
-							>
-								<Button
-									className={cls.letterInput}
-									variant="card"
-								>
-									<Typography
-										variant="R16"
-										color="#000"
-									>
-										{destination.text}
-									</Typography>
-								</Button>
-
-								<IconButton>
-									<CheckCircleIcon />
-								</IconButton>
-							</Stack>
-						))}
-					</ScrollBox>
+					<AutocompleteList />
 				</Stack>
 			</Grid>
 		</Grid>

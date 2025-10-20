@@ -1,7 +1,7 @@
 export const letter = {
 	title: 'Обращение',
 	fields: {
-		topic: {
+		subject: {
 			label: 'Тема',
 			type: 'text',
 			required: true,

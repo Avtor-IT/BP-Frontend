@@ -8,22 +8,179 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from 'shared/icons/CheckCircle';
 import { ExpandIcon } from 'shared/icons/Expand';
-import { ScrollBox } from 'shared/ui/Scrollable';
 import cls from '../Input.module.scss';
 import FormSection from './FormSection';
+// eslint-disable-next-line no-restricted-imports
+import { useLogoList } from 'entities/Letter/api/getLogos';
+import { Controller, useFormContext } from 'react-hook-form';
+import { ListLoader } from './ListLoader';
+import { VirtualizedList } from 'shared/ui/VirtualizedList';
 
-const backgrounds = [
-	{ title: 'Название шаблона', id: 1 },
-	{ title: 'Название шаблона', id: 2 },
-	{ title: 'Название шаблона', id: 3 },
-	{ title: 'Название шаблона', id: 4 },
-	{ title: 'Название шаблона', id: 5 },
-	{ title: 'Название шаблона', id: 6 },
-	{ title: 'Название шаблона', id: 7 },
-	{ title: 'Название шаблона', id: 8 },
-	{ title: 'Название шаблона', id: 9 },
-	{ title: 'Название шаблона', id: 10 },
-];
+const LogoList = ({ section }) => {
+	const { control } = useFormContext();
+
+	return (
+		<ListLoader
+			query={useLogoList}
+			render={(logoList) => {
+				return (
+					<Controller
+						name={`${section}.companyLogo`}
+						control={control}
+						render={({ field }) => (
+							<VirtualizedList
+								list={logoList}
+								itemHeight={70}
+								renderItem={(logo) => {
+									const selected = field.value === logo.id;
+
+									return (
+										<Stack
+											key={logo.id}
+											direction="row"
+											justifyContent="space-between"
+											alignItems="center"
+											gap={3}
+										>
+											<Card
+												className={cls.letterInput}
+												variant="card"
+												sx={{
+													borderRadius: 1,
+													paddingBlock: 2,
+													position: 'relative',
+													minHeight: 70,
+												}}
+											>
+												<CardHeader
+													action={
+														<IconButton
+															sx={{ p: 0 }}
+														>
+															<ExpandIcon fontSize="small" />
+														</IconButton>
+													}
+													title={logo.name}
+													sx={{ paddingInline: 2 }}
+													slotProps={{
+														title: {
+															variant: 'M16',
+															overflow: 'hidden',
+															textOverflow:
+																'ellipsis',
+															whiteSpace:
+																'nowrap',
+														},
+														action: {
+															sx: {
+																position:
+																	'absolute',
+																top: 8,
+																right: 8,
+															},
+														},
+													}}
+												/>
+											</Card>
+
+											<IconButton
+												onClick={() =>
+													field.onChange(
+														selected
+															? undefined
+															: logo.id
+													)
+												}
+											>
+												<CheckCircleIcon
+													color={
+														selected
+															? 'primary'
+															: undefined
+													}
+												/>
+											</IconButton>
+										</Stack>
+									);
+								}}
+							/>
+
+							// <ScrollBox>
+							// 	{logoList.map((logo) => {
+							// 		const selected = field.value === logo.id;
+
+							// 		return (
+							// 			<Stack
+							// 				key={logo.id}
+							// 				direction="row"
+							// 				justifyContent="space-between"
+							// 				alignItems="center"
+							// 				gap={3}
+							// 			>
+							// 				<Card
+							// 					className={cls.letterInput}
+							// 					variant="card"
+							// 					sx={{
+							// 						borderRadius: 1,
+							// 						paddingBlock: 2,
+							// 						position: 'relative',
+							// 						minHeight: 70,
+							// 					}}
+							// 				>
+							// 					<CardHeader
+							// 						action={
+							// 							<IconButton
+							// 								sx={{ p: 0 }}
+							// 							>
+							// 								<ExpandIcon fontSize="small" />
+							// 							</IconButton>
+							// 						}
+							// 						title={logo.name}
+							// 						sx={{ paddingInline: 2 }}
+							// 						slotProps={{
+							// 							title: {
+							// 								variant: 'M16',
+							// 							},
+							// 							action: {
+							// 								sx: {
+							// 									position:
+							// 										'absolute',
+							// 									top: 8,
+							// 									right: 8,
+							// 								},
+							// 							},
+							// 						}}
+							// 					/>
+							// 				</Card>
+
+							// 				<IconButton
+							// 					onClick={() =>
+							// 						field.onChange(
+							// 							selected
+							// 								? undefined
+							// 								: logo.id
+							// 						)
+							// 					}
+							// 				>
+							// 					<CheckCircleIcon
+							// 						color={
+							// 							selected
+							// 								? 'primary'
+							// 								: undefined
+							// 						}
+							// 					/>
+							// 				</IconButton>
+							// 			</Stack>
+							// 		);
+							// 	})}
+							// </ScrollBox>
+						)}
+					/>
+				);
+			}}
+		/>
+	);
+};
 
 const SenderStep = ({ config, ...props }) => {
 	return (
@@ -44,55 +201,12 @@ const SenderStep = ({ config, ...props }) => {
 					gap={3}
 					height="100%"
 				>
-					<Typography variant="M20">Фирменный бланк</Typography>
-					<ScrollBox>
-						{backgrounds.map((background) => (
-							<Stack
-								key={background.id}
-								direction="row"
-								justifyContent="space-between"
-								alignItems="center"
-								gap={3}
-							>
-								<Card
-									className={cls.letterInput}
-									variant="card"
-									sx={{
-										borderRadius: 1,
-										paddingBlock: 2,
-										position: 'relative',
-										minHeight: 70,
-									}}
-								>
-									<CardHeader
-										action={
-											<IconButton sx={{ p: 0 }}>
-												<ExpandIcon fontSize="small" />
-											</IconButton>
-										}
-										title={background.title}
-										sx={{ paddingInline: 2 }}
-										slotProps={{
-											title: {
-												variant: 'M16',
-											},
-											action: {
-												sx: {
-													position: 'absolute',
-													top: 8,
-													right: 8,
-												},
-											},
-										}}
-									/>
-								</Card>
+					<Typography variant="M20">Логотип компании</Typography>
 
-								<IconButton>
-									<CheckCircleIcon />
-								</IconButton>
-							</Stack>
-						))}
-					</ScrollBox>
+					<LogoList
+						section={'sender'}
+						config={config}
+					/>
 				</Stack>
 			</Grid>
 		</Grid>

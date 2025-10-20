@@ -1,62 +1,81 @@
 import { Button, Grid, IconButton, Stack, Typography } from '@mui/material';
 import CheckCircleIcon from 'shared/icons/CheckCircle';
-import { ScrollBox } from 'shared/ui/Scrollable';
 import cls from '../Input.module.scss';
 import FormSection from './FormSection';
+// eslint-disable-next-line no-restricted-imports
+import { useSignsList } from 'entities/Letter/api/getSigns';
+// eslint-disable-next-line no-restricted-imports
+import { useFacsimileList } from 'entities/Letter/api/getFacsimile';
+import { Controller, useFormContext } from 'react-hook-form';
+import { ListLoader } from './ListLoader';
+import { VirtualizedList } from 'shared/ui/VirtualizedList';
 
-const stamps = [
-	{
-		id: 1,
-		title: 'Подпись1.png',
-	},
-	{
-		id: 2,
-		title: 'Подпись2.png',
-	},
-	{
-		id: 3,
-		title: 'Подпись3.png',
-	},
-	{
-		id: 4,
-		title: 'Подпись3.png',
-	},
-	{
-		id: 5,
-		title: 'Подпись3.png',
-	},
-	{
-		id: 6,
-		title: 'Подпись3.png',
-	},
-];
+const PersonalList = ({ query, name }) => {
+	const { control } = useFormContext();
 
-const facsimile = [
-	{
-		id: 1,
-		title: 'Факсимиле 1.png',
-	},
-	{
-		id: 2,
-		title: 'Факсимиле 2.png',
-	},
-	{
-		id: 3,
-		title: 'Факсимиле 3.png',
-	},
-	{
-		id: 4,
-		title: 'Факсимиле 3.png',
-	},
-	{
-		id: 5,
-		title: 'Факсимиле 3.png',
-	},
-	{
-		id: 6,
-		title: 'Факсимиле 3.png',
-	},
-];
+	return (
+		<ListLoader
+			query={query}
+			render={(list) => {
+				return (
+					<Controller
+						name={name}
+						control={control}
+						render={({ field }) => (
+							<VirtualizedList
+								list={list}
+								itemHeight={60}
+								renderItem={(item) => {
+									const selected = field.value === item.id;
+									const select = () => {
+										field.onChange(
+											selected ? undefined : item.id
+										);
+									};
+
+									return (
+										<Stack
+											key={item.id}
+											direction="row"
+											justifyContent="space-between"
+											alignItems="center"
+											gap={3}
+										>
+											<Button
+												className={cls.letterInput}
+												variant="card"
+											>
+												<Typography
+													variant="R16"
+													color="#000"
+													overflow="hidden"
+													textOverflow="ellipsis"
+													whiteSpace="nowrap"
+												>
+													{item.name}
+												</Typography>
+											</Button>
+
+											<IconButton onClick={select}>
+												<CheckCircleIcon
+													color={
+														selected
+															? 'primary'
+															: undefined
+													}
+												/>
+											</IconButton>
+										</Stack>
+									);
+								}}
+							/>
+						)}
+					/>
+				);
+			}}
+		/>
+	);
+};
 
 const PersonalStep = ({ config, ...props }) => {
 	return (
@@ -82,33 +101,10 @@ const PersonalStep = ({ config, ...props }) => {
 						flexGrow={1}
 					>
 						<Typography variant="M20">Печать</Typography>
-						<ScrollBox>
-							{stamps.map((stamp) => (
-								<Stack
-									key={stamp.id}
-									direction="row"
-									justifyContent="space-between"
-									alignItems="center"
-									gap={3}
-								>
-									<Button
-										className={cls.letterInput}
-										variant="card"
-									>
-										<Typography
-											variant="R16"
-											color="#000"
-										>
-											{stamp.title}
-										</Typography>
-									</Button>
-
-									<IconButton>
-										<CheckCircleIcon />
-									</IconButton>
-								</Stack>
-							))}
-						</ScrollBox>
+						<PersonalList
+							query={useSignsList}
+							name="personal.signature"
+						/>
 					</Stack>
 
 					<Stack
@@ -116,33 +112,10 @@ const PersonalStep = ({ config, ...props }) => {
 						flexGrow={1}
 					>
 						<Typography variant="M20">Факсимиле</Typography>
-						<ScrollBox>
-							{facsimile.map((facsimile) => (
-								<Stack
-									key={facsimile.id}
-									direction="row"
-									justifyContent="space-between"
-									alignItems="center"
-									gap={3}
-								>
-									<Button
-										className={cls.letterInput}
-										variant="card"
-									>
-										<Typography
-											variant="R16"
-											color="#000"
-										>
-											{facsimile.title}
-										</Typography>
-									</Button>
-
-									<IconButton>
-										<CheckCircleIcon />
-									</IconButton>
-								</Stack>
-							))}
-						</ScrollBox>
+						<PersonalList
+							query={useFacsimileList}
+							name="personal.facsimile"
+						/>
 					</Stack>
 				</Stack>
 			</Grid>

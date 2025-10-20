@@ -11,26 +11,19 @@ const deleteAction = {
 	color: 'tertiary',
 };
 
-const actionsByType = {
-	draft: [
-		{
-			actionName: 'Редактирование',
-			actionShortName: 'Исправить',
-			icon: <EditSquareIcon sx={{ width: '24px', height: '24px' }} />,
-			color: 'warning',
-		},
-		deleteAction,
-	],
-	formed: [
-		{
-			actionName: 'Повторить письмо',
-			actionShortName: 'Повторить',
-			icon: <RefreshIcon sx={{ width: '24px', height: '24px' }} />,
-			color: 'success',
-		},
-		deleteAction,
-	],
-	sent: [
+const actionsByType = (isDraft) => {
+	if (isDraft)
+		return [
+			{
+				actionName: 'Редактирование',
+				actionShortName: 'Исправить',
+				icon: <EditSquareIcon sx={{ width: '24px', height: '24px' }} />,
+				color: 'warning',
+			},
+			deleteAction,
+		];
+
+	return [
 		{
 			actionName: 'Повторить письмо',
 			actionShortName: 'Повторить',
@@ -38,12 +31,12 @@ const actionsByType = {
 			color: 'success',
 		},
 		deleteAction,
-	],
+	];
 };
 
 const LetterActions = ({ letter }) => {
 	const breakpoints = useMaxWidth();
-	const actions = actionsByType[letter.type];
+	const actions = actionsByType(letter.is_draft);
 
 	return (
 		<Stack

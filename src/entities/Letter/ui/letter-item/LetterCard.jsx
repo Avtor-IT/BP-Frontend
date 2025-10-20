@@ -8,6 +8,7 @@ import {
 import { CheckSquareIcon } from 'shared/icons/CheckSquare';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import ImportIcon from 'shared/icons/Import';
+import { formatDate } from 'shared/lib';
 import { useMaxWidth } from 'shared/model';
 
 const iconSx = {
@@ -17,36 +18,25 @@ const iconSx = {
 	transform: 'translateX(50%)',
 };
 
-const getTypeTitle = (type) => {
-	switch (type) {
-		case 'draft':
-			return (
-				<Typography
-					variant="M20"
-					color="warning.main"
-				>
-					Черновик
-				</Typography>
-			);
-		case 'formed':
-			return (
-				<Typography
-					variant="M20"
-					color="success.main"
-				>
-					Сформировано
-				</Typography>
-			);
-		case 'sent':
-			return (
-				<Typography
-					variant="M20"
-					color="success.main"
-				>
-					Отправлено
-				</Typography>
-			);
-	}
+const getTypeTitle = (isDraft) => {
+	if (isDraft)
+		return (
+			<Typography
+				variant="M20"
+				color="warning.main"
+			>
+				Черновик
+			</Typography>
+		);
+
+	return (
+		<Typography
+			variant="M20"
+			color="success.main"
+		>
+			Сформировано
+		</Typography>
+	);
 };
 
 const LetterCard = ({ letter, ...props }) => {
@@ -61,7 +51,7 @@ const LetterCard = ({ letter, ...props }) => {
 				...props.sx,
 			}}
 		>
-			{letter.type === 'draft' ? (
+			{letter.is_draft ? (
 				<EditSquareIcon
 					color="warning"
 					sx={iconSx}
@@ -81,10 +71,10 @@ const LetterCard = ({ letter, ...props }) => {
 					justifyContent="space-between"
 				>
 					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
-						{letter.num}
+						{letter.title}
 					</Typography>
 					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
-						{letter.date}
+						{formatDate(letter.timestamp)}
 					</Typography>
 				</Stack>
 
@@ -98,7 +88,7 @@ const LetterCard = ({ letter, ...props }) => {
 							<Typography
 								variant={breakpoints.xl ? 'M12' : 'M16'}
 							>
-								{letter.topic}
+								{letter.subject}
 							</Typography>
 						</Stack>
 
@@ -110,7 +100,7 @@ const LetterCard = ({ letter, ...props }) => {
 							<Typography
 								variant={breakpoints.xl ? 'M12' : 'M16'}
 							>
-								{letter.destination}
+								{letter.address}
 							</Typography>
 						</Stack>
 					</Stack>
@@ -127,7 +117,7 @@ const LetterCard = ({ letter, ...props }) => {
 								<ImportIcon strokeWidth={1.5} />
 							</IconButton>
 						</Stack>
-						{getTypeTitle(letter.type)}
+						{getTypeTitle(letter.is_draft)}
 					</Stack>
 				</Stack>
 			</CardContent>

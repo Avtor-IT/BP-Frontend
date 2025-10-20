@@ -3,7 +3,7 @@ import { ExpandIcon } from 'shared/icons/Expand';
 import { useMaxWidth } from 'shared/model';
 import { FadedScrollBox } from 'shared/ui/Scrollable';
 
-const LetterText = () => {
+const LetterText = ({ text }) => {
 	const breakpoints = useMaxWidth();
 
 	return (
@@ -43,15 +43,7 @@ const LetterText = () => {
 							variant="M16"
 							color="tertiary.main"
 						>
-							Lorem ipsum dolor sit, amet consectetur adipisicing
-							elit. Ut earum molestias harum ratione architecto.
-							Optio magnam officia harum cupiditate vel dolore
-							voluptatum error, distinctio ullam fugit animi alias
-							voluptatibus itaque. Fuga, corporis eos. Delectus
-							deleniti voluptatum et magni, sit inventore tempore
-							minus laborum quia! Rerum ipsum nemo quo aspernatur
-							quasi harum consequuntur, repudiandae, quam itaque
-							accusamus, possimus illo soluta incidunt.
+							{text}
 						</Typography>
 					</FadedScrollBox>
 				) : null}

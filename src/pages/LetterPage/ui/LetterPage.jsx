@@ -1,8 +1,11 @@
-import { Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import {
 	LastLettersWidget,
 	LetterConstructorCard,
-	LettersListWidget,
+	LettersList,
+	// LettersFilter,
+	// LettersSearch,
+	// LettersSort,
 } from 'entities/Letter';
 
 const LetterPage = () => {
@@ -34,7 +37,22 @@ const LetterPage = () => {
 			</Grid>
 
 			<Grid size={{ xxxl: 4, xs: 5 }}>
-				<LettersListWidget />
+				<Stack
+					gap={{ xl: 4, xs: 3 }}
+					alignItems="start"
+				>
+					{/* <LettersSearch /> */}
+
+					{/* <Stack
+						direction="row"
+						gap={1}
+					>
+						<LettersSort />
+						<LettersFilter />
+					</Stack> */}
+
+					<LettersList />
+				</Stack>
 			</Grid>
 		</Grid>
 	);

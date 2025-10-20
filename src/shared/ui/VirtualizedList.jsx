@@ -19,9 +19,15 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 		return list.length;
 	}, [list]);
 
+	const calculatedListHeight = useMemo(() => {
+		return listHeight || count * itemHeight;
+	}, [listHeight]);
+
 	const startRef = useRef(0);
 	const [start, setStart] = useState(0);
-	const [end, setEnd] = useState(start + Math.ceil(listHeight / itemHeight));
+	const [end, setEnd] = useState(
+		start + Math.ceil(calculatedListHeight / itemHeight)
+	);
 
 	const handleScroll = (e) => {
 		const startRaw = Math.ceil(e.currentTarget.scrollTop / itemHeight);
@@ -29,10 +35,10 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 		if (startRef.current !== startRaw) {
 			startRef.current = startRaw;
 			setStart(startRaw);
-			setEnd(startRaw + Math.ceil(listHeight / itemHeight));
+			setEnd(startRaw + Math.ceil(calculatedListHeight / itemHeight));
 		}
 
-		slotProps.innerBox?.onScroll?.(e);
+		slotProps?.innerBox?.onScroll?.(e);
 	};
 
 	return (
@@ -59,7 +65,7 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 					position="relative"
 					height={`${count * itemHeight}px`}
 				>
-					{list.map((message, index) => {
+					{list.map((item, index) => {
 						if (
 							index + overscan < start ||
 							index - overscan > end
@@ -69,7 +75,12 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 
 						return (
 							<div
-								key={message.id}
+								key={
+									item.id ||
+									`${index}-${Math.round(
+										Math.random() * 1000
+									)}`
+								}
 								style={{
 									position: 'absolute',
 									left: 0,
@@ -80,13 +91,13 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 									}px)`, // better than top coordinate by perfomance issues
 								}}
 							>
-								{renderItem(message)}
+								{renderItem(item, index)}
 							</div>
 						);
 					})}
 				</Box>
 
-				<div ref={endRef} />
+				{endRef && <div ref={endRef} />}
 			</Box>
 		</Box>
 	);

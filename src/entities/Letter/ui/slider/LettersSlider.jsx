@@ -102,7 +102,7 @@ const LettersSlider = () => {
 				}}
 			>
 				<Slider {...settings}>
-					{letters.map((letter, i) => (
+					{letters.slice(0, 5).map((letter, i) => (
 						<Box
 							key={i}
 							padding={1}
