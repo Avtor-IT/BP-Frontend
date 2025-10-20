@@ -70,10 +70,21 @@ const LetterCard = ({ letter, ...props }) => {
 					direction="row"
 					justifyContent="space-between"
 				>
-					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
+					<Typography
+						variant={breakpoints.xl ? 'M16' : 'M20'}
+						overflow="hidden"
+						textOverflow="ellipsis"
+						whiteSpace="nowrap"
+						maxWidth={140}
+					>
 						{letter.title}
 					</Typography>
-					<Typography variant={breakpoints.xl ? 'M16' : 'M20'}>
+					<Typography
+						variant={breakpoints.xl ? 'M16' : 'M20'}
+						overflow="hidden"
+						textOverflow="ellipsis"
+						whiteSpace="nowrap"
+					>
 						{formatDate(letter.timestamp)}
 					</Typography>
 				</Stack>
@@ -83,10 +94,14 @@ const LetterCard = ({ letter, ...props }) => {
 						<Stack
 							direction="row"
 							justifyContent="space-between"
+							gap={2}
 						>
 							<Typography variant="R16">Тема:</Typography>
 							<Typography
 								variant={breakpoints.xl ? 'M12' : 'M16'}
+								overflow="hidden"
+								textOverflow="ellipsis"
+								whiteSpace="nowrap"
 							>
 								{letter.subject}
 							</Typography>
@@ -95,10 +110,14 @@ const LetterCard = ({ letter, ...props }) => {
 						<Stack
 							direction="row"
 							justifyContent="space-between"
+							gap={2}
 						>
 							<Typography variant="R16">Адресат:</Typography>
 							<Typography
 								variant={breakpoints.xl ? 'M12' : 'M16'}
+								overflow="hidden"
+								textOverflow="ellipsis"
+								whiteSpace="nowrap"
 							>
 								{letter.address}
 							</Typography>
