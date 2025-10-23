@@ -1,4 +1,4 @@
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
 import useLetters from '../../api/getLetters';
 import LetterActions from '../letter-item/LetterActions';
@@ -6,6 +6,8 @@ import LetterCard from '../letter-item/LetterCard';
 import LetterText from '../letter-item/LetterText';
 import { useEffect, useRef } from 'react';
 import { VirtualizedLettersList } from './VirtualizedLettersList';
+import { useMaxWidth } from 'shared/model';
+import { EmptyListIcon } from 'shared/icons/EmptyList';
 
 const SkeletonList = ({ size = 5 }) => {
 	return Array.from({ length: size }).map((letter, i) => (
@@ -38,6 +40,7 @@ const SkeletonList = ({ size = 5 }) => {
 };
 
 const LettersList = () => {
+	const breakpoints = useMaxWidth();
 	const {
 		data: letters,
 		isLoading,
@@ -98,38 +101,13 @@ const LettersList = () => {
 
 	return (
 		<Stack
-			gap={3}
 			width="100%"
+			pb={4}
 		>
-			{/* {letters.map((letter) => (
-				<Grid
-					key={letter.id}
-					container
-					columns={{ xxxl: 4, lg: 5, md: 3, xs: 2 }}
-					columnSpacing={2}
-					rowSpacing={1}
-				>
-					<Grid size={{ xxxl: 1, xs: 2 }}>
-						<LetterCard letter={letter} />
-					</Grid>
-					<Grid
-						size={{ lg: 2, xs: 3 }}
-						order={{ lg: 2, xs: 3 }}
-					>
-						<LetterText text={letter.content.letter.text} />
-					</Grid>
-					<Grid
-						size={{ md: 1, xs: 2 }}
-						order={{ lg: 3, xs: 2 }}
-					>
-						<LetterActions letter={letter} />
-					</Grid>
-				</Grid>
-			))} */}
-
 			<VirtualizedLettersList
 				items={letters}
-				itemHeight={200}
+				itemHeight={breakpoints.md ? 340 : breakpoints.lg ? 280 : 200}
+				overscan={4}
 				renderItem={(letter) => (
 					<Grid
 						container
@@ -161,12 +139,32 @@ const LettersList = () => {
 			{isFetchingNextPage && <SkeletonList />}
 
 			{!hasNextPage && letters.length > 0 && (
-				<Stack
-					alignItems="center"
-					padding={2}
-				>
-					<Typography variant="body2">Писем больше нет</Typography>
-				</Stack>
+				<Card sx={{ paddingBlock: '40px' }}>
+					<CardContent
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							gap: 2,
+						}}
+					>
+						<EmptyListIcon
+							strokeWidth={3.5}
+							sx={{
+								width: '81px',
+								height: '81px',
+								color: 'tertiary.dark',
+							}}
+						/>
+
+						<Typography
+							variant={breakpoints.md ? 'M16' : 'M24'}
+							color="textSecondary.default"
+						>
+							Писем больше нет
+						</Typography>
+					</CardContent>
+				</Card>
 			)}
 		</Stack>
 	);

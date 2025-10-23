@@ -18,7 +18,7 @@ export const getDefaultValues = (init = {}) => {
 	const defaultValues = {};
 
 	Object.keys(letterFormConfig).forEach((section) => {
-		defaultValues[section] = {};
+		defaultValues[section] = init[section] || {};
 		Object.keys(letterFormConfig[section].fields).forEach((field) => {
 			defaultValues[section][field] = init[section]?.[field] || '';
 		});

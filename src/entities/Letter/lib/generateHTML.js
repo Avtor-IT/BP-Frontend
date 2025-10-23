@@ -1,17 +1,19 @@
+// для пнг нужны ссылки
+
 export const generateHTML = (params) => {
 	const {
 		companyName,
 		companyAddress,
 		companyPhone,
 		companyEmail,
-		topic,
+		subject,
 		text,
 		personalPosition,
 		personalInitials,
 		personalPhone,
-		companyLogo,
-		signature,
-		print,
+		// companyLogo,
+		// signature,
+		// print,
 	} = params;
 
 	const font = 'Times New Roman';
@@ -28,7 +30,8 @@ export const generateHTML = (params) => {
 	const pageWidth = '210mm';
 	const pageHeight = '296mm';
 
-	const headerHtml = `
+	const headerHtml =
+		`
         <div style="
             margin-top: ${pageMargin.top}mm; 
             margin-left: ${pageMargin.left}mm; 
@@ -39,15 +42,14 @@ export const generateHTML = (params) => {
             line-height: 1.5;
             margin-bottom: 20px;
         ">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-                <img 
-					src="${companyLogo}" 
-					style="
-						width: 100px; 
-						height: 100px; 
-						margin-left: -${pageMargin.left - pageMargin.top}mm;
-					" />
-                <div style="text-align: right;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">` +
+		/*  <img 
+                    src="${companyLogo}" 
+                    style="
+                        width: 100px; 
+                        height: 100px; 
+                        margin-left: -${pageMargin.left - pageMargin.top}mm;
+					" /> */ `<div style="text-align: right;">
                     <strong>${companyName}</strong><br>
                     ${companyAddress}<br>
                     ${companyPhone}<br>
@@ -72,7 +74,7 @@ export const generateHTML = (params) => {
                 font-size: ${fontSize * 1.5}px; 
                 margin-bottom: 20px;
                 font-weight: bold;
-            ">${topic}</h1>
+            ">${subject}</h1>
             <p style="
                 text-align: justify;
                 text-indent: ${indent}cm;
@@ -81,7 +83,8 @@ export const generateHTML = (params) => {
         </div>
     `;
 
-	const footerHtml = `
+	const footerHtml =
+		`
         <div style="
             margin-left: ${pageMargin.left}mm; 
             margin-right: ${pageMargin.right}mm; 
@@ -104,9 +107,8 @@ export const generateHTML = (params) => {
                 <strong>${personalPosition}</strong> 
                 <strong>${personalInitials}</strong>
             </div>
-            <div>${personalPhone}</div>
-
-            <img 
+            <div>${personalPhone}</div>` +
+		/*  <img 
                 src='${signature}' 
                 style="
                     width: 100px;
@@ -128,8 +130,8 @@ export const generateHTML = (params) => {
                     top: 15px;
                     z-index: 0;
                 "
-            />
-        </div>
+            /> */
+		`</div>
     `;
 
 	const fullHtml = `

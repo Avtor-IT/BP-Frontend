@@ -31,14 +31,15 @@ const loadImage = async (url) => {
 };
 
 export const generateAndDownloadDocx = async ({ documentName, ...params }) => {
-	const companyLogo = await loadImage(params.companyLogo);
-	const signature = await loadImage(params.signature);
-	const print = await loadImage(params.print);
+	// Для фоток нужен url, а не id
+	// const companyLogo = await loadImage(params.companyLogo);
+	// const signature = await loadImage(params.signature);
+	// const print = await loadImage(params.print);
 	const docxBlob = await generateDocx({
 		...params,
-		companyLogo,
-		signature,
-		print,
+		// companyLogo,
+		// signature,
+		// print,
 	});
 	saveAs(docxBlob, `${documentName}.docx`);
 };
@@ -49,14 +50,14 @@ export const generateDocx = async (params) => {
 		companyAddress,
 		companyPhone,
 		companyEmail,
-		topic,
+		subject,
 		text,
 		personalPosition,
 		personalInitials,
 		personalPhone,
-		companyLogo,
-		signature,
-		print,
+		// companyLogo,
+		// signature,
+		// print,
 	} = params;
 
 	const font = 'Times New Roman';
@@ -75,23 +76,23 @@ export const generateDocx = async (params) => {
 		gutter: 0,
 	};
 
-	const companyLogoImage = new ImageRun({
-		data: companyLogo.data,
-		type: companyLogo.type.split('/')[1],
-		transformation: {
-			width: 100,
-			height: 100,
-		},
-		floating: {
-			behindDocument: true,
-			horizontalPosition: {
-				offset: 3597 * 80, // 80mm
-			},
-			verticalPosition: {
-				offset: 3597 * 80, // 80mm
-			},
-		},
-	});
+	// const companyLogoImage = new ImageRun({
+	// 	data: companyLogo.data,
+	// 	type: companyLogo.type.split('/')[1],
+	// 	transformation: {
+	// 		width: 100,
+	// 		height: 100,
+	// 	},
+	// 	floating: {
+	// 		behindDocument: true,
+	// 		horizontalPosition: {
+	// 			offset: 3597 * 80, // 80mm
+	// 		},
+	// 		verticalPosition: {
+	// 			offset: 3597 * 80, // 80mm
+	// 		},
+	// 	},
+	// });
 
 	const header = new Header({
 		children: [
@@ -99,7 +100,7 @@ export const generateDocx = async (params) => {
 				alignment: AlignmentType.RIGHT,
 				spacing: { after: 720 },
 				children: [
-					...(companyLogoImage ? [companyLogoImage] : []),
+					// ...(companyLogoImage ? [companyLogoImage] : []),
 					new TextRun({
 						text: companyName,
 						font,
@@ -129,31 +130,31 @@ export const generateDocx = async (params) => {
 		],
 	});
 
-	const signatureImage = new ImageRun({
-		data: signature.data,
-		type: signature.type.split('/')[1],
-		transformation: { width: 100, height: 100 },
-	});
+	// const signatureImage = new ImageRun({
+	// 	data: signature.data,
+	// 	type: signature.type.split('/')[1],
+	// 	transformation: { width: 100, height: 100 },
+	// });
 
-	const printImage = new ImageRun({
-		data: print.data,
-		type: print.type.split('/')[1],
-		transformation: { width: 120, height: 120 },
-		floating: {
-			horizontalPosition: {
-				offset: -mmToEMU(25),
-				relative: HorizontalPositionRelativeFrom.RIGHT_MARGIN,
-			},
-			verticalPosition: {
-				offset: mmToEMU(4),
-				relative: VerticalPositionRelativeFrom.BOTTOM_MARGIN,
-			},
-			wrap: { type: TextWrappingType.NONE },
-			zIndex: 0,
-			behindDocument: true,
-			allowOverlap: true,
-		},
-	});
+	// const printImage = new ImageRun({
+	// 	data: print.data,
+	// 	type: print.type.split('/')[1],
+	// 	transformation: { width: 120, height: 120 },
+	// 	floating: {
+	// 		horizontalPosition: {
+	// 			offset: -mmToEMU(25),
+	// 			relative: HorizontalPositionRelativeFrom.RIGHT_MARGIN,
+	// 		},
+	// 		verticalPosition: {
+	// 			offset: mmToEMU(4),
+	// 			relative: VerticalPositionRelativeFrom.BOTTOM_MARGIN,
+	// 		},
+	// 		wrap: { type: TextWrappingType.NONE },
+	// 		zIndex: 0,
+	// 		behindDocument: true,
+	// 		allowOverlap: true,
+	// 	},
+	// });
 
 	const footerTable = new Table({
 		width: {
@@ -191,16 +192,16 @@ export const generateDocx = async (params) => {
 						],
 					}),
 
-					new TableCell({
-						width: { size: 20, type: WidthType.PERCENTAGE },
-						verticalAlign: VerticalAlign.CENTER,
-						children: [
-							new Paragraph({
-								children: [signatureImage],
-								alignment: AlignmentType.CENTER,
-							}),
-						],
-					}),
+					// new TableCell({
+					// 	width: { size: 20, type: WidthType.PERCENTAGE },
+					// 	verticalAlign: VerticalAlign.CENTER,
+					// 	children: [
+					// 		new Paragraph({
+					// 			children: [signatureImage],
+					// 			alignment: AlignmentType.CENTER,
+					// 		}),
+					// 	],
+					// }),
 
 					new TableCell({
 						width: { size: 40, type: WidthType.PERCENTAGE },
@@ -225,7 +226,7 @@ export const generateDocx = async (params) => {
 	});
 
 	const footer = new Footer({
-		children: [footerTable, new Paragraph({ children: [printImage] })],
+		children: [footerTable /* new Paragraph({ children: [printImage] }) */],
 	});
 
 	const content = [
@@ -233,7 +234,7 @@ export const generateDocx = async (params) => {
 			alignment: AlignmentType.CENTER,
 			children: [
 				new TextRun({
-					text: topic,
+					text: subject,
 					font,
 					size: fontSize * 2,
 					bold: true,

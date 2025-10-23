@@ -1,16 +1,21 @@
 import { Card, CardHeader, IconButton, Modal } from '@mui/material';
-import { useState } from 'react';
 import AddSquareIcon from 'shared/icons/AddSquare';
 import { useMaxWidth } from 'shared/model';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 import LetterConstructorModal from './LetterConstructorModal';
+import { useLeterModalStore } from '../../store/letterModalStore';
+import { useLetterStore } from '../../store/letterStore';
 
 const LetterConstructorCard = ({ ...props }) => {
-	const [open, setOpen] = useState(false);
-	const handleOpen = () => setOpen(true);
-
-	const handleClose = () => setOpen(false);
 	const breakpoints = useMaxWidth();
+
+	const { open, handleOpen, handleClose } = useLeterModalStore();
+	const { clearLetter } = useLetterStore();
+
+	const handleClick = () => {
+		clearLetter();
+		handleOpen();
+	};
 
 	return (
 		<>
@@ -48,7 +53,7 @@ const LetterConstructorCard = ({ ...props }) => {
 				/>
 
 				<IconButton
-					onClick={handleOpen}
+					onClick={() => handleClick()}
 					sx={{
 						position: 'absolute',
 						right: 24,

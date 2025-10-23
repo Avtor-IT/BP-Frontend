@@ -2,9 +2,14 @@ import {
 	Card,
 	CardContent,
 	IconButton,
+	Menu,
+	MenuItem,
 	Stack,
 	Typography,
 } from '@mui/material';
+import { useGenerateDocx, useGeneratePdf } from '../../lib/useGenerateDocument';
+import { letterToFields } from '../../model/generator-config/formLetter';
+import { useState } from 'react';
 import { CheckSquareIcon } from 'shared/icons/CheckSquare';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import ImportIcon from 'shared/icons/Import';
@@ -42,6 +47,26 @@ const getTypeTitle = (isDraft) => {
 const LetterCard = ({ letter, ...props }) => {
 	const breakpoints = useMaxWidth();
 
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const generateDocxMutation = useGenerateDocx();
+	const generatePdfMutatoin = useGeneratePdf();
+	const handlePdfGeneration = () => {
+		generatePdfMutatoin.mutate(letterToFields(letter.content));
+		handleClose();
+	};
+	const handleDocxGeneration = () => {
+		generateDocxMutation.mutate(letterToFields(letter.content));
+		handleClose();
+	};
+
 	return (
 		<Card
 			{...props}
@@ -69,13 +94,14 @@ const LetterCard = ({ letter, ...props }) => {
 				<Stack
 					direction="row"
 					justifyContent="space-between"
+					gap={1}
 				>
 					<Typography
 						variant={breakpoints.xl ? 'M16' : 'M20'}
 						overflow="hidden"
 						textOverflow="ellipsis"
 						whiteSpace="nowrap"
-						maxWidth={140}
+						maxWidth={115}
 					>
 						{letter.title}
 					</Typography>
@@ -132,9 +158,25 @@ const LetterCard = ({ letter, ...props }) => {
 							direction="row"
 							gap={1}
 						>
-							<IconButton sx={{ p: 0 }}>
+							<IconButton
+								sx={{ p: 0 }}
+								onClick={handleClick}
+							>
 								<ImportIcon strokeWidth={1.5} />
 							</IconButton>
+
+							<Menu
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleClose}
+							>
+								<MenuItem onClick={handleDocxGeneration}>
+									DOCX
+								</MenuItem>
+								<MenuItem onClick={handlePdfGeneration}>
+									PDF
+								</MenuItem>
+							</Menu>
 						</Stack>
 						{getTypeTitle(letter.is_draft)}
 					</Stack>

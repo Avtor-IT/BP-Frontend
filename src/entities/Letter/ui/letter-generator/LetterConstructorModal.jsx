@@ -6,46 +6,26 @@ import {
 	getDefaultValues,
 	letterFormConfig,
 } from '../../model/generator-config/letterFormConfig';
-// eslint-disable-next-line no-restricted-imports
-import { useCreateLeter } from 'entities/Letter/api/saveLetter';
 import { useQueryClient } from '@tanstack/react-query';
-// eslint-disable-next-line no-restricted-imports
-import { KEY as LETTERS_KEY } from 'entities/Letter/api/getLetters';
-
-const initValues = {
-	sender: {
-		companyName: 'companyName',
-		companyAddress: 'companyAddress',
-		companyPhone: '+7 999 999 9999',
-		companyEmail: 'avtorit@avtorit.ru',
-		companyLogo: 1,
-	},
-	destination: {
-		documentName: 'documentName',
-		destinationInitials: 'destinationInitials',
-		destinationJob: 'destinationJob',
-	},
-	letter: {
-		subject: 'subject',
-		text: 'text',
-	},
-	personal: {
-		personalInitials: 'personalInitials',
-		personalPosition: 'personalPosition',
-		personalPhone: '+7 999 999 9999',
-		date: '25.07.25',
-		signature: 1,
-		facsimile: 2,
-	},
-};
+import { useCreateLeter } from '../../api/saveLetter';
+import { KEY as LETTERS_KEY } from '../../api/getLetters';
+import { useLetterStore } from '../../store/letterStore';
+import {
+	letterToFields,
+	letterToServer,
+} from '../../model/generator-config/formLetter';
+import { useLeterModalStore } from '../../store/letterModalStore';
 
 const LetterConstructorModal = () => {
 	const queryClient = useQueryClient();
+	const { letter } = useLetterStore();
+	const { handleClose } = useLeterModalStore();
 
 	const form = useForm({
-		defaultValues: getDefaultValues(initValues),
+		defaultValues: getDefaultValues(letter),
 		mode: 'onChange',
 	});
+
 	const steps = useMemo(
 		() =>
 			Object.values(letterFormConfig).map((config) => (
@@ -63,29 +43,18 @@ const LetterConstructorModal = () => {
 	const createLetterMutation = useCreateLeter({
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: [LETTERS_KEY] });
+			handleClose();
 		},
 	});
 
 	const handlePdfGeneration = (data) => {
-		handleFormSubmit(data, generatePdfMutatoin.mutate);
+		handleFormSubmit(letterToFields(data), generatePdfMutatoin.mutate);
 	};
 	const handleDocxGeneration = (data) => {
-		handleFormSubmit(data, generateDocxMutation.mutate);
+		handleFormSubmit(letterToFields(data), generateDocxMutation.mutate);
 	};
 	const handleSaveLetter = (data) => {
-		const formedLetter = {
-			title:
-				data.destination.accountingNo || data.destination.documentName,
-			subject: data.letter.subject,
-			address: data.sender.companyAddress,
-			content: data,
-			is_draft: false,
-			signature: data.personal.signature,
-			facsimile: data.personal.facsimile,
-			logo: data.sender.companyLogo,
-		};
-
-		handleFormSubmit(formedLetter, createLetterMutation.mutate);
+		handleFormSubmit(letterToServer(data), createLetterMutation.mutate);
 	};
 
 	const handleFormSubmit = (data, action) => {
@@ -119,6 +88,7 @@ const LetterConstructorModal = () => {
 								text="Сохранить"
 								color="secondary"
 								onClick={form.handleSubmit(handleSaveLetter)}
+								loading={createLetterMutation.isPending}
 								disabled={Boolean(
 									Object.values(form.formState.errors).length
 								)}

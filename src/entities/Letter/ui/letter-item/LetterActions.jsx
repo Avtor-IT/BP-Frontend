@@ -1,41 +1,45 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { useLeterModalStore } from '../../store/letterModalStore';
 import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import { RefreshIcon } from 'shared/icons/Refresh';
 import { TrashIcon } from 'shared/icons/Trash';
 import { useMaxWidth } from 'shared/model/index.js';
-
-const deleteAction = {
-	actionName: 'Удалить из списка',
-	actionShortName: 'Удалить',
-	icon: <TrashIcon sx={{ width: '24px', height: '24px' }} />,
-	color: 'tertiary',
-};
-
-const actionsByType = (isDraft) => {
-	if (isDraft)
-		return [
-			{
-				actionName: 'Редактирование',
-				actionShortName: 'Исправить',
-				icon: <EditSquareIcon sx={{ width: '24px', height: '24px' }} />,
-				color: 'warning',
-			},
-			deleteAction,
-		];
-
-	return [
-		{
-			actionName: 'Повторить письмо',
-			actionShortName: 'Повторить',
-			icon: <RefreshIcon sx={{ width: '24px', height: '24px' }} />,
-			color: 'success',
-		},
-		deleteAction,
-	];
-};
+import { useLetterStore } from '../../store/letterStore';
 
 const LetterActions = ({ letter }) => {
 	const breakpoints = useMaxWidth();
+	const { handleOpen } = useLeterModalStore();
+	const { setLetter } = useLetterStore();
+
+	const deleteAction = {
+		actionName: 'Удалить из списка',
+		actionShortName: 'Удалить',
+		icon: <TrashIcon sx={{ width: '24px', height: '24px' }} />,
+		color: 'tertiary',
+	};
+	const editAction = {
+		actionName: 'Редактирование',
+		actionShortName: 'Исправить',
+		icon: <EditSquareIcon sx={{ width: '24px', height: '24px' }} />,
+		color: 'warning',
+	};
+	const repeatAction = {
+		actionName: 'Повторить письмо',
+		actionShortName: 'Повторить',
+		icon: <RefreshIcon sx={{ width: '24px', height: '24px' }} />,
+		color: 'success',
+		action: (letter) => {
+			setLetter(letter.content);
+			handleOpen();
+		},
+	};
+
+	const actionsByType = (isDraft) => {
+		if (isDraft) return [editAction, deleteAction];
+
+		return [repeatAction, deleteAction];
+	};
+
 	const actions = actionsByType(letter.is_draft);
 
 	return (
@@ -75,6 +79,7 @@ const LetterActions = ({ letter }) => {
 						borderRadius: breakpoints.xl ? 2 : undefined,
 						flex: breakpoints.md ? '1 1 50%' : undefined,
 					}}
+					onClick={() => action.action?.(letter)}
 					startIcon={action.icon}
 				>
 					<Typography
