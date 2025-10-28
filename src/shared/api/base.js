@@ -1,17 +1,4 @@
-import axios from 'axios';
-import { apiEndpoints } from 'shared/model';
-
-const url = {
-	testing: 'https://intizar.pythonanywhere.com',
-	broadcast: 'http://0.0.0.0:8000',
-	local: 'http://127.0.0.1:8000',
-	vps: 'http://5.35.82.235',
-	ssl: 'https://xn--24-6kcduamh0cckkold.xn--p1ai',
-};
-
-const instance = axios.create({
-	baseURL: url.ssl,
-});
+import instance from './lib';
 
 // Add urlParams config property
 instance.interceptors.request.use((config) => {
@@ -40,75 +27,9 @@ instance.interceptors.request.use((config) => {
 });
 
 class Api {
-	_ACCESS_SESSIONSTORAGE = 'access';
-	_REFRESH_SESSIONSTORAGE = 'refresh';
-
-	_SessionAccessToken = () =>
-		sessionStorage.getItem(this._ACCESS_SESSIONSTORAGE);
-	_SessionRefreshToken = () =>
-		sessionStorage.getItem(this._REFRESH_SESSIONSTORAGE);
-	_UpdateSessionRefreshToken = (newToken) =>
-		sessionStorage.setItem(this._ACCESS_SESSIONSTORAGE, newToken);
-	_RemoveSession = () => {
-		sessionStorage.removeItem(this._ACCESS_SESSIONSTORAGE);
-		sessionStorage.removeItem(this._REFRESH_SESSIONSTORAGE);
-	};
-
-	_AuthHeader = () => ({
-		Authorization: 'Bearer ' + this._SessionAccessToken(),
-	});
-
-	_CheckAccessToken = async () => {
-		const access = this._SessionAccessToken();
-
-		if (access) {
-			await instance.post(`${apiEndpoints.JWT_VERIFY}`, {
-				token: access,
-			});
-		}
-	};
-
-	_ProccessAccessToken = async () => {
-		try {
-			await this._CheckAccessToken();
-		} catch (e) {
-			if (e.response.status === 401 && this._SessionRefreshToken()) {
-				return await this._ProccessRefreshToken();
-			}
-
-			this._RemoveSession();
-			return Promise.reject(e);
-		}
-	};
-
-	_ProccessRefreshToken = async () => {
-		try {
-			const response = await instance.post(
-				`${apiEndpoints.JWT_REFRESH}`,
-				{
-					refresh: this._SessionRefreshToken(),
-				}
-			);
-			this._UpdateSessionRefreshToken(response.data.access);
-
-			return response.data;
-		} catch (e) {
-			this._RemoveSession();
-			return Promise.reject(e);
-		}
-	};
-
 	Get = async (url, config = {}) => {
-		await this._ProccessAccessToken();
-
 		return instance
-			.get(url, {
-				...config,
-				headers: {
-					...config.headers,
-					...this._AuthHeader(),
-				},
-			})
+			.get(url, config)
 			.then((response) => {
 				return Promise.resolve(response.data);
 			})
@@ -118,16 +39,8 @@ class Api {
 	};
 
 	Post = async (url, body, config = {}) => {
-		await this._ProccessAccessToken();
-
 		return instance
-			.post(url, body, {
-				...config,
-				headers: {
-					...config.headers,
-					...this._AuthHeader(),
-				},
-			})
+			.post(url, body, config)
 			.then((response) => {
 				return Promise.resolve(response.data);
 			})
@@ -140,10 +53,6 @@ class Api {
 		try {
 			const response = await instance.get(url, {
 				...config,
-				headers: {
-					...config.headers,
-					...this._AuthHeader(),
-				},
 				responseType: 'arraybuffer',
 			});
 
