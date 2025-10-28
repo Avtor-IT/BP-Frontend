@@ -28,9 +28,7 @@ const PersonalList = ({ query, name }) => {
 								renderItem={(item) => {
 									const selected = field.value === item.id;
 									const select = () => {
-										field.onChange(
-											selected ? undefined : item.id
-										);
+										field.onChange(selected ? '' : item.id);
 									};
 
 									return (

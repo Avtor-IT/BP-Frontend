@@ -86,9 +86,7 @@ const LogoList = ({ section }) => {
 											<IconButton
 												onClick={() =>
 													field.onChange(
-														selected
-															? undefined
-															: logo.id
+														selected ? '' : logo.id
 													)
 												}
 											>
@@ -104,76 +102,6 @@ const LogoList = ({ section }) => {
 									);
 								}}
 							/>
-
-							// <ScrollBox>
-							// 	{logoList.map((logo) => {
-							// 		const selected = field.value === logo.id;
-
-							// 		return (
-							// 			<Stack
-							// 				key={logo.id}
-							// 				direction="row"
-							// 				justifyContent="space-between"
-							// 				alignItems="center"
-							// 				gap={3}
-							// 			>
-							// 				<Card
-							// 					className={cls.letterInput}
-							// 					variant="card"
-							// 					sx={{
-							// 						borderRadius: 1,
-							// 						paddingBlock: 2,
-							// 						position: 'relative',
-							// 						minHeight: 70,
-							// 					}}
-							// 				>
-							// 					<CardHeader
-							// 						action={
-							// 							<IconButton
-							// 								sx={{ p: 0 }}
-							// 							>
-							// 								<ExpandIcon fontSize="small" />
-							// 							</IconButton>
-							// 						}
-							// 						title={logo.name}
-							// 						sx={{ paddingInline: 2 }}
-							// 						slotProps={{
-							// 							title: {
-							// 								variant: 'M16',
-							// 							},
-							// 							action: {
-							// 								sx: {
-							// 									position:
-							// 										'absolute',
-							// 									top: 8,
-							// 									right: 8,
-							// 								},
-							// 							},
-							// 						}}
-							// 					/>
-							// 				</Card>
-
-							// 				<IconButton
-							// 					onClick={() =>
-							// 						field.onChange(
-							// 							selected
-							// 								? undefined
-							// 								: logo.id
-							// 						)
-							// 					}
-							// 				>
-							// 					<CheckCircleIcon
-							// 						color={
-							// 							selected
-							// 								? 'primary'
-							// 								: undefined
-							// 						}
-							// 					/>
-							// 				</IconButton>
-							// 			</Stack>
-							// 		);
-							// 	})}
-							// </ScrollBox>
 						)}
 					/>
 				);

@@ -20,7 +20,7 @@ export const getDefaultValues = (init = {}) => {
 	Object.keys(letterFormConfig).forEach((section) => {
 		defaultValues[section] = init[section] || {};
 		Object.keys(letterFormConfig[section].fields).forEach((field) => {
-			defaultValues[section][field] = init[section]?.[field] || '';
+			defaultValues[section][field] = init[section]?.[field];
 		});
 	});
 

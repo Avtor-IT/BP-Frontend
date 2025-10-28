@@ -54,7 +54,8 @@ const LetterConstructorModal = () => {
 		handleFormSubmit(letterToFields(data), generateDocxMutation.mutate);
 	};
 	const handleSaveLetter = (data) => {
-		handleFormSubmit(letterToServer(data), createLetterMutation.mutate);
+		letterToServer(data);
+		// handleFormSubmit(letterToServer(data), createLetterMutation.mutate);
 	};
 
 	const handleFormSubmit = (data, action) => {

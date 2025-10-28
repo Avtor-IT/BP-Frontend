@@ -1,4 +1,12 @@
 export const letterToServer = (clientLetter) => {
+	Object.entries(clientLetter).forEach(([section, sectionValues]) => {
+		Object.entries(sectionValues).forEach(([key, value]) => {
+			if (!value) {
+				delete clientLetter[section][key];
+			}
+		});
+	});
+
 	return {
 		title:
 			clientLetter.destination.accountingNo ||
