@@ -1,21 +1,19 @@
 import { Box } from '@mui/system';
 import Slider from 'react-slick';
 import cls from '../notifications.module.scss';
+import { forwardRef } from 'react';
 
-const SliderDots = ({
-	navSlider,
-	refFunction,
-	notifications,
-	beforeChange,
-	currentSlide,
-}) => {
+const SliderDots = forwardRef(function SliderDots(
+	{ navSlider, notifications, beforeChange, currentSlide },
+	ref
+) {
 	const settingsDots = {
 		dots: false,
 		arrows: false,
 		centerMode: true,
 		focusOnSelect: true,
 		centerPadding: '20%',
-		slidesToShow: 3,
+		slidesToShow: notifications.length === 3 ? 2 : 3,
 		beforeChange: beforeChange,
 	};
 
@@ -42,9 +40,9 @@ const SliderDots = ({
 			<Slider
 				{...settingsDots}
 				asNavFor={navSlider}
-				ref={refFunction}
+				ref={ref}
 			>
-				{notifications.map((note, index) => (
+				{notifications.map((notification, index) => (
 					<Box
 						key={index}
 						sx={{
@@ -54,12 +52,12 @@ const SliderDots = ({
 							justifyContent: 'center !important',
 						}}
 					>
-						<Box className={`${cls.dot} ${dotClass(index)}`}></Box>
+						<Box className={`${cls.dot} ${dotClass(index)}`} />
 					</Box>
 				))}
 			</Slider>
 		</Box>
 	);
-};
+});
 
 export default SliderDots;

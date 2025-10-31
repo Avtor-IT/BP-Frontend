@@ -15,15 +15,28 @@ const baseURL = baseUrls.ssl;
 
 const instance = axios.create({ baseURL });
 
-// helpers
-const getAccess = () => sessionStorage.getItem(STORAGE.ACCESS);
-const getRefresh = () => sessionStorage.getItem(STORAGE.REFRESH);
-export const setAccess = (t) => sessionStorage.setItem(STORAGE.ACCESS, t);
-export const setRefresh = (t) => sessionStorage.setItem(STORAGE.REFRESH, t);
-const clearSession = () => {
-	sessionStorage.removeItem(STORAGE.ACCESS);
-	sessionStorage.removeItem(STORAGE.REFRESH);
-};
+class AuthStorage {
+	constructor(storage) {
+		this.storage = storage;
+	}
+	getAccess = () => this.storage.getItem(STORAGE.ACCESS);
+	getRefresh = () => this.storage.getItem(STORAGE.REFRESH);
+	setAccess = (t) => this.storage.setItem(STORAGE.ACCESS, t);
+	setRefresh = (t) => this.storage.setItem(STORAGE.REFRESH, t);
+	setSession = (a, r) => {
+		this.storage.setItem(STORAGE.ACCESS, a);
+		this.storage.setItem(STORAGE.REFRESH, r);
+	};
+	clearSession = () => {
+		this.storage.removeItem(STORAGE.ACCESS);
+		this.storage.removeItem(STORAGE.REFRESH);
+	};
+	checkSession = () => {
+		return Boolean(this.getAccess());
+	};
+}
+
+export const authStorage = new AuthStorage(localStorage);
 
 // single-flight refresh state
 let isRefreshing = false;
@@ -40,7 +53,7 @@ const notifySubscribers = (token) => {
 
 // attach access token to requests
 instance.interceptors.request.use((config) => {
-	const access = getAccess();
+	const access = authStorage.getAccess();
 	if (access) {
 		config.headers = config.headers ?? {};
 		config.headers.Authorization = `Bearer ${access}`;
@@ -52,7 +65,7 @@ instance.interceptors.request.use((config) => {
 const raw = axios.create({ baseURL });
 
 const refreshToken = async () => {
-	const refresh = getRefresh();
+	const refresh = authStorage.getRefresh();
 	if (!refresh) throw new Error('No refresh token');
 
 	if (isRefreshing && refreshPromise) return refreshPromise;
@@ -62,12 +75,12 @@ const refreshToken = async () => {
 		.post(apiEndpoints.JWT_REFRESH, { refresh })
 		.then((r) => {
 			const newAccess = r.data.access;
-			setAccess(newAccess);
+			authStorage.setAccess(newAccess);
 			notifySubscribers(newAccess);
 			return newAccess;
 		})
 		.catch((err) => {
-			clearSession();
+			authStorage.clearSession();
 			notifySubscribers(null);
 			throw err;
 		})
@@ -104,7 +117,7 @@ instance.interceptors.response.use(
 				return instance(originalRequest);
 			} catch (e) {
 				// refresh failed -> clear session and reject
-				clearSession();
+				authStorage.clearSession();
 				return Promise.reject(e);
 			}
 		}

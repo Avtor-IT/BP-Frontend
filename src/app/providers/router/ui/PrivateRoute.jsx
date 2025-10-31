@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from 'app/layout/Layout';
 import { useCheckStatus } from 'entities/User';
@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
 
 	const statusQuery = useCheckStatus();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (statusQuery.data) {
 			const isAuthenticated = statusQuery.data.is_authenticated;
 			if (!isAuthenticated) {
@@ -21,7 +21,8 @@ const PrivateRoute = ({ children }) => {
 		}
 	}, [navigate, statusQuery]);
 
-	if (statusQuery.isPending) return <FallbackPage />;
+	if (statusQuery.isPending || statusQuery.isLoading || !statusQuery.data)
+		return <FallbackPage />;
 
 	if (!children) {
 		return <Layout />;

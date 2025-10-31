@@ -1,8 +1,8 @@
 import {
+	Button,
 	Card,
 	CardContent,
 	CardHeader,
-	IconButton,
 	Skeleton,
 	Stack,
 	Typography,
@@ -18,10 +18,25 @@ import { createAdditioinalSx } from 'shared/mui';
 import { useMaxWidth } from 'shared/model';
 import ManagerActions from './ManagerActions';
 import ManagerActionsMobile from './ManagerActions.mobile';
+import { useRoom } from 'entities/Chat';
+import { generatePath } from 'react-router';
+import { AppRoutes, RoutePath } from 'shared/router';
+import { Link } from 'react-router-dom';
 
 export const ManagerCard = ({ showPic = true, ...props }) => {
 	const breakpoints = useMaxWidth();
 	const { data: manager, isLoading, isError } = useManager();
+
+	const {
+		data: room,
+		isPending: isRoomPending,
+		isError: isRoomError,
+	} = useRoom(manager?.ID);
+	const chatRoute = room
+		? generatePath(RoutePath[AppRoutes.CHAT], {
+				id: room.id,
+		  })
+		: null;
 
 	if (isLoading)
 		return (
@@ -57,17 +72,17 @@ export const ManagerCard = ({ showPic = true, ...props }) => {
 						title: { variant: breakpoints.xl ? 'M20' : 'M24' },
 					}}
 					action={
-						<IconButton>
-							<Stack
-								direction="row"
-								alignItems="center"
-								gap={0.5}
-								color="primary.main"
-							>
-								<Typography variant="R16">3</Typography>
-								<MailIcon fontSize="small" />
-							</Stack>
-						</IconButton>
+						<Button
+							component={Link}
+							to={chatRoute}
+							variant="unstyled"
+							disabled={isRoomError}
+							loading={isRoomPending}
+							endIcon={<MailIcon fontSize="small" />}
+							sx={{ '&': { color: 'primary.main' } }}
+						>
+							<Typography variant="R16">3</Typography>
+						</Button>
 					}
 				/>
 

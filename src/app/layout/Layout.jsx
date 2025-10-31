@@ -88,9 +88,7 @@ export const Layout = () => {
 								<MenuIcon />
 							</IconButton>
 						) : (
-							<>
-								<User />
-							</>
+							<User />
 						)}
 					</Grid>
 				</Grid>

@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'shared/ui/Button';
 import useUser from '../hooks/useUser';
+import { authStorage } from 'shared/api/lib';
 
 const User = () => {
 	const { data, isLoading } = useUser();
@@ -12,8 +13,7 @@ const User = () => {
 
 	const logout = () => {
 		queryClient.clear();
-		sessionStorage.removeItem('access');
-		sessionStorage.removeItem('refresh');
+		authStorage.clearSession();
 
 		navigate('/login', { replace: true });
 	};

@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { Grid } from '@mui/system';
+import { Grid, minHeight } from '@mui/system';
 import { CompanyBalanceCard, CompanyCard } from 'entities/Company';
 import { ManagerCard } from 'entities/Manager';
 import { Notifications } from 'entities/Notifications';
@@ -55,7 +55,7 @@ const MainPage = () => {
 				<Grid
 					size={{
 						xxxl: 1,
-						xxl: 5,
+						xs: 5,
 					}}
 					order={{ xxl: 2, xs: 3 }}
 					sx={(theme) => ({
@@ -64,7 +64,7 @@ const MainPage = () => {
 						},
 					})}
 				>
-					<Notifications sx={{ height: '100%' }} />
+					<Notifications sx={{ height: '100%', minHeight: 146 }} />
 				</Grid>
 
 				{/* <Grid

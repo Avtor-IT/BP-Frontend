@@ -3,6 +3,7 @@ import cls from './LoginPage.module.scss';
 import useLoginMutation from 'features/Auth';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
+import { useCheckStatus } from 'entities/User';
 
 const LoginPage = () => {
 	const [userName, setUserName] = useState('');
@@ -10,8 +11,8 @@ const LoginPage = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const navigate = useNavigate();
-
 	const loginMutation = useLoginMutation();
+	const { data: authStatus } = useCheckStatus();
 
 	const handleLogin = (e) => {
 		e && e.preventDefault();
@@ -27,6 +28,12 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
+		if (authStatus?.is_authenticated) {
+			navigate('/', { replace: true });
+		}
+	}, [authStatus, navigate]);
+
+	useEffect(() => {
 		if (loginMutation.error) {
 			if (loginMutation.error.message === 'Unauthorized') {
 				setErrorMessage('Пользователь не найден');
@@ -37,10 +44,6 @@ const LoginPage = () => {
 				);
 			}
 			return;
-		}
-
-		if (loginMutation.data) {
-			navigate('/', { replace: true });
 		}
 	}, [loginMutation, navigate]);
 

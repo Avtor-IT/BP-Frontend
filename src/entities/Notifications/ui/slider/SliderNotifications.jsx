@@ -3,56 +3,86 @@ import { Box } from '@mui/system';
 import Slider from 'react-slick';
 import CheckCircle from 'shared/icons/CheckCircle';
 import cls from '../notifications.module.scss';
+import { forwardRef } from 'react';
+import { useMarkDone } from 'entities/Chat';
 
-const SliderNotifications = ({
-	navDots,
-	refFunction,
-	notifications,
-	currentSlide,
-}) => {
+const SliderNotifications = forwardRef(function SliderNotifiations(
+	{ navDots, notifications, currentSlide, beforeChange },
+	ref
+) {
 	const settings = {
 		dots: false,
 		arrows: false,
 		swipeToSlide: true,
 		waitForAnimate: false,
 		cancelable: true,
+		beforeChange,
+	};
+
+	const markDone = useMarkDone();
+	const handleMarkDone = (messageId, done) => {
+		markDone.mutate({ messageId, done: !done });
 	};
 
 	return (
 		<Box
 			className={`${cls.sliderNotifications} slider-container`}
-			sx={{ '& .slick-list': { overflow: 'visible' } }}
+			sx={{
+				'& .slick-list': { overflow: 'visible', height: '100%' },
+				'& .slick-slider': { height: '100%' },
+				'& .slick-track': { height: '100%' },
+				flexGrow: 1,
+			}}
 		>
 			<Slider
 				{...settings}
 				asNavFor={navDots}
-				ref={refFunction}
+				ref={ref}
 				className="slider-notifications"
 			>
-				{notifications.map((notification, index) => (
-					<Box
-						key={index}
-						className={`${cls.slideNotification} ${
-							currentSlide === index ? cls.fadeIn : cls.fadeOut
-						}`}
-					>
-						<Typography variant="R16">{notification}</Typography>
+				{notifications.map((notification, index) => {
+					const className =
+						currentSlide === index ? cls.fadeIn : cls.fadeOut;
+
+					return (
 						<Box
-							style={{
-								position: 'absolute',
-								right: '-2px',
-								top: '-47px',
-							}}
+							key={notification.id}
+							className={`${cls.slideNotification} ${className}`}
 						>
-							<IconButton sx={{ p: 0 }}>
-								<CheckCircle />
-							</IconButton>
+							<Typography variant="R16">
+								{notification.content}
+							</Typography>
+							<Box
+								style={{
+									position: 'absolute',
+									right: '-2px',
+									top: '-47px',
+								}}
+							>
+								<IconButton
+									sx={{
+										p: 0,
+										color: notification.done
+											? 'primary.main'
+											: undefined,
+									}}
+									loading={markDone.isPending}
+									onClick={() =>
+										handleMarkDone(
+											notification.id,
+											notification.done
+										)
+									}
+								>
+									<CheckCircle />
+								</IconButton>
+							</Box>
 						</Box>
-					</Box>
-				))}
+					);
+				})}
 			</Slider>
 		</Box>
 	);
-};
+});
 
 export default SliderNotifications;

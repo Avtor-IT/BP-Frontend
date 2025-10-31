@@ -17,14 +17,13 @@ a,
 a:link,
 a:visited {
 	text-decoration: none;
-	color: inherit;
 }
 
 a.text:active, /* активная/посещенная ссылка */
 a.text:hover, /* при наведении */
 a.text {
 	text-decoration: none;
-	color: inherit;
+	color: unset;
 }
 
 a:hover {

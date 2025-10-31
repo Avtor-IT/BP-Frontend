@@ -125,7 +125,7 @@ export const Navigation = ({ ...props }) => {
 						fullWidth
 						sx={(theme) => ({
 							...styles(isActive),
-							color: 'textSecondary',
+							color: 'textSecondary.default',
 							paddingLeft: '12px',
 							[theme.breakpoints.down('xxl')]: {
 								justifyContent: 'center',
@@ -137,7 +137,9 @@ export const Navigation = ({ ...props }) => {
 						<Typography
 							variant={downXxxl ? 'L12' : 'L16'}
 							color={
-								isActive ? 'primary.contrastText' : undefined
+								isActive
+									? 'primary.contrastText'
+									: 'textSecondary'
 							}
 						>
 							{el.title}

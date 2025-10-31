@@ -140,7 +140,7 @@ const HumanResources = () => {
 					/>
 				</Grid>
 				<Grid size={3}>
-					<LoadDetailedEmployeeInfo minHeight="605px" />
+					<LoadDetailedEmployeeInfo />
 				</Grid>
 
 				<Grid size="grow">

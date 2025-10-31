@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 import { KEY as STATUS_KEY } from 'entities/User';
+import { authStorage } from 'shared/api/lib';
 
 const KEY = apiEndpoints.JWT_CREATE;
 
@@ -10,8 +11,7 @@ const login = async (body) => {
 		const response = await api.Post(apiEndpoints.JWT_CREATE, body);
 
 		if (response?.access) {
-			sessionStorage.setItem('access', response.access);
-			sessionStorage.setItem('refresh', response.refresh);
+			authStorage.setSession(response.access, response.refresh);
 			return response.access;
 		}
 		return response;

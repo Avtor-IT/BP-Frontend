@@ -76,7 +76,7 @@ const LetterCard = ({ letter, ...props }) => {
 				...props.sx,
 			}}
 		>
-			{letter.is_draft ? (
+			{/* {letter.is_draft ? (
 				<EditSquareIcon
 					color="warning"
 					sx={iconSx}
@@ -86,7 +86,7 @@ const LetterCard = ({ letter, ...props }) => {
 					color="success"
 					sx={iconSx}
 				/>
-			)}
+			)} */}
 
 			<CardContent
 				sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}

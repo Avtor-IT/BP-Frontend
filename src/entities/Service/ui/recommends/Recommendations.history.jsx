@@ -1,5 +1,4 @@
-import { CardHeader, CircularProgress, Stack, Typography } from '@mui/material';
-import { Card } from 'shared/ui/Card';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 import { RecommendationItem } from './Recommendation.item';
 
 export const RecommendationsHistory = ({ useRecommendationsHistoryQuery }) => {
@@ -19,9 +18,9 @@ export const RecommendationsHistory = ({ useRecommendationsHistoryQuery }) => {
 
 	return (
 		<Stack gap={2}>
-			{recommendsList.map((rec, i) => (
+			{recommendsList.map((rec) => (
 				<RecommendationItem
-					key={i}
+					key={rec.id}
 					recommendation={rec}
 				/>
 			))}

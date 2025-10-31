@@ -1,10 +1,15 @@
 import { IconButton, Stack, Typography } from '@mui/material';
+import { useMarkDone } from 'entities/Chat';
 import CheckCircleIcon from 'shared/icons/CheckCircle';
-import { RecommendationsHistory } from './Recommendations.history';
 import { useMaxWidth } from 'shared/model';
 
 export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
 	const breakpoints = useMaxWidth();
+
+	const markDone = useMarkDone();
+	const handleMarkDone = (messageId, done) => {
+		markDone.mutate({ messageId, done: done });
+	};
 
 	return (
 		<Stack
@@ -21,9 +26,15 @@ export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
 				paddingBlock={1}
 				{...slotProps?.typography}
 			>
-				{recommendation.description}
+				{recommendation.content}
 			</Typography>
-			<IconButton>
+			<IconButton
+				loading={markDone.isPending}
+				sx={{ color: recommendation.done ? 'primary.main' : undefined }}
+				onClick={() =>
+					handleMarkDone(recommendation.id, !recommendation.done)
+				}
+			>
 				<CheckCircleIcon />
 			</IconButton>
 		</Stack>

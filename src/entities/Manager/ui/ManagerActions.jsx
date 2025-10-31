@@ -8,6 +8,12 @@ import { AppRoutes, RoutePath } from 'shared/router';
 const ManagerActions = ({ manager }) => {
 	const { data: room, isPending, isError } = useRoom(manager?.ID);
 
+	const chatRoute = room
+		? generatePath(RoutePath[AppRoutes.CHAT], {
+				id: room.id,
+		  })
+		: null;
+
 	return (
 		<Stack
 			direction="row"
@@ -17,36 +23,23 @@ const ManagerActions = ({ manager }) => {
 				component={Link}
 				to={RoutePath[AppRoutes.MAIN]}
 				variant="unstyled"
+				disabled={isError}
+				loading={isPending}
+				endIcon={<CallIcon strokeWidth={1.5} />}
 			>
-				<Stack
-					direction="row"
-					alignItems="center"
-					gap={1}
-				>
-					<Typography variant="R16">Заказать звонок</Typography>
-					<CallIcon strokeWidth={1.5} />
-				</Stack>
+				<Typography variant="R16">Заказать звонок</Typography>
 			</Button>
+
 			<Button
 				component={Link}
-				disabled={isPending || isError}
-				to={
-					room
-						? generatePath(RoutePath[AppRoutes.CHAT], {
-								id: room.id,
-						  })
-						: '/'
-				}
+				disabled={isError}
+				loadingPosition="start"
+				loading={isPending}
+				to={chatRoute}
 				variant="unstyled"
+				endIcon={<MessageIcon strokeWidth={1.5} />}
 			>
-				<Stack
-					direction="row"
-					alignItems="center"
-					gap={1}
-				>
-					<Typography variant="R16">Написать</Typography>
-					<MessageIcon strokeWidth={1.5} />
-				</Stack>
+				<Typography variant="R16">Написать</Typography>
 			</Button>
 		</Stack>
 	);

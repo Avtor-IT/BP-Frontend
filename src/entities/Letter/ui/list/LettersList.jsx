@@ -9,34 +9,62 @@ import { VirtualizedLettersList } from './VirtualizedLettersList';
 import { useMaxWidth } from 'shared/model';
 import { EmptyListIcon } from 'shared/icons/EmptyList';
 
-const SkeletonList = ({ size = 5 }) => {
-	return Array.from({ length: size }).map((letter, i) => (
+const LetterItemTemplate = ({ letter }) => {
+	return (
 		<Grid
-			key={i}
 			container
-			columns={4}
+			columns={{ xxxl: 4, lg: 5, md: 3, xs: 2 }}
 			columnSpacing={2}
+			rowSpacing={1}
 		>
-			<Grid size={1}>
-				<Skeleton
-					variant="rounded"
-					height="180px"
-				/>
+			<Grid size={{ xxxl: 1, xs: 2 }}>
+				{letter ? (
+					<LetterCard letter={letter} />
+				) : (
+					<Skeleton
+						variant="rounded"
+						height="190px"
+					/>
+				)}
 			</Grid>
-			<Grid size={2}>
-				<Skeleton
-					variant="rounded"
-					height="180px"
-				/>
+			<Grid
+				size={{ lg: 2, xs: 3 }}
+				order={{ lg: 2, xs: 3 }}
+			>
+				{letter ? (
+					<LetterText text={letter.content.letter.text} />
+				) : (
+					<Skeleton
+						variant="rounded"
+						height="190px"
+					/>
+				)}
 			</Grid>
-			<Grid size={1}>
-				<Skeleton
-					variant="rounded"
-					height="180px"
-				/>
+			<Grid
+				size={{ md: 1, xs: 2 }}
+				order={{ lg: 3, xs: 2 }}
+			>
+				{letter ? (
+					<LetterActions letter={letter} />
+				) : (
+					<Skeleton
+						variant="rounded"
+						height="190px"
+					/>
+				)}
 			</Grid>
 		</Grid>
-	));
+	);
+};
+
+const SkeletonList = ({ size = 10 }) => {
+	return (
+		<Stack gap={1}>
+			{Array.from({ length: size }).map((letter, i) => (
+				<LetterItemTemplate key={i} />
+			))}
+		</Stack>
+	);
 };
 
 const LettersList = () => {
@@ -108,30 +136,7 @@ const LettersList = () => {
 				items={letters}
 				itemHeight={breakpoints.md ? 340 : breakpoints.lg ? 280 : 200}
 				overscan={4}
-				renderItem={(letter) => (
-					<Grid
-						container
-						columns={{ xxxl: 4, lg: 5, md: 3, xs: 2 }}
-						columnSpacing={2}
-						rowSpacing={1}
-					>
-						<Grid size={{ xxxl: 1, xs: 2 }}>
-							<LetterCard letter={letter} />
-						</Grid>
-						<Grid
-							size={{ lg: 2, xs: 3 }}
-							order={{ lg: 2, xs: 3 }}
-						>
-							<LetterText text={letter.content.letter.text} />
-						</Grid>
-						<Grid
-							size={{ md: 1, xs: 2 }}
-							order={{ lg: 3, xs: 2 }}
-						>
-							<LetterActions letter={letter} />
-						</Grid>
-					</Grid>
-				)}
+				renderItem={(letter) => <LetterItemTemplate letter={letter} />}
 			/>
 
 			<div ref={sentinelRef} />
