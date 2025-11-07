@@ -5,24 +5,32 @@ import useGetBlob from '../hooks/useGetBlob';
 import DownloadDocumentButton from './DownloadDocumentButton';
 import RenderFile from './RenderFile';
 
-const style = {
+const boxStyle = {
+	paddingBlock: 2,
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 	width: 800,
-	maxHeight: '100%',
-	bgcolor: 'background.paper',
-	boxShadow: 24,
+	height: 900,
+	maxHeight: '100vh',
+	display: 'flex',
 	outline: 'none',
-	borderRadius: '8px',
-	overflow: 'hidden',
 };
 
-const DocumentModal = ({ open, onClose, document }) => {
-	const { data: blob, isError } = useGetBlob(document.DOWNLOAD_URL);
+const style = {
+	bgcolor: 'background.paper',
+	boxShadow: 24,
+	borderRadius: '8px',
+	overflow: 'auto',
+	flexGrow: 1,
+	p: 2,
+};
+
+const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
+	const { data: blob, isError } = useGetBlob(downloadUrl);
 	const [content, setContent] = useState(null);
-	const [fetching, setFetching] = useState(true);
+	const [isFetching, setIsFetching] = useState(true);
 
 	useEffect(() => {
 		if (blob) {
@@ -30,7 +38,7 @@ const DocumentModal = ({ open, onClose, document }) => {
 			const reader = new FileReader();
 			reader.onload = () => {
 				setContent(reader.result);
-				setFetching(false);
+				setIsFetching(false);
 			};
 
 			if (blobType === 'text/plain') {
@@ -42,27 +50,58 @@ const DocumentModal = ({ open, onClose, document }) => {
 				reader.readAsDataURL(blob);
 			} else {
 				// Неподдерживаемый формат
-				setFetching(false);
+				setIsFetching(false);
 			}
 		}
 	}, [blob]);
 
-	if (isError) {
+	if (isError || !downloadUrl) {
 		return (
 			<Modal
 				open={open}
 				onClose={onClose}
 			>
-				<Box sx={style}>
-					<Box p={2}>
+				<Box sx={boxStyle}>
+					<Box
+						sx={{
+							...style,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
 						<Typography
 							variant="M24"
 							maxWidth="calc(100% - 2rem)"
 							overflow="hidden"
 							textOverflow="ellipsis"
 						>
-							Произошла ошибка при загрузке документа.
+							{!downloadUrl
+								? 'Файл отсутсвует на севрере.'
+								: 'Произошла ошибка при загрузке документа.'}
 						</Typography>
+					</Box>
+				</Box>
+			</Modal>
+		);
+	}
+
+	if (isFetching) {
+		return (
+			<Modal
+				open={open}
+				onClose={onClose}
+			>
+				<Box sx={boxStyle}>
+					<Box
+						sx={{
+							...style,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
+						<CircularProgress color="primary" />
 					</Box>
 				</Box>
 			</Modal>
@@ -74,8 +113,11 @@ const DocumentModal = ({ open, onClose, document }) => {
 			open={open}
 			onClose={onClose}
 		>
-			<Box sx={style}>
-				<Box p={2}>
+			<Box sx={boxStyle}>
+				<Stack
+					sx={style}
+					gap={2}
+				>
 					<Stack
 						direction="row"
 						gap={1}
@@ -87,32 +129,24 @@ const DocumentModal = ({ open, onClose, document }) => {
 							overflow="hidden"
 							textOverflow="ellipsis"
 						>
-							{document.NAME}
+							{fileName}
 						</Typography>
 
 						<DownloadDocumentButton
-							document={document}
+							downloadUrl={downloadUrl}
+							fileName={fileName}
 							style={{ height: '1rem' }}
 						/>
 					</Stack>
-				</Box>
-				{fetching ? (
-					<Stack
-						alignItems="center"
-						justifyContent="center"
-						p={4}
-						color="var(--primary)"
-					>
-						<CircularProgress color="inherit" />
-					</Stack>
-				) : (
-					<Box>
+
+					<Box flexGrow={1}>
 						<RenderFile
 							content={content}
 							type={blob.type.split(';')[0]}
+							height="100%"
 						/>
 					</Box>
-				)}
+				</Stack>
 			</Box>
 		</Modal>
 	);

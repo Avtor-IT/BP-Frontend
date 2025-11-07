@@ -4,10 +4,9 @@ import ImportIcon from 'shared/icons/Import';
 import { Button } from 'shared/ui/Button';
 import useDownloadMutation from '../hooks/useDownloadMutation';
 
-const DownloadDocumentButton = ({ icon, document, style }) => {
-	const { mutate: download, isPending: isDownloading } = useDownloadMutation(
-		document.ID
-	);
+const DownloadDocumentButton = ({ icon, downloadUrl, fileName, style }) => {
+	const { mutate: download, isPending: isDownloading } =
+		useDownloadMutation();
 
 	return (
 		<Button
@@ -15,9 +14,9 @@ const DownloadDocumentButton = ({ icon, document, style }) => {
 			variant="unStyled"
 			onClick={() =>
 				download({
-					url: document.DOWNLOAD_URL,
+					url: downloadUrl,
 					params: {
-						filename: document.NAME,
+						filename: fileName,
 					},
 				})
 			}

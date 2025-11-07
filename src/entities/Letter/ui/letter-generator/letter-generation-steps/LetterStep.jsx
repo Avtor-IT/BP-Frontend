@@ -51,38 +51,6 @@ const SubjectList = () => {
 							);
 						}}
 					/>
-
-					// <ScrollBox>
-					// 	{letters.map((letter) => {
-					// 		const apply = async () => {
-					// 			setValue('letter.subject', letter.subject);
-					// 			await trigger();
-					// 		};
-
-					// 		return (
-					// 			<Stack
-					// 				key={letter.id}
-					// 				direction="row"
-					// 				justifyContent="space-between"
-					// 				alignItems="center"
-					// 				gap={3}
-					// 			>
-					// 				<Button
-					// 					className={cls.letterInput}
-					// 					variant="card"
-					// 					onClick={apply}
-					// 				>
-					// 					<Typography
-					// 						variant="R16"
-					// 						color="#000"
-					// 					>
-					// 						{letter.subject}
-					// 					</Typography>
-					// 				</Button>
-					// 			</Stack>
-					// 		);
-					// 	})}
-					// </ScrollBox>
 				);
 			}}
 		/>

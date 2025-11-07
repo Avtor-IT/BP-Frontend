@@ -17,8 +17,10 @@ const FileItem = ({ document, ...props }) => {
 			<DocumentModal
 				open={open}
 				onClose={handleClose}
-				document={document}
+				downloadUrl={document.DOWNLOAD_URL}
+				fileName={document.NAME}
 			/>
+
 			<Stack
 				height="100%"
 				justifyContent="space-between"

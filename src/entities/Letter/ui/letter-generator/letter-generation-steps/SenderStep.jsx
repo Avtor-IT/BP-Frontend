@@ -15,98 +15,129 @@ import { useLogoList } from 'entities/Letter/api/getLogos';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ListLoader } from './ListLoader';
 import { VirtualizedList } from 'shared/ui/VirtualizedList';
+import { useState } from 'react';
+// eslint-disable-next-line no-restricted-imports
+import { DocumentModal } from 'entities/Documents/@X/Letter/DocumentModal';
 
 const LogoList = ({ section }) => {
 	const { control } = useFormContext();
 
+	const [logo, setLogo] = useState(null);
+	const handleOpen = (logo) => setLogo(logo);
+	const handleClose = () => setLogo(null);
+
 	return (
-		<ListLoader
-			query={useLogoList}
-			render={(logoList) => {
-				return (
-					<Controller
-						name={`${section}.companyLogo`}
-						control={control}
-						render={({ field }) => (
-							<VirtualizedList
-								list={logoList}
-								itemHeight={70}
-								renderItem={(logo) => {
-									const selected = field.value === logo.id;
+		<>
+			{Boolean(logo) && (
+				<DocumentModal
+					open={Boolean(logo)}
+					onClose={handleClose}
+					downloadUrl={logo.file?.replace(/^http:/, 'https:')}
+					fileName={logo.name}
+				/>
+			)}
 
-									return (
-										<Stack
-											key={logo.id}
-											direction="row"
-											justifyContent="space-between"
-											alignItems="center"
-											gap={3}
-										>
-											<Card
-												className={cls.letterInput}
-												variant="card"
-												sx={{
-													borderRadius: 1,
-													paddingBlock: 2,
-													position: 'relative',
-													minHeight: 70,
-												}}
+			<ListLoader
+				query={useLogoList}
+				render={(logoList) => {
+					return (
+						<Controller
+							name={`${section}.companyLogo`}
+							control={control}
+							render={({ field }) => (
+								<VirtualizedList
+									list={logoList}
+									itemHeight={80}
+									renderItem={(logo) => {
+										const selected =
+											field.value === logo.id;
+
+										return (
+											<Stack
+												key={logo.id}
+												direction="row"
+												justifyContent="space-between"
+												alignItems="center"
+												gap={3}
 											>
-												<CardHeader
-													action={
-														<IconButton
-															sx={{ p: 0 }}
-														>
-															<ExpandIcon fontSize="small" />
-														</IconButton>
-													}
-													title={logo.name}
-													sx={{ paddingInline: 2 }}
-													slotProps={{
-														title: {
-															variant: 'M16',
-															overflow: 'hidden',
-															textOverflow:
-																'ellipsis',
-															whiteSpace:
-																'nowrap',
-														},
-														action: {
-															sx: {
-																position:
-																	'absolute',
-																top: 8,
-																right: 8,
-															},
-														},
+												<Card
+													className={cls.letterInput}
+													variant="card"
+													sx={{
+														borderRadius: 1,
+														paddingBlock: 2,
+														position: 'relative',
+														minHeight: 70,
 													}}
-												/>
-											</Card>
+												>
+													<CardHeader
+														action={
+															<IconButton
+																onClick={() =>
+																	handleOpen(
+																		logo
+																	)
+																}
+																sx={{
+																	p: 0,
+																}}
+															>
+																<ExpandIcon fontSize="small" />
+															</IconButton>
+														}
+														title={logo.name}
+														sx={{
+															paddingInline: 2,
+														}}
+														slotProps={{
+															title: {
+																variant: 'M16',
+																overflow:
+																	'hidden',
+																textOverflow:
+																	'ellipsis',
+																whiteSpace:
+																	'nowrap',
+															},
+															action: {
+																sx: {
+																	position:
+																		'absolute',
+																	top: 8,
+																	right: 8,
+																},
+															},
+														}}
+													/>
+												</Card>
 
-											<IconButton
-												onClick={() =>
-													field.onChange(
-														selected ? '' : logo.id
-													)
-												}
-											>
-												<CheckCircleIcon
-													color={
-														selected
-															? 'primary'
-															: undefined
+												<IconButton
+													onClick={() =>
+														field.onChange(
+															selected
+																? ''
+																: logo.id
+														)
 													}
-												/>
-											</IconButton>
-										</Stack>
-									);
-								}}
-							/>
-						)}
-					/>
-				);
-			}}
-		/>
+												>
+													<CheckCircleIcon
+														color={
+															selected
+																? 'primary'
+																: undefined
+														}
+													/>
+												</IconButton>
+											</Stack>
+										);
+									}}
+								/>
+							)}
+						/>
+					);
+				}}
+			/>
+		</>
 	);
 };
 

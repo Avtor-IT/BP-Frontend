@@ -9,69 +9,93 @@ import { useFacsimileList } from 'entities/Letter/api/getFacsimile';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ListLoader } from './ListLoader';
 import { VirtualizedList } from 'shared/ui/VirtualizedList';
+import { useState } from 'react';
+// eslint-disable-next-line no-restricted-imports
+import { DocumentModal } from 'entities/Documents/@X/Letter/DocumentModal';
 
 const PersonalList = ({ query, name }) => {
 	const { control } = useFormContext();
 
+	const [file, setFile] = useState(null);
+	const handleOpen = (file) => setFile(file);
+	const handleClose = () => setFile(null);
+
 	return (
-		<ListLoader
-			query={query}
-			render={(list) => {
-				return (
-					<Controller
-						name={name}
-						control={control}
-						render={({ field }) => (
-							<VirtualizedList
-								list={list}
-								itemHeight={60}
-								renderItem={(item) => {
-									const selected = field.value === item.id;
-									const select = () => {
-										field.onChange(selected ? '' : item.id);
-									};
+		<>
+			{Boolean(file) && (
+				<DocumentModal
+					open={Boolean(file)}
+					onClose={handleClose}
+					downloadUrl={file.file?.replace(/^http:/, 'https:')}
+					fileName={file.name}
+				/>
+			)}
 
-									return (
-										<Stack
-											key={item.id}
-											direction="row"
-											justifyContent="space-between"
-											alignItems="center"
-											gap={3}
-										>
-											<Button
-												className={cls.letterInput}
-												variant="card"
+			<ListLoader
+				query={query}
+				render={(list) => {
+					return (
+						<Controller
+							name={name}
+							control={control}
+							render={({ field }) => (
+								<VirtualizedList
+									list={list}
+									itemHeight={60}
+									renderItem={(item) => {
+										const selected =
+											field.value === item.id;
+										const select = () => {
+											field.onChange(
+												selected ? '' : item.id
+											);
+										};
+
+										return (
+											<Stack
+												key={item.id}
+												direction="row"
+												justifyContent="space-between"
+												alignItems="center"
+												gap={3}
 											>
-												<Typography
-													variant="R16"
-													color="#000"
-													overflow="hidden"
-													textOverflow="ellipsis"
-													whiteSpace="nowrap"
-												>
-													{item.name}
-												</Typography>
-											</Button>
-
-											<IconButton onClick={select}>
-												<CheckCircleIcon
-													color={
-														selected
-															? 'primary'
-															: undefined
+												<Button
+													className={cls.letterInput}
+													variant="card"
+													onClick={() =>
+														handleOpen(item)
 													}
-												/>
-											</IconButton>
-										</Stack>
-									);
-								}}
-							/>
-						)}
-					/>
-				);
-			}}
-		/>
+												>
+													<Typography
+														variant="R16"
+														color="#000"
+														overflow="hidden"
+														textOverflow="ellipsis"
+														whiteSpace="nowrap"
+													>
+														{item.name}
+													</Typography>
+												</Button>
+
+												<IconButton onClick={select}>
+													<CheckCircleIcon
+														color={
+															selected
+																? 'primary'
+																: undefined
+														}
+													/>
+												</IconButton>
+											</Stack>
+										);
+									}}
+								/>
+							)}
+						/>
+					);
+				}}
+			/>
+		</>
 	);
 };
 

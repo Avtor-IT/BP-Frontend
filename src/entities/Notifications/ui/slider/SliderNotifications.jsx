@@ -66,7 +66,7 @@ const SliderNotifications = forwardRef(function SliderNotifiations(
 											? 'primary.main'
 											: undefined,
 									}}
-									loading={markDone.isPending}
+									// loading={markDone.isPending}
 									onClick={() =>
 										handleMarkDone(
 											notification.id,

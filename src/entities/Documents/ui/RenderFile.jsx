@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-const RenderFile = ({ content, type }) => {
+const RenderFile = ({ content, type, ...props }) => {
 	if (content === null) {
 		return (
 			<Box p={2}>
@@ -25,7 +25,7 @@ const RenderFile = ({ content, type }) => {
 					color="var(--gray-dark)"
 				>
 					Файл пуст.
-				</Typography>{' '}
+				</Typography>
 			</Box>
 		);
 	}
@@ -35,16 +35,18 @@ const RenderFile = ({ content, type }) => {
 			src={content}
 			alt="document"
 			style={{ width: '100%', maxHeight: '100%' }}
+			{...props}
 		/>
 	) : type === 'application/pdf' ? (
 		<embed
 			src={content}
 			type="application/pdf"
 			width="100%"
-			height="800px"
+			{...props}
 		/>
 	) : type === 'text/plain' ? (
 		<pre
+			{...props}
 			style={{
 				padding: '16px',
 				whiteSpace: 'pre-wrap',
@@ -52,6 +54,7 @@ const RenderFile = ({ content, type }) => {
 				maxHeight: '300px',
 				overflowY: 'auto',
 				fontSize: '24px',
+				...props?.style,
 			}}
 		>
 			{content}

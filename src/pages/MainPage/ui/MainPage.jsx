@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { Grid, minHeight } from '@mui/system';
+import { Grid } from '@mui/system';
 import { CompanyBalanceCard, CompanyCard } from 'entities/Company';
 import { ManagerCard } from 'entities/Manager';
 import { Notifications } from 'entities/Notifications';

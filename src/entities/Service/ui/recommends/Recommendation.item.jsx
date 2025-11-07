@@ -29,7 +29,7 @@ export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
 				{recommendation.content}
 			</Typography>
 			<IconButton
-				loading={markDone.isPending}
+				// loading={markDone.isPending}
 				sx={{ color: recommendation.done ? 'primary.main' : undefined }}
 				onClick={() =>
 					handleMarkDone(recommendation.id, !recommendation.done)
