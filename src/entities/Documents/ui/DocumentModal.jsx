@@ -11,8 +11,8 @@ const boxStyle = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: 800,
-	height: 900,
+	maxWidth: 800,
+	minHeight: 250,
 	maxHeight: '100vh',
 	display: 'flex',
 	outline: 'none',
@@ -77,7 +77,7 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 							textOverflow="ellipsis"
 						>
 							{!downloadUrl
-								? 'Файл отсутсвует на севрере.'
+								? 'Файл отсутствует на севрере.'
 								: 'Произошла ошибка при загрузке документа.'}
 						</Typography>
 					</Box>
@@ -139,13 +139,16 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 						/>
 					</Stack>
 
-					<Box flexGrow={1}>
+					<Stack
+						flexGrow={1}
+						justifyContent="center"
+						alignItems="center"
+					>
 						<RenderFile
 							content={content}
 							type={blob.type.split(';')[0]}
-							height="100%"
 						/>
-					</Box>
+					</Stack>
 				</Stack>
 			</Box>
 		</Modal>

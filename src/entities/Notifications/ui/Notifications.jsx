@@ -6,6 +6,7 @@ import cls from './notifications.module.scss';
 import SliderDots from './slider/SliderDots';
 import SliderNotifications from './slider/SliderNotifications';
 import { useImportantMessages } from 'entities/Chat';
+import { useManagerChat } from '../api/managerChat';
 
 export const Notifications = (props) => {
 	const {
@@ -13,6 +14,9 @@ export const Notifications = (props) => {
 		isLoading,
 		isError,
 	} = useImportantMessages(2);
+
+	// const { data: managerChat } = useManagerChat();
+	// console.log(managerChat);
 
 	const [currentSlide, setCurrentSlide] = useState(0);
 

@@ -34,7 +34,7 @@ const RenderFile = ({ content, type, ...props }) => {
 		<img
 			src={content}
 			alt="document"
-			style={{ width: '100%', maxHeight: '100%' }}
+			style={{ maxHeight: '100%' }}
 			{...props}
 		/>
 	) : type === 'application/pdf' ? (
@@ -42,6 +42,7 @@ const RenderFile = ({ content, type, ...props }) => {
 			src={content}
 			type="application/pdf"
 			width="100%"
+			style={{ height: '900px', maxHeight: '100%', minWidth: '800px' }}
 			{...props}
 		/>
 	) : type === 'text/plain' ? (

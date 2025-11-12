@@ -54,14 +54,5 @@ export const useMarkDone = () => {
 				});
 			}
 		},
-
-		onSettled: () => {
-			qc.invalidateQueries(
-				{ queryKey: [GET_IMPORTANT_MESSAGES_KEY] },
-				{
-					exact: false,
-				}
-			);
-		},
 	});
 };

@@ -5,17 +5,25 @@ import { RefreshIcon } from 'shared/icons/Refresh';
 import { TrashIcon } from 'shared/icons/Trash';
 import { useMaxWidth } from 'shared/model/index.js';
 import { useLetterStore } from '../../store/letterStore';
+import { useDeleteLetter } from '../../api/deleteLetter';
 
 const LetterActions = ({ letter }) => {
 	const breakpoints = useMaxWidth();
 	const { handleOpen } = useLeterModalStore();
 	const { setLetter } = useLetterStore();
 
+	const { mutate: deleteLetter, isPending: isDeletePending } =
+		useDeleteLetter();
+
 	const deleteAction = {
 		actionName: 'Удалить из списка',
 		actionShortName: 'Удалить',
 		icon: <TrashIcon sx={{ width: '24px', height: '24px' }} />,
 		color: 'tertiary',
+		action: (letter) => {
+			deleteLetter(letter.id);
+		},
+		props: { loading: isDeletePending },
 	};
 	const editAction = {
 		actionName: 'Редактирование',
@@ -81,6 +89,7 @@ const LetterActions = ({ letter }) => {
 					}}
 					onClick={() => action.action?.(letter)}
 					startIcon={action.icon}
+					{...action.props}
 				>
 					<Typography
 						variant={

@@ -49,6 +49,17 @@ class Api {
 			});
 	};
 
+	Delete = async (url, config = {}) => {
+		return instance
+			.delete(url, config)
+			.then((response) => {
+				return Promise.resolve(response);
+			})
+			.catch((error) => {
+				return Promise.reject(error);
+			});
+	};
+
 	GetBlob = async (url, config = {}) => {
 		try {
 			const response = await instance.get(url, {
