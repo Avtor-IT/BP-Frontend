@@ -1,7 +1,6 @@
-import { Container, IconButton } from '@mui/material';
+import { Badge, Container, IconButton } from '@mui/material';
 import { Grid, Stack } from '@mui/system';
 import { ChatBot } from 'entities/ChatBot';
-import { NotificationButton } from 'entities/Notifications';
 import { User } from 'entities/User';
 import { FallbackContent } from 'pages/FallbackPage';
 import { Suspense } from 'react';
@@ -11,6 +10,7 @@ import { useMaxWidth } from 'shared/model';
 import { AppRoutes, RoutePath } from 'shared/router';
 import { Logo, LogoIcon } from 'shared/ui/Logo';
 import { Navigation } from 'widgets/Navigation';
+import NotificationsIcon from 'shared/icons/Notifications';
 
 export const Layout = () => {
 	const breakpoints = useMaxWidth();
@@ -81,7 +81,14 @@ export const Layout = () => {
 							alignItems: 'center',
 						}}
 					>
-						<NotificationButton />
+						<IconButton>
+							<Badge
+								badgeContent={100}
+								color="error"
+							>
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
 
 						{breakpoints.lg ? (
 							<IconButton>

@@ -3,14 +3,19 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 
-export const useChatWS = ({ roomId }) => {
+export const CHAT_TYPE = {
+	DEPARTMENT: 'DEPARTMENT',
+	MANAGER: 'MANAGER',
+};
+
+export const useChatWS = ({ roomId, type = CHAT_TYPE.DEPARTMENT }) => {
 	const [url, setUrl] = useState();
 	const socket = useWebSocket(url, undefined, Boolean(url));
 
 	useEffect(() => {
 		(async () => {
 			const wsurl = await api.getWebSocketUrl(
-				apiEndpoints.ROOM_WEBSOCKET,
+				apiEndpoints[`ROOM_WEBSOCKET_${type}`],
 				{
 					urlParams: { chat_id: roomId },
 				}

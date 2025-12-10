@@ -1,4 +1,4 @@
-import { ChatPage } from 'pages/ChatPage';
+import { ChatPage, DepartmentChatPage, ManagerChatPage } from 'pages/ChatPage';
 import { CompanyPage } from 'pages/CompanyPage';
 import { DocumentsPage } from 'pages/DocumentsPage';
 import { FallbackPage } from 'pages/FallbackPage';
@@ -48,7 +48,11 @@ const Routes = () => {
 					path: RoutePath[AppRoutes.CHATS],
 					children: [
 						{ index: true, element: <ChatPage /> },
-						{ path: ':id', element: <ChatPage /> },
+						{
+							path: 'department/:id',
+							element: <DepartmentChatPage />,
+						},
+						{ path: 'manager/:id', element: <ManagerChatPage /> },
 					],
 				},
 				{

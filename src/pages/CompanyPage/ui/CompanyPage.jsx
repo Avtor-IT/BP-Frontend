@@ -2,7 +2,6 @@ import {
 	Box,
 	Button,
 	Card,
-	CardContent,
 	Input,
 	MenuItem,
 	Select,
@@ -15,8 +14,8 @@ import {
 	DocumentsLink,
 	DocumentsSlider,
 	TaxExtractCard,
+	useCompanyDocuments,
 } from 'entities/Documents';
-import useCompanyDocuments from 'entities/Documents/hooks/useCompanyDocuments';
 import { LetterheadCard } from 'entities/Letter';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';

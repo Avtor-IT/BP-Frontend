@@ -6,24 +6,27 @@ import cls from './notifications.module.scss';
 import SliderDots from './slider/SliderDots';
 import SliderNotifications from './slider/SliderNotifications';
 import { useImportantMessages } from 'entities/Chat';
-import { useManagerChat } from '../api/managerChat';
+import { useManagerChat } from 'entities/Chat';
 
 export const Notifications = (props) => {
+	const {
+		data: managerChat,
+		isError: isManagerChatError,
+		isLoading: isManagerLoading,
+	} = useManagerChat();
+
 	const {
 		data: importantMessages,
 		isLoading,
 		isError,
-	} = useImportantMessages(2);
-
-	// const { data: managerChat } = useManagerChat();
-	// console.log(managerChat);
+	} = useImportantMessages(managerChat?.id);
 
 	const [currentSlide, setCurrentSlide] = useState(0);
 
 	let refSlider = useRef(null);
 	let refDots = useRef(null);
 
-	if (isLoading) {
+	if (isLoading || isManagerLoading) {
 		return (
 			<Skeleton
 				variant="rounded"
@@ -32,7 +35,7 @@ export const Notifications = (props) => {
 		);
 	}
 
-	if (isError) {
+	if (isError || isManagerChatError) {
 		return (
 			<Card
 				{...props}

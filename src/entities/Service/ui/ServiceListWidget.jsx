@@ -2,11 +2,11 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Suspense, useMemo } from 'react';
 import { useMaxWidth } from 'shared/model';
-import useGetUserServices from '../hooks/useGetUserServices';
+import useUserServices from '../hooks/useUserServices';
 import services from '../model/services';
 
 const ServiceListWidget = () => {
-	const { data: userServices, isLoading, isError } = useGetUserServices();
+	const { data: userServices, isLoading, isError } = useUserServices();
 	const breakpoints = useMaxWidth();
 
 	const activeServices = useMemo(() => {

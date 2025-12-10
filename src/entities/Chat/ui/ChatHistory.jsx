@@ -1,16 +1,27 @@
 import { Box, CircularProgress, Stack } from '@mui/material';
 import { useMessages } from 'entities/Chat';
 import MessagesList from './MessagesList';
+import { useNavigate } from 'react-router';
+import { AppRoutes, RoutePath } from 'shared/router';
+import { useEffect } from 'react';
 
 const ChatHistory = ({ id, ...props }) => {
 	const {
 		data: messages,
 		isLoading: isMessagesLoading,
 		isError: isMessagesError,
+		error,
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
 	} = useMessages(id);
+
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (error?.status === 404) {
+			navigate(RoutePath[AppRoutes.CHATS], { replace: true });
+		}
+	}, [error, navigate]);
 
 	if (isMessagesLoading) {
 		return (

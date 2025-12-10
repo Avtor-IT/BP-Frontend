@@ -174,7 +174,7 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 					</Stack>
 				)}
 
-				{!breakpoints.lg && (
+				{/* {!breakpoints.lg && (
 					<CompanyBalanceCard
 						sx={{
 							position: 'absolute',
@@ -184,7 +184,7 @@ export const CompanyCard = ({ documents = true, ...props }) => {
 							zIndex: 999,
 						}}
 					/>
-				)}
+				)} */}
 			</CardContent>
 		</Card>
 	);

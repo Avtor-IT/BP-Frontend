@@ -17,8 +17,6 @@ export const useCreateLeter = (config) => {
 		onMutate: async (newLetter) => {
 			await qc.cancelQueries({ queryKey: [LETTERS_LIST_KEY] });
 
-			console.log(newLetter);
-
 			const previous = qc.getQueriesData({
 				queryKey: [LETTERS_LIST_KEY],
 			});
@@ -28,18 +26,14 @@ export const useCreateLeter = (config) => {
 			previous.forEach(([queryKey, data]) => {
 				if (!data) return data;
 
+				const newId = data.pages[0].results[0]?.id ? +1 : 1;
 				const newPage = [
-					{ ...newLetter, id: data.pages[0].results[0].id + 1 },
+					{ ...newLetter, id: newId },
 					...data.pages[0].results,
 				];
 
-				console.log(data);
-				console.log(newPage);
-
 				// const newPages = data.pages
-
 				// const newData = { ...data, pages:  };
-
 				// qc.setQueryData(queryKey, newData);
 			});
 

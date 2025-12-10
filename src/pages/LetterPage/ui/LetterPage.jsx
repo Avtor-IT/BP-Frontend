@@ -26,13 +26,21 @@ const LetterPage = () => {
 					size={{ xxl: 3, xs: 5 }}
 					order={{ xxl: 1, xs: 2 }}
 				>
-					<LastLettersWidget height="100%" />
+					<LastLettersWidget
+						sx={{
+							height: '100%',
+							minHeight: 228,
+						}}
+					/>
 				</Grid>
 				<Grid
 					size={{ xxl: 2, xs: 5 }}
 					order={{ xxl: 2, xs: 1 }}
 				>
-					<LetterConstructorCard sx={{ height: '100%' }} />
+					<LetterConstructorCard
+						minHeight={{ xxxl: 228, xs: 120 }}
+						sx={{ height: '100%' }}
+					/>
 				</Grid>
 			</Grid>
 

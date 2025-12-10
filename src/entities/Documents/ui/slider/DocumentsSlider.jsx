@@ -15,8 +15,6 @@ import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import AddSquareIcon from 'shared/icons/AddSquare';
 import { ArrowInCircle } from 'shared/icons/ArrowInCircle';
-import ExportIcon from 'shared/icons/Export';
-import ImportIcon from 'shared/icons/Import';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 import useDownloadMutation from '../../hooks/useDownloadMutation';
 import { DocumentSlide } from './DocumentSlide';
@@ -104,7 +102,7 @@ const DocumentsSlider = ({
 	const downXl = useMediaQuery(theme.breakpoints.down('xl'));
 	const { mutate: download } = useDownloadMutation();
 
-	const slidesToShow = downXl ? 1 : 2;
+	const slidesToShow = 1;
 	const settings = {
 		dots: false,
 		slidesToShow,
@@ -167,9 +165,9 @@ const DocumentsSlider = ({
 			<CardContent
 				sx={{
 					flexGrow: 1,
-					display: 'flex',
+					display: documents.length ? undefined : 'flex',
+					// '& .slick-track': { minWidth: '100%' },
 					'& .slick-list': { overflow: 'visible' },
-					'& .slick-track': { minWidth: '100%' },
 				}}
 			>
 				{documents.length ? (
@@ -179,6 +177,7 @@ const DocumentsSlider = ({
 								paddingRight={
 									i === documents.length - 1 ? '0' : 1
 								}
+								width="190px"
 								key={i}
 							>
 								<DocumentSlide

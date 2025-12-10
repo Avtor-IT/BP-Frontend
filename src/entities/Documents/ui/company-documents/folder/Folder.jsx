@@ -15,9 +15,11 @@ const Folder = ({ folder, open }) => {
 	const navigate = useNavigate();
 
 	const pathArray = urlPath ? urlPath.split('/') : [];
-	const { data: files, isLoading } = useGetFolderChildren(
-		folder['DOWNLOAD_URL']
-	);
+	const {
+		data: files,
+		isLoading,
+		isError,
+	} = useGetFolderChildren(folder['DOWNLOAD_URL']);
 
 	if (isLoading) {
 		return (
@@ -39,6 +41,18 @@ const Folder = ({ folder, open }) => {
 				sx={{
 					opacity: '0.8',
 				}}
+			/>
+		);
+	}
+
+	if (isError) {
+		return (
+			<FolderCard
+				title={`${folder.NAME} (Ошибка при загрузке файлов)`}
+				sx={{
+					opacity: '0.8',
+				}}
+				showArrow={false}
 			/>
 		);
 	}

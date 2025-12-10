@@ -1,4 +1,4 @@
-import { Button, Input, Typography } from '@mui/material';
+import { Button, CircularProgress, Input, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -64,9 +64,12 @@ const DocumentList = ({ company, ...otherProps }) => {
 
 	if (isLoading) {
 		return (
-			<Box {...otherProps}>
-				<Typography variant="M20">Загрузка документов...</Typography>
-			</Box>
+			<Stack
+				alignItems="center"
+				{...otherProps}
+			>
+				<CircularProgress />
+			</Stack>
 		);
 	}
 
@@ -123,13 +126,14 @@ const DocumentList = ({ company, ...otherProps }) => {
 				</Button>
 			</Stack>
 
-			<Input
+			{/* <Input
 				inputProps={{ placeholder: 'Поиск' }}
 				variant="card"
 				mb={4}
 				onInput={(e) => setSearch(e.target.value)}
 				fullWidth
-			/>
+			/> */}
+
 			<Stack
 				gap={2}
 				paddingBottom={2}

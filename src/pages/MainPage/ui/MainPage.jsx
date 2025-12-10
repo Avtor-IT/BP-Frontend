@@ -2,12 +2,26 @@ import { Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/system';
 import { CompanyBalanceCard, CompanyCard } from 'entities/Company';
 import { ManagerCard } from 'entities/Manager';
-import { Notifications } from 'entities/Notifications';
-import { ServiceAnchorList, ServiceListWidget } from 'entities/Service';
+import {
+	ServiceAnchorList,
+	ServiceListWidget,
+	useUserServices,
+} from 'entities/Service';
 import { useMaxWidth } from 'shared/model';
 import SectionTitle from 'shared/ui/SectionTitle';
+// eslint-disable-next-line no-restricted-imports
+import { Notifications } from '../widgets/notifications-widget';
+import { useMemo } from 'react';
 
 const MainPage = () => {
+	const { data: userServices } = useUserServices();
+
+	const activeServices = useMemo(() => {
+		if (userServices) {
+			return userServices['active_services'];
+		}
+	}, [userServices]);
+
 	const breakpoints = useMaxWidth();
 
 	return (
@@ -75,11 +89,13 @@ const MainPage = () => {
 				</Grid> */}
 			</Grid>
 
-			{!breakpoints.xxxl && <SectionTitle>Мои услуги</SectionTitle>}
+			{!breakpoints.xxxl && activeServices?.length ? (
+				<SectionTitle>Мои услуги</SectionTitle>
+			) : null}
 
-			{breakpoints.lg && (
+			{breakpoints.lg && activeServices?.length ? (
 				<Typography variant="M20">Быстрый переход</Typography>
-			)}
+			) : null}
 
 			{breakpoints.xxl && <ServiceAnchorList />}
 			<ServiceListWidget />

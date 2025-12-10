@@ -21,11 +21,13 @@ const palette = {
 	background: {
 		default: '#FFFFFF',
 		light: '#E8E8E8',
+		primaryshade: '#FCF8FA',
 		dark: '#F9F9F9FF',
 		paper: '#FFFFFF',
 		contrast: '#EAE7FF',
 	},
 	textPrimary: {
+		dark: '#000',
 		default: '#3D3F4C',
 	},
 	textSecondary: {
@@ -51,6 +53,9 @@ const palette = {
 		light: '#49B567',
 		dark: '#34996D',
 		contrastText: '#FFFFFF',
+	},
+	blue: {
+		main: '#2E2C83',
 	},
 };
 

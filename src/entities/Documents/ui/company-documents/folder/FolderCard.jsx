@@ -3,7 +3,15 @@ import { Box } from '@mui/system';
 import ArrowIcon from 'shared/icons/Arrow';
 import { Card } from 'shared/ui/Card';
 
-const FolderCard = ({ children, title, onTitleClick, open, sx, ...props }) => {
+const FolderCard = ({
+	children,
+	title,
+	onTitleClick,
+	open,
+	sx,
+	showArrow,
+	...props
+}) => {
 	return (
 		<Card
 			sx={{ ...sx, padding: '0 !important', minHeight: '76px' }}
@@ -33,14 +41,16 @@ const FolderCard = ({ children, title, onTitleClick, open, sx, ...props }) => {
 					>
 						{title}
 					</Typography>
-					<ArrowIcon
-						strokeWidth={2}
-						color="secondary"
-						sx={{
-							transition: 'transform .1s ease-in-out',
-							transform: open ? 'rotate(90deg)' : '',
-						}}
-					/>
+					{Boolean(showArrow) && (
+						<ArrowIcon
+							strokeWidth={2}
+							color="secondary"
+							sx={{
+								transition: 'transform .1s ease-in-out',
+								transform: open ? 'rotate(90deg)' : '',
+							}}
+						/>
+					)}
 				</Stack>
 			</Box>
 

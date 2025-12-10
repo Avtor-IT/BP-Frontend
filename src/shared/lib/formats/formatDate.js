@@ -13,4 +13,16 @@ const formatDate = (isoDateString) => {
 	return `${day}.${month}.${year}`;
 };
 
+export const formatTimestampToShortDate = (ts) => {
+	const date = new Date(ts);
+
+	const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+	const day = days[date.getDay()];
+	const hh = String(date.getHours()).padStart(2, '0');
+	const mm = String(date.getMinutes()).padStart(2, '0');
+
+	return `${day} ${hh}:${mm}`;
+};
+
 export default formatDate;

@@ -17,4 +17,6 @@ export const useImportantMessages = (chatRoomId, pageSize = 10) =>
 		queryFn: async () => await getImportantMessages(chatRoomId, pageSize),
 		queryKey: [KEY, chatRoomId, pageSize],
 		staleTime: 1000 * 60 * 5,
+		retry: false,
+		enabled: Boolean(chatRoomId),
 	});

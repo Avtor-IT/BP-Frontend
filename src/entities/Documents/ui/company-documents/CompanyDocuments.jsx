@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { Box, Grid, Stack } from '@mui/system';
 import { useCompanies } from 'entities/Company';
 import { useMemo } from 'react';
@@ -20,9 +20,12 @@ const CompanyDocuments = ({ ...props }) => {
 
 	if (isLoading) {
 		return (
-			<Box {...props}>
-				<Typography variant="M40">Загрузка компании...</Typography>
-			</Box>
+			<Stack
+				alignItems="center"
+				{...props}
+			>
+				<CircularProgress />
+			</Stack>
 		);
 	}
 

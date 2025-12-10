@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { apiEndpoints } from 'shared/model';
 import { useChatWS } from '../api/chatWebSocket';
 import { Button, Stack, TextField } from '@mui/material';
+import { CHAT_LIST_KEY } from '..';
 
 const updateMessages = (oldData, msg) => {
 	if (!oldData) return oldData;
@@ -28,7 +29,7 @@ const updateMessages = (oldData, msg) => {
 	};
 };
 
-const SendMessageForm = ({ roomId }) => {
+const SendMessageForm = ({ roomId, type }) => {
 	const queryClient = useQueryClient();
 
 	const [message, setMessage] = useState('');
@@ -51,6 +52,7 @@ const SendMessageForm = ({ roomId }) => {
 		isClosed,
 	} = useChatWS({
 		roomId,
+		type,
 	});
 
 	const onMessageHandler = (lastJsonMessage) => {
@@ -60,6 +62,7 @@ const SendMessageForm = ({ roomId }) => {
 			[apiEndpoints.CHAT_MESSAGES, roomId],
 			(oldData) => updateMessages(oldData, msg)
 		);
+		queryClient.invalidateQueries({ queryKey: [CHAT_LIST_KEY] });
 	};
 
 	const sendMessage = (e) => {

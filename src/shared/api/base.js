@@ -1,4 +1,4 @@
-import instance from './lib';
+import instance, { authStorage } from './lib';
 
 // Add urlParams config property
 instance.interceptors.request.use((config) => {
@@ -34,7 +34,7 @@ class Api {
 				return Promise.resolve(response.data);
 			})
 			.catch((error) => {
-				return Promise.reject(error);
+				return Promise.reject(error.response);
 			});
 	};
 
@@ -78,9 +78,8 @@ class Api {
 	};
 
 	getWebSocketUrl = async (uri, config = {}) => {
-		await this._ProccessAccessToken();
-
 		const base = new URL(instance.defaults.baseURL);
+
 		const protocol = base.protocol === 'https:' ? 'wss:' : 'ws:';
 
 		let path = uri;
@@ -93,7 +92,7 @@ class Api {
 		}
 
 		const wsUrl = new URL(path, `${protocol}//${base.host}`);
-		wsUrl.searchParams.append('token', this._SessionAccessToken());
+		wsUrl.searchParams.append('token', authStorage.getAccess());
 
 		return wsUrl.href;
 	};

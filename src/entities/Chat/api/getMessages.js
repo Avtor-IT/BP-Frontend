@@ -14,6 +14,7 @@ const useMessages = (chat_room_id) =>
 		queryKey: [apiEndpoints.CHAT_MESSAGES, chat_room_id],
 		queryFn: ({ pageParam }) => getMessages(chat_room_id, pageParam),
 		getNextPageParam: (lastpage) => lastpage.next_page,
+		retry: false,
 	});
 
 export default useMessages;

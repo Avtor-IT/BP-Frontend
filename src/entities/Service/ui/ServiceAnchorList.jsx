@@ -1,13 +1,13 @@
 import { Card, CardHeader, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import { useMaxWidth } from 'shared/model/index.js';
-import useGetUserServices from '../hooks/useGetUserServices';
+import useUserServices from '../hooks/useUserServices';
 import services from '../model/services';
 
 const ServiceAnchorList = () => {
 	const breakpoints = useMaxWidth();
 
-	const { data: userServices } = useGetUserServices();
+	const { data: userServices } = useUserServices();
 	const activeServices = useMemo(() => {
 		if (userServices) {
 			return userServices['active_services'];
