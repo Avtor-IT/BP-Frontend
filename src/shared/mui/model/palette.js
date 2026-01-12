@@ -8,7 +8,7 @@ const palette = {
 	},
 	secondary: {
 		main: '#514996',
-		light: '#B2ABDB',
+		light: '#A79EF3',
 		dark: '#433C85',
 		contrastText: '#FFFFFF',
 	},
@@ -25,6 +25,7 @@ const palette = {
 		dark: '#F9F9F9FF',
 		paper: '#FFFFFF',
 		contrast: '#EAE7FF',
+		bubble: '#F3F4F9',
 	},
 	textPrimary: {
 		dark: '#000',
@@ -32,6 +33,8 @@ const palette = {
 	},
 	textSecondary: {
 		default: '#6C6E87',
+		light: '#B5B5B5',
+		secondary: '#A79EF3',
 	},
 	error: {
 		main: '#EF454A',

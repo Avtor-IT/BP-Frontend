@@ -6,8 +6,6 @@ import { useDepartmentChat } from '../api/getDepartmentChat';
 const Chat = ({ roomId, type, ...props }) => {
 	const { data: chat, isLoading, isError } = useDepartmentChat(roomId);
 
-	console.log(chat);
-
 	if (isLoading)
 		return (
 			<Stack gap={2}>
@@ -31,7 +29,7 @@ const Chat = ({ roomId, type, ...props }) => {
 		>
 			<Stack
 				height="100%"
-				justifyContent="end"
+				justifyContent="start"
 				gap={2}
 				maxHeight="100%"
 			>

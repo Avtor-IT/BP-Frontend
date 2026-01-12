@@ -1,6 +1,7 @@
-import { CircularProgress, ListItem, ListItemText } from '@mui/material';
+import { CircularProgress, ListItem } from '@mui/material';
 import { useCallback, useMemo, useRef } from 'react';
 import { VirtualizedList } from 'shared/ui/VirtualizedList';
+import MessageItem from './MessageItem';
 
 const LOAD_OFFSET = 60;
 
@@ -9,30 +10,33 @@ const MessagesList = ({
 	hasNextPage,
 	isFetchingNextPage,
 	fetchNextPage,
+	onMessageVisible,
 	...props
 }) => {
+	const messagesList = useMemo(() => {
+		return messages.pages.flatMap((page) => page.results).reverse();
+	}, [messages]);
+
 	const scrollRef = useRef(null);
 	const initialScrolled = useRef(false);
 
-	const setEndRef = useCallback(
-		(node) => {
-			if (node) {
-				node.scrollIntoView({
-					behavior: initialScrolled.current ? 'smooth' : undefined,
-				});
-				if (scrollRef.current) {
-					initialScrolled.current = true;
-				} else {
-					initialScrolled.current = false;
-				}
+	const setEndRef = useCallback((node) => {
+		if (node) {
+			node.scrollIntoView({
+				behavior: initialScrolled.current ? 'smooth' : undefined,
+			});
+			if (scrollRef.current) {
+				initialScrolled.current = true;
+			} else {
+				initialScrolled.current = false;
 			}
-		},
-		[messages]
-	);
+		}
+	}, []);
 
 	const handleScroll = useCallback(
 		(e) => {
-			if (!hasNextPage || isFetchingNextPage) return;
+			if (!hasNextPage || isFetchingNextPage || !initialScrolled.current)
+				return;
 			if (e.currentTarget.scrollTop <= LOAD_OFFSET) {
 				const prevHeight = scrollRef.current?.scrollHeight ?? 0;
 				fetchNextPage().then(() => {
@@ -64,10 +68,6 @@ const MessagesList = ({
 		[hasNextPage, isFetchingNextPage, fetchNextPage]
 	);
 
-	const messagesList = useMemo(() => {
-		return messages.pages.flatMap((page) => page.results).reverse();
-	}, [messages]);
-
 	return (
 		<VirtualizedList
 			list={messagesList}
@@ -75,7 +75,10 @@ const MessagesList = ({
 			listHeight={700}
 			itemHeight={44}
 			slotProps={{
-				innerBox: { ref: setScrollRef, onScroll: handleScroll },
+				innerBox: {
+					ref: setScrollRef,
+					onScroll: handleScroll,
+				},
 			}}
 			firstItem={
 				hasNextPage ? (
@@ -87,17 +90,15 @@ const MessagesList = ({
 				) : null
 			}
 			renderItem={(message) => (
-				<ListItemText
-					primary={message.content}
-					secondary={new Date(message.timestamp).toLocaleString()}
-					sx={{
-						textAlign:
-							message.sender_type === 'user' ? 'right' : 'left',
-					}}
+				<MessageItem
+					message={message}
+					onMessageVisible={onMessageVisible}
+					key={message.id}
 				/>
 			)}
 			{...props}
 		/>
 	);
 };
+
 export default MessagesList;

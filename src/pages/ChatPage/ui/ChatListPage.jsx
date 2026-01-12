@@ -41,6 +41,9 @@ const ChatListPage = () => {
 		<List>
 			{chatList.map((chat) => {
 				const lastMessage = chat.last_message;
+				const from = lastMessage?.sender_type;
+				const isRead = lastMessage?.read;
+
 				return (
 					<ListItemButton
 						sx={{
@@ -88,7 +91,9 @@ const ChatListPage = () => {
 									display: 'block',
 									maxWidth: '920px',
 									variant: 'R16',
-									color: 'textPrimary.dark',
+									color: lastMessage
+										? 'textPrimary.dark'
+										: 'textPrimary.default',
 								},
 							}}
 							primary={`b24 id: ${
@@ -100,51 +105,55 @@ const ChatListPage = () => {
 									: 'Нет сообщений'
 							}
 						/>
+
 						<Stack
 							alignItems="end"
 							justifyContent="end"
 							gap={2}
+							marginBottom="auto"
 						>
 							<Stack
 								direction="row"
 								gap={2}
 							>
-								{lastMessage ? (
-									<>
-										{lastMessage.read ? null : (
-											<Typography
-												variant="R16"
-												color="textSecondary.default"
-											>
-												Не прочитано
-											</Typography>
-										)}
+								{from === 'user' && !isRead ? (
+									lastMessage.read ? null : (
 										<Typography
 											variant="R16"
-											color="textPrimary.dark"
+											color="textSecondary.default"
 										>
-											{formatTimestampToShortDate(
-												lastMessage.timestamp
-											)}
+											Не прочитано
 										</Typography>
-									</>
+									)
 								) : null}
+
+								{lastMessage && (
+									<Typography
+										variant="R16"
+										color="textPrimary.dark"
+									>
+										{formatTimestampToShortDate(
+											lastMessage.timestamp
+										)}
+									</Typography>
+								)}
 							</Stack>
-							<Typography
-								variant="R16"
-								sx={{
-									display: 'flex',
-									justifyContent: 'center',
-									alignItems: 'center',
-									width: '32px',
-									height: '32px',
-									backgroundColor: 'blue.main',
-									color: 'primary.contrastText',
-									borderRadius: '50%',
-								}}
-							>
-								1
-							</Typography>
+
+							{from === 'b24' && !isRead && (
+								<Typography
+									variant="R16"
+									sx={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										width: '32px',
+										height: '32px',
+										backgroundColor: 'blue.main',
+										color: 'primary.contrastText',
+										borderRadius: '50%',
+									}}
+								></Typography>
+							)}
 						</Stack>
 					</ListItemButton>
 				);

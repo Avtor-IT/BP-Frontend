@@ -61,19 +61,8 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 			>
 				{firstItem}
 
-				<Box
-					position="relative"
-					height={`${count * itemHeight}px`}
-					{...slotProps?.listBox}
-				>
-					{list.map((item, index) => {
-						if (
-							index + overscan < start ||
-							index - overscan > end
-						) {
-							return null;
-						}
-
+				{list.map((item, index) => {
+					if (index + overscan < start || index - overscan > end) {
 						return (
 							<div
 								key={
@@ -83,20 +72,35 @@ export const VirtualizedList = forwardRef(function VirtualizedList(
 									)}`
 								}
 								style={{
-									position: 'absolute',
-									left: 0,
-									right: 0,
-									top: 0,
-									transform: `translateY(${
-										itemHeight * index
-									}px)`, // better than top coordinate by perfomance issues
+									height: itemHeight,
+									background: 'red',
 								}}
-							>
-								{renderItem(item, index)}
-							</div>
+							/>
 						);
-					})}
-				</Box>
+					}
+
+					return (
+						<div
+							key={
+								item.id ||
+								`${index}-${Math.round(Math.random() * 1000)}`
+							}
+							style={
+								{
+									// position: 'absolute',
+									// left: 0,
+									// right: 0,
+									// top: 0,
+									// transform: `translateY(${
+									// 	itemHeight * index
+									// }px)`, // better than top coordinate by perfomance issues
+								}
+							}
+						>
+							{renderItem(item, index)}
+						</div>
+					);
+				})}
 
 				{endRef && <div ref={endRef} />}
 			</Box>

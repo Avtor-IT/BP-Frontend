@@ -48,10 +48,12 @@ export const useDeleteLetter = () => {
 					};
 				});
 
-				const newData = { ...data, pages: newPages };
+				// const newData = { ...data, pages: newPages };
 
-				qc.setQueryData(queryKey, newData);
+				// qc.setQueryData(queryKey, newData);
 			});
+
+			qc.invalidateQueries({ queryKey: [LETTERS_LIST_KEY] });
 
 			// snapshot for onError handler
 			return { previous };

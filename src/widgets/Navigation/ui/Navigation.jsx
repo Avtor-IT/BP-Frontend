@@ -72,11 +72,11 @@ export const Navigation = ({ ...props }) => {
 				link: RoutePath[AppRoutes.COMPANY],
 				icon: <ListIcon />,
 			},
-			{
-				title: 'Маркетплейс',
-				link: RoutePath[AppRoutes.MARKET],
-				icon: <Market />,
-			},
+			// {
+			// 	title: 'Маркетплейс',
+			// 	link: RoutePath[AppRoutes.MARKET],
+			// 	icon: <Market />,
+			// },
 			{
 				title: 'Конструктор письма',
 				link: RoutePath[AppRoutes.LETTER],

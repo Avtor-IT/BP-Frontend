@@ -1,9 +1,10 @@
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { CardHeader, Skeleton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Suspense, useMemo } from 'react';
 import { useMaxWidth } from 'shared/model';
 import useUserServices from '../hooks/useUserServices';
 import services from '../model/services';
+import { Card } from 'shared/ui/Card';
 
 const ServiceListWidget = () => {
 	const { data: userServices, isLoading, isError } = useUserServices();
@@ -29,13 +30,17 @@ const ServiceListWidget = () => {
 		return 'Ошибка при загрузке услуг.';
 	}
 
-	if (!activeServices.length) return null;
+	return Object.entries(services).map(([id, service]) => {
+		const isActive = activeServices.find((a) => a?.service === Number(id));
 
-	return activeServices.map(({ service: id }) => {
-		const service = services[id];
-
-		if (!service) {
-			return null;
+		if (!isActive) {
+			return (
+				<Card key={id}>
+					<CardHeader
+						title={`Сервис "${service.title}" не подключен`}
+					/>
+				</Card>
+			);
 		}
 
 		return (

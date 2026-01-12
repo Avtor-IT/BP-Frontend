@@ -1,10 +1,10 @@
+import { Button, Stack, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from 'entities/User';
 import { useEffect, useRef, useState } from 'react';
 import { apiEndpoints } from 'shared/model';
-import { useChatWS } from '../api/chatWebSocket';
-import { Button, Stack, TextField } from '@mui/material';
 import { CHAT_LIST_KEY } from '..';
+import { useChatWS } from '../api/chatWebSocket';
 
 const updateMessages = (oldData, msg) => {
 	if (!oldData) return oldData;
@@ -95,7 +95,7 @@ const SendMessageForm = ({ roomId, type }) => {
 					onChange={handleMessageChange}
 					fullWidth
 					placeholder={isClosed ? 'Ошибка подключения' : 'Сообщение'}
-					disabled={isConnecting}
+					autoFocus
 				/>
 				<Button
 					type="submit"

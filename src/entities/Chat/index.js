@@ -6,3 +6,7 @@ export { useImportantMessages } from './api/getImportantMessages';
 export { useMarkDone } from './api/markDone';
 export { useManagerChat } from './api/managerChat';
 export { CHAT_TYPE, useChatWS } from './api/chatWebSocket';
+export {
+	default as useReadMessage,
+	KEY as READ_MESSAGE_KEY,
+} from './api/readMessage';
