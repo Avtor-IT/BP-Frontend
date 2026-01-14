@@ -23,7 +23,7 @@ export const useChatWS = ({ roomId, type = CHAT_TYPE.DEPARTMENT }) => {
 
 			setUrl(wsurl);
 		})();
-	}, [roomId]);
+	}, [roomId, type]);
 
 	return {
 		...socket,

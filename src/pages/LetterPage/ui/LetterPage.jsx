@@ -38,8 +38,11 @@ const LetterPage = () => {
 					order={{ xxl: 2, xs: 1 }}
 				>
 					<LetterConstructorCard
-						minHeight={{ xxxl: 228, xs: 120 }}
-						sx={{ height: '100%' }}
+						// minHeight={{ xxxl: 228, xs: 120 }}
+						sx={{
+							height: '100%',
+							minHeight: { xxxl: 228, xs: 120 },
+						}}
 					/>
 				</Grid>
 			</Grid>

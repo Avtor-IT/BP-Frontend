@@ -15,16 +15,30 @@ const MessageList = ({
 	status: _status,
 }) => {
 	const parentRef = useRef(null);
-	const bottomRef = useRef(null);
 	const topRef = useRef(null);
 	const countRef = useRef(null);
 	const scrollRef = useRef(null);
+	const isAtBottomRef = useRef(true);
+	const prevFirstIdRef = useRef(null);
+	const prevLastIdRef = useRef(null);
+	const prevScrollRef = useRef(0);
+	const prevTotalSizeRef = useRef(0);
 
 	const virtualizer = useVirtualizer({
 		count: hasNextPage ? messages.length + 1 : messages.length,
 		getScrollElement: () => parentRef.current,
 		estimateSize: () => ITEM_HEIGHT,
 		overscan: 4,
+		useAnimationFrameWithResizeObserver: true,
+		getItemKey: (index) => {
+			if (hasNextPage && index === 0) return 'loader';
+			const messageIndex = hasNextPage ? index - 1 : index;
+			return messages[messageIndex]?.id ?? `row-${index}`;
+		},
+		shouldAdjustScrollPositionOnItemSizeChange: (item, delta, instance) => {
+			const first = instance.getVirtualItems()[0];
+			return first ? item.index < first.index : false;
+		},
 	});
 
 	const items = virtualizer.getVirtualItems();
@@ -32,10 +46,16 @@ const MessageList = ({
 	const pad = Math.max(0, LIST_HEIGHT - totalSize);
 
 	useEffect(() => {
-		/* observe top & bottom */
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.target.id === 'top') {
+		/* observe top for paging */
+		const root = parentRef.current;
+		if (!root) {
+			return undefined;
+		}
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.target.id !== 'top') return;
 					if (
 						entry.isIntersecting &&
 						hasNextPage &&
@@ -43,45 +63,100 @@ const MessageList = ({
 					) {
 						fetchNextPage();
 					}
-				}
-			});
-		});
+				});
+			},
+			{ root }
+		);
 
-		if (topRef.current) observer.observe(topRef.current);
-		if (bottomRef.current) observer.observe(bottomRef.current);
+		if (topRef.current) {
+			observer.observe(topRef.current);
+		}
 
 		return () => observer.disconnect();
 	}, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
 	useEffect(() => {
 		/* update scrollRef if the messages count changes */
-		if (messages.length === countRef.current) return; // to avoid duplicate calls
+		if (!messages.length) {
+			countRef.current = 0;
+			prevFirstIdRef.current = null;
+			prevLastIdRef.current = null;
+			return;
+		}
 
-		/* scroll to an end on the initial messages fetch */
-		if (!scrollRef.current) {
+		const prevCount = countRef.current;
+		const firstId = messages[0]?.id;
+		const lastId = messages[messages.length - 1]?.id;
+		const lastMessage = messages[messages.length - 1];
+		const totalSize = virtualizer.getTotalSize();
+
+		if (prevCount == null) {
 			scrollRef.current = {
 				index: messages.length - (hasNextPage ? 0 : 1),
 				align: 'end',
 			};
-			countRef.current = messages.length;
-			return;
+		} else if (prevCount < messages.length) {
+			const added = messages.length - prevCount;
+			const isPrepend =
+				prevFirstIdRef.current &&
+				firstId &&
+				prevFirstIdRef.current !== firstId;
+			const isAppend =
+				prevLastIdRef.current &&
+				lastId &&
+				prevLastIdRef.current !== lastId;
+			const isOwnAppend = isAppend && lastMessage?.sender_type === 'user';
+
+			if (isPrepend) {
+				scrollRef.current = {
+					index: added + (hasNextPage ? 1 : 0),
+					align: 'top',
+					adjust: {
+						delta: totalSize - prevTotalSizeRef.current,
+						base:
+							parentRef.current.scrollTop ??
+							prevScrollRef.current,
+					},
+				};
+			} else if (isAppend && (isAtBottomRef.current || isOwnAppend)) {
+				scrollRef.current = {
+					index: messages.length - (hasNextPage ? 0 : 1),
+					align: 'end',
+				};
+			}
 		}
 
-		scrollRef.current = {
-			index: messages.length - countRef.current + (hasNextPage ? 1 : 0),
-			align: 'top',
-		};
-
 		countRef.current = messages.length;
-	}, [messages.length, virtualizer]);
+		prevFirstIdRef.current = firstId;
+		prevLastIdRef.current = lastId;
+		prevTotalSizeRef.current = totalSize;
+	}, [messages, hasNextPage]);
+
+	const handleScroll = () => {
+		const element = parentRef.current;
+		if (!element) return;
+
+		const threshold = 16;
+		const { scrollTop, scrollHeight, clientHeight } = element;
+		prevScrollRef.current = scrollTop;
+
+		isAtBottomRef.current =
+			scrollHeight - scrollTop - clientHeight <= threshold;
+	};
 
 	useLayoutEffect(() => {
 		/* scroll based on scrollRef */
 		if (scrollRef.current) {
 			requestAnimationFrame(() => {
-				const { index, align } = scrollRef.current;
-				console.log(index, align);
-				virtualizer.scrollToIndex(index, { align });
+				const { index, align, adjust } = scrollRef.current;
+
+				if (adjust && parentRef.current) {
+					virtualizer.scrollToOffset(adjust.base + adjust.delta);
+					delete scrollRef.current.adjust;
+				} else {
+					/* Срабатывает при append, надо исправить */
+					virtualizer.scrollToIndex(index, { align });
+				}
 			});
 		}
 	}, [messages.length, virtualizer]);
@@ -89,6 +164,7 @@ const MessageList = ({
 	return (
 		<div
 			ref={parentRef}
+			onScroll={handleScroll}
 			style={{
 				height: LIST_HEIGHT + 'px',
 				overflow: 'auto',
@@ -159,12 +235,6 @@ const MessageList = ({
 							</div>
 						);
 					})}
-
-					<div
-						style={{ position: 'absolute', bottom: 0 }}
-						id="bottom"
-						ref={bottomRef}
-					/>
 				</div>
 			</div>
 		</div>
