@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { AppRoutes, RoutePath } from 'shared/router';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-const ChatHistory = ({ id, ...props }) => {
+const ChatHistory = ({ id, listHeight, ...props }) => {
 	const {
 		data: messages,
 		isLoading: isMessagesLoading,
@@ -29,13 +29,13 @@ const ChatHistory = ({ id, ...props }) => {
 
 	// Функция для обработки видимости сообщения (прочтение)
 	const handleMessageVisibility = useCallback(
-		(message) => {
+		async (message) => {
 			if (
 				message.sender_type === 'b24' &&
 				!message.read &&
 				!readMessagesRef.current.has(message.id)
 			) {
-				readMessageMutation.mutate(message.id);
+				await readMessageMutation.mutateAsync(message.id);
 				readMessagesRef.current.add(message.id);
 			}
 		},
@@ -81,6 +81,7 @@ const ChatHistory = ({ id, ...props }) => {
 			hasNextPage={hasNextPage}
 			onMessageVisible={handleMessageVisibility}
 			status={status}
+			listHeight={listHeight}
 			{...props}
 		/>
 	);

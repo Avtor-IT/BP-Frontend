@@ -18,7 +18,7 @@ export const apiEndpoints = {
 	CHAT_MESSAGES: `/api/chat/:chat_room_id/messages/ ` /* to edit */,
 	CHAT_IMPORTANT_MESSAGES: `/api/chat/messages/important/` /* to edit */,
 	CHAT_LIST: `/api/chat/my-chats/`,
-	READ_MESSAGE: '/chat/messages/:message_id/read/',
+	READ_MESSAGE: 'api/chat/messages/:message_id/read/',
 	MANAGER_CHAT: `/api/chat/my-manager-chat/`,
 	DEPARTMENT_CHAT: `/api/chat/chatrooms/department/:department_id/`,
 	MARK_DONE: `/api/chat/messages/:message_id/done/`,

@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Document from 'shared/icons/Document';
 import HomeIcon from 'shared/icons/Home';
 import ListIcon from 'shared/icons/List';
-import Market from 'shared/icons/Market';
 import OfficeIcon from 'shared/icons/Office';
 import { AppRoutes, RoutePath } from 'shared/router';
 

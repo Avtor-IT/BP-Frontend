@@ -6,12 +6,11 @@ import { MESSAGES_KEY } from './getMessages';
 export const KEY = apiEndpoints.READ_MESSAGE;
 
 const readMessage = async (message_id) => {
-	return Promise.resolve({ message_id, status: 'ok' });
-	// return await api.Post(
-	// 	apiEndpoints.READ_MESSAGE,
-	// 	{},
-	// 	{ urlParams: { message_id } }
-	// );
+	return await api.Post(
+		apiEndpoints.READ_MESSAGE,
+		{},
+		{ urlParams: { message_id } }
+	);
 };
 
 const useReadMessage = (chat_room_id) => {

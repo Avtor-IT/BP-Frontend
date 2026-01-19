@@ -3,7 +3,6 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import MessageItem from './MessageItem';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-const LIST_HEIGHT = 700;
 const ITEM_HEIGHT = 45 + 8;
 
 const MessageList = ({
@@ -12,6 +11,7 @@ const MessageList = ({
 	isFetchingNextPage,
 	fetchNextPage,
 	onMessageVisible,
+	listHeight,
 	status: _status,
 }) => {
 	const parentRef = useRef(null);
@@ -43,7 +43,7 @@ const MessageList = ({
 
 	const items = virtualizer.getVirtualItems();
 	const totalSize = virtualizer.getTotalSize();
-	const pad = Math.max(0, LIST_HEIGHT - totalSize);
+	const pad = Math.max(0, parseInt(listHeight) - totalSize);
 
 	useEffect(() => {
 		/* observe top for paging */
@@ -121,8 +121,11 @@ const MessageList = ({
 			} else if (isAppend && (isAtBottomRef.current || isOwnAppend)) {
 				scrollRef.current = {
 					index: messages.length - (hasNextPage ? 0 : 1),
+					behavior: isOwnAppend ? 'smooth' : 'auto',
 					align: 'end',
 				};
+			} else {
+				scrollRef.current = null;
 			}
 		}
 
@@ -148,14 +151,15 @@ const MessageList = ({
 		/* scroll based on scrollRef */
 		if (scrollRef.current) {
 			requestAnimationFrame(() => {
-				const { index, align, adjust } = scrollRef.current;
+				if (!scrollRef.current) return;
+				const { index, align, adjust, behavior } = scrollRef.current;
 
 				if (adjust && parentRef.current) {
 					virtualizer.scrollToOffset(adjust.base + adjust.delta);
 					delete scrollRef.current.adjust;
 				} else {
 					/* Срабатывает при append, надо исправить */
-					virtualizer.scrollToIndex(index, { align });
+					virtualizer.scrollToIndex(index, { align, behavior });
 				}
 			});
 		}
@@ -166,7 +170,7 @@ const MessageList = ({
 			ref={parentRef}
 			onScroll={handleScroll}
 			style={{
-				height: LIST_HEIGHT + 'px',
+				height: listHeight,
 				overflow: 'auto',
 				contain: 'strict',
 			}}
@@ -203,7 +207,6 @@ const MessageList = ({
 							: virtualItem.index;
 
 						const message = messages[messageIndex];
-
 						return (
 							<div
 								key={virtualItem.key}

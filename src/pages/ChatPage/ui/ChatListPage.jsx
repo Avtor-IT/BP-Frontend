@@ -9,7 +9,6 @@ import {
 	Typography,
 } from '@mui/material';
 import { useChatList } from 'entities/Chat';
-import { useUserServices } from 'entities/Service';
 import { Link } from 'react-router-dom';
 import { formatTimestampToShortDate } from 'shared/lib';
 
