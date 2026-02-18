@@ -3,7 +3,8 @@ import { Stack } from '@mui/system';
 import { useEffect, useState } from 'react';
 import useGetBlob from '../hooks/useGetBlob';
 import DownloadDocumentButton from './DownloadDocumentButton';
-import RenderFile from './RenderFile';
+import { RenderFile } from 'shared/ui/RenderFile';
+import { formatFileName } from 'shared/lib/file';
 
 const boxStyle = {
 	paddingBlock: 2,
@@ -11,7 +12,7 @@ const boxStyle = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	maxWidth: 800,
+	width: 800,
 	minHeight: 250,
 	maxHeight: '100vh',
 	display: 'flex',
@@ -129,7 +130,7 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 							overflow="hidden"
 							textOverflow="ellipsis"
 						>
-							{fileName}
+							{formatFileName(fileName)}
 						</Typography>
 
 						<DownloadDocumentButton

@@ -65,6 +65,7 @@ const useMessages = (chat_room_id) =>
 		},
 		retry: false,
 		staleTime: Infinity,
+		refetchOnMount: false,
 	});
 
 export default useMessages;

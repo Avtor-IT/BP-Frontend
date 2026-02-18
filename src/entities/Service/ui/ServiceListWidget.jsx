@@ -31,9 +31,11 @@ const ServiceListWidget = () => {
 	}
 
 	return Object.entries(services).map(([id, service]) => {
-		const isActive = activeServices.find((a) => a?.service === Number(id));
+		const activeService = activeServices.find(
+			(a) => a?.service === Number(id)
+		);
 
-		if (!isActive) {
+		if (!activeService) {
 			return (
 				<Card key={id}>
 					<CardHeader
@@ -90,7 +92,9 @@ const ServiceListWidget = () => {
 							/>
 						}
 					>
-						<service.component />
+						<service.component
+							deparmentId={activeService.department_id}
+						/>
 					</Suspense>
 				</Stack>
 			</Box>

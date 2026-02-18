@@ -1,6 +1,5 @@
 import { Button, CardActions, Divider, Typography } from '@mui/material';
-import { useRoom } from 'entities/Chat';
-import { generatePath, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CallIcon } from 'shared/icons/Call';
 import MessageIcon from 'shared/icons/Message';
 import { useMaxWidth } from 'shared/model';
@@ -22,15 +21,8 @@ const xlSx = {
 	flexGrow: 1,
 };
 
-const ManagerActionsMobile = ({ manager }) => {
+const ManagerActionsMobile = ({ chatRoute }) => {
 	const breakpoints = useMaxWidth();
-	const { data: room, isPending, isError } = useRoom(manager?.ID);
-
-	const chatRoute = room
-		? generatePath(RoutePath[AppRoutes.CHAT], {
-				id: room.id,
-		  })
-		: null;
 
 	return (
 		<CardActions
@@ -47,13 +39,9 @@ const ManagerActionsMobile = ({ manager }) => {
 				component={Link}
 				to={RoutePath[AppRoutes.MAIN]}
 				variant="unstyled"
-				disabled={isError}
-				loading={isPending}
 				endIcon={
 					<CallIcon
-						color={
-							breakpoints.xl && !isError ? 'success' : undefined
-						}
+						color={breakpoints.xl ? 'success' : undefined}
 						strokeWidth={1.5}
 					/>
 				}
@@ -74,14 +62,10 @@ const ManagerActionsMobile = ({ manager }) => {
 			<Button
 				component={Link}
 				to={chatRoute}
-				disabled={isError}
-				loading={isPending}
 				variant="unstyled"
 				endIcon={
 					<MessageIcon
-						color={
-							breakpoints.xl && !isError ? 'secondary' : undefined
-						}
+						color={breakpoints.xl ? 'secondary' : undefined}
 						strokeWidth={1.5}
 					/>
 				}

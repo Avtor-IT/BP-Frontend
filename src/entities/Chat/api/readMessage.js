@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 import { MESSAGES_KEY } from './getMessages';
+import { KEY as COUNT_KEY } from './messagesCount';
 
 export const KEY = apiEndpoints.READ_MESSAGE;
 
@@ -36,6 +37,7 @@ const useReadMessage = (chat_room_id) => {
 						read: true,
 					});
 
+					qc.invalidateQueries({ queryKey: [COUNT_KEY] });
 					return { ...page, results: newMessages };
 				});
 

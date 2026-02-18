@@ -13,17 +13,15 @@ import { useMaxWidth } from 'shared/model';
 import { createAdditioinalSx } from 'shared/mui';
 import { CircledTitle } from 'shared/ui/CircledTitle';
 import { ScrollBox } from 'shared/ui/Scrollable';
-import useUploadFileMutation from '../hooks/useUploadFileMutation';
+import { usePrepareAndUploadFile } from '../hooks/useUploadFileMutation';
 import { CloseIcon } from 'shared/icons/Close';
-import { useFiletoBase64 } from '../hooks/useFileToBase64';
 
 const UploadDocument = (props) => {
 	const breakpoints = useMaxWidth();
 
 	const inputRef = useRef(null);
 	const [droppedFiles, setDroppedFiles] = useState([]);
-	const uploadMutation = useUploadFileMutation();
-	const toBase64Mutation = useFiletoBase64();
+	const { mutateAsync, isPending, isError } = usePrepareAndUploadFile();
 
 	const handleFiles = (newFiles) => {
 		if (!newFiles) return;
@@ -39,31 +37,18 @@ const UploadDocument = (props) => {
 		setDroppedFiles(prev);
 	};
 
-	const [isLoading, setLoading] = useState(false);
-	const [isError, setIsError] = useState(false);
 	const [errorDescribe, setErrorDescribe] = useState('');
 
 	const uploadHandle = async () => {
 		try {
-			setLoading(true);
-			setIsError(false);
 			for (const rawFile of droppedFiles) {
-				const preparedFile = {
-					name: rawFile.name,
-					base64: await toBase64Mutation.mutateAsync(rawFile),
-				};
-
-				await uploadMutation.mutateAsync(preparedFile);
+				await mutateAsync({ rawFile });
 			}
 			setDroppedFiles([]);
 		} catch (e) {
-			setIsError(true);
-
 			if (e.response.data.error === 'DISK_OBJ_22000') {
 				setErrorDescribe('Файл с таким названием уже есть.');
 			}
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -85,7 +70,7 @@ const UploadDocument = (props) => {
 								typography: 'M16',
 								color: 'secondary.main',
 							}}
-							disabled={!droppedFiles.length || Boolean(isError)}
+							disabled={!droppedFiles.length || isPending}
 						>
 							Добавить
 						</Button>
@@ -122,7 +107,7 @@ const UploadDocument = (props) => {
 					handleFiles(e.dataTransfer.files);
 				}}
 			>
-				{isLoading && (
+				{isPending && (
 					<Stack
 						position="absolute"
 						top={0}
@@ -161,18 +146,11 @@ const UploadDocument = (props) => {
 							{errorDescribe ||
 								'Возникла ошибка. Сообщите менеджеру.'}
 						</Typography>
-						<Button
-							onClick={() => setIsError(false)}
-							sx={{ typography: 'M20' }}
-							color={'secondary'}
-						>
-							Повторить попытку
-						</Button>
 					</Stack>
 				)}
 
 				<input
-					disabled={isLoading || Boolean(isError)}
+					disabled={isPending || Boolean(isError)}
 					ref={inputRef}
 					type="file"
 					multiple

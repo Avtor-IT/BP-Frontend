@@ -13,7 +13,7 @@ export const RecommendationsHistory = ({ useRecommendationsHistoryQuery }) => {
 	}
 
 	if (isError) {
-		return <Typography>Ошибка при загрузке рекомендации.</Typography>;
+		return <Typography>Ошибка при загрузке рекомендаций.</Typography>;
 	}
 
 	return (

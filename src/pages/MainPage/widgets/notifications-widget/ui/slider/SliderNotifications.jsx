@@ -4,24 +4,28 @@ import Slider from 'react-slick';
 import CheckCircle from 'shared/icons/CheckCircle';
 import cls from '../notifications.module.scss';
 import { forwardRef } from 'react';
-import { useMarkDone } from 'entities/Chat';
+import { useToggleImportantMessage } from 'features/Chat';
 
 const SliderNotifications = forwardRef(function SliderNotifiations(
 	{ navDots, notifications, currentSlide, beforeChange },
 	ref
 ) {
+	const isSingle = notifications.length <= 1;
 	const settings = {
+		infinite: !isSingle,
 		dots: false,
 		arrows: false,
-		swipeToSlide: true,
+		swipeToSlide: !isSingle,
+		swipe: !isSingle,
+		draggable: !isSingle,
 		waitForAnimate: false,
 		cancelable: true,
 		beforeChange,
 	};
 
-	const markDone = useMarkDone();
+	const markDone = useToggleImportantMessage();
 	const handleMarkDone = (messageId, done) => {
-		markDone.mutate({ messageId, done: !done });
+		markDone.toggle(messageId, done);
 	};
 
 	return (

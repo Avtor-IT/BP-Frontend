@@ -8,7 +8,7 @@ export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
 
 	const markDone = useMarkDone();
 	const handleMarkDone = (messageId, done) => {
-		markDone.mutate({ messageId, done: done });
+		markDone.mutate({ messageId, done: !done });
 	};
 
 	return (
@@ -32,7 +32,7 @@ export const RecommendationItem = ({ recommendation, slotProps, ...props }) => {
 				// loading={markDone.isPending}
 				sx={{ color: recommendation.done ? 'primary.main' : undefined }}
 				onClick={() =>
-					handleMarkDone(recommendation.id, !recommendation.done)
+					handleMarkDone(recommendation.id, recommendation.done)
 				}
 			>
 				<CheckCircleIcon />

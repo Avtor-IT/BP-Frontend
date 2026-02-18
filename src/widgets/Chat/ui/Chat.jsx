@@ -1,13 +1,26 @@
 import { Box, IconButton, Skeleton, Stack, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import ChatHistory from './ChatHistory';
-import SendMessageForm from './SendMessageForm';
-import { useDepartmentChat } from '../api/getDepartmentChat';
+import { SendMessageForm } from 'features/Chat';
+import { useDepartmentChat } from 'entities/Chat';
 import { CloseIcon } from 'shared/icons/Close';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoutes, RoutePath } from 'shared/router';
 
 const Chat = ({ roomId, type, ...props }) => {
+	const navigate = useNavigate();
 	const { data: chat, isLoading, isError } = useDepartmentChat(roomId);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === 'Escape') {
+				navigate(RoutePath[AppRoutes.CHATS]);
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [navigate]);
 
 	if (isLoading)
 		return (
@@ -22,15 +35,21 @@ const Chat = ({ roomId, type, ...props }) => {
 			</Stack>
 		);
 
-	if (isError) return <Typography variant="M24">Ошибка</Typography>;
+	if (isError)
+		return <Typography variant="M24">Ошибка загрузки чата</Typography>;
 
 	return (
 		<Box
 			height="100%"
+			minHeight={0}
+			maxHeight="1200px"
 			paddingBottom={4}
 			{...props}
 		>
-			<Stack height="100%">
+			<Stack
+				height="100%"
+				minHeight={0}
+			>
 				<Stack
 					direction="row"
 					backgroundColor="secondary.main"
@@ -55,11 +74,14 @@ const Chat = ({ roomId, type, ...props }) => {
 					flexGrow={1}
 					justifyContent="start"
 					maxHeight="100%"
+					minHeight={0}
 				>
-					<ChatHistory
-						id={chat.id}
-						listHeight={'600px'}
-					/>
+					<Box
+						flexGrow={1}
+						minHeight={0}
+					>
+						<ChatHistory chatId={chat.id} />
+					</Box>
 
 					<SendMessageForm
 						roomId={chat.id}

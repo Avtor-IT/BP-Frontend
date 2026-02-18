@@ -1,0 +1,4 @@
+export const CHAT_TYPE = {
+	DEPARTMENT: 'DEPARTMENT',
+	MANAGER: 'MANAGER',
+};

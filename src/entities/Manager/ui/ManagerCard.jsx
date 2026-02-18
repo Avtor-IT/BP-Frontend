@@ -18,27 +18,27 @@ import { createAdditioinalSx } from 'shared/mui';
 import { useMaxWidth } from 'shared/model';
 import ManagerActions from './ManagerActions';
 import ManagerActionsMobile from './ManagerActions.mobile';
-import { useRoom } from 'entities/Chat';
+import { useManagerChat } from 'entities/Chat';
 import { generatePath } from 'react-router';
 import { AppRoutes, RoutePath } from 'shared/router';
 import { Link } from 'react-router-dom';
 
 export const ManagerCard = ({ showPic = true, ...props }) => {
 	const breakpoints = useMaxWidth();
-	const { data: manager, isLoading, isError } = useManager();
-
+	const { data: chat, isLoading, isError } = useManagerChat();
 	const {
-		data: room,
-		isPending: isRoomPending,
-		isError: isRoomError,
-	} = useRoom(manager?.ID);
-	const chatRoute = room
-		? generatePath(RoutePath[AppRoutes.CHAT], {
-				id: room.id,
+		data: manager,
+		isLoading: isManagerLoading,
+		isError: isManagerError,
+	} = useManager();
+
+	const chatRoute = chat
+		? generatePath(RoutePath[AppRoutes.CHATS], {
+				id: chat.id,
 		  })
 		: null;
 
-	if (isLoading)
+	if (isLoading || isManagerLoading)
 		return (
 			<Skeleton
 				variant="rounded"
@@ -46,129 +46,124 @@ export const ManagerCard = ({ showPic = true, ...props }) => {
 			/>
 		);
 
-	if (isError) return <ErrorCard text="Ошибка при загрузке менеджера" />;
+	if (isError || isManagerError)
+		return <ErrorCard text="Ошибка при загрузке менеджера" />;
 
-	if (manager) {
-		return (
-			<Card
-				{...props}
-				sx={createAdditioinalSx(
-					{
-						gap: 2,
-						paddingBottom: breakpoints.xxl
-							? breakpoints.xl
-								? '48px'
-								: '16px'
-							: undefined,
-						position: 'relative',
-						paddingTop: breakpoints.xl ? 3 : undefined,
-					},
-					props.sx
-				)}
-			>
-				<CardHeader
-					title="Мой менеджер"
-					slotProps={{
-						title: { variant: breakpoints.xl ? 'M20' : 'M24' },
-					}}
-					action={
-						<Button
-							component={Link}
-							to={chatRoute}
-							variant="unstyled"
-							disabled={isRoomError}
-							loading={isRoomPending}
-							endIcon={<MailIcon fontSize="small" />}
-							sx={{ '&': { color: 'primary.main' } }}
-						>
-							<Typography variant="R16">3</Typography>
-						</Button>
-					}
-				/>
+	return (
+		<Card
+			{...props}
+			sx={createAdditioinalSx(
+				{
+					gap: 2,
+					paddingBottom: breakpoints.xxl
+						? breakpoints.xl
+							? '48px'
+							: '16px'
+						: undefined,
+					position: 'relative',
+					paddingTop: breakpoints.xl ? 3 : undefined,
+				},
+				props.sx
+			)}
+		>
+			<CardHeader
+				title="Мой менеджер"
+				slotProps={{
+					title: { variant: breakpoints.xl ? 'M20' : 'M24' },
+				}}
+				action={
+					<Button
+						component={Link}
+						to={chatRoute}
+						variant="unstyled"
+						disabled={isError}
+						loading={isLoading}
+						endIcon={<MailIcon fontSize="small" />}
+						sx={{ '&': { color: 'primary.main' } }}
+					>
+						<Typography variant="R16">3</Typography>
+					</Button>
+				}
+			/>
 
-				<CardContent sx={{ height: '100%' }}>
+			<CardContent sx={{ height: '100%' }}>
+				<Stack
+					direction={breakpoints.xl ? 'column' : 'row'}
+					gap={1}
+					justifyContent="space-between"
+					height="100%"
+				>
 					<Stack
-						direction={breakpoints.xl ? 'column' : 'row'}
-						gap={1}
-						justifyContent="space-between"
+						direction="row"
+						gap={2}
+						alignItems="center"
+					>
+						{showPic && (
+							<AvatarManager src={manager['PERSONAL_PHOTO']} />
+						)}
+						<Typography
+							variant={breakpoints.xxxl ? 'R16' : 'M16'}
+							sx={{
+								lineHeight: '1.3',
+								paddingBottom:
+									breakpoints.xxxl && !breakpoints.xxl
+										? '42px'
+										: undefined,
+							}}
+						>
+							{manager['LAST_NAME']}
+							<br />
+							{manager['NAME']}
+							<br />
+							{manager['SECOND_NAME']}
+						</Typography>
+					</Stack>
+
+					<Stack
+						justifyContent="end"
+						alignItems="end"
 						height="100%"
 					>
 						<Stack
-							direction="row"
 							gap={2}
-							alignItems="center"
-						>
-							{showPic && (
-								<AvatarManager
-									src={manager['PERSONAL_PHOTO']}
-								/>
-							)}
-							<Typography
-								variant={breakpoints.xxxl ? 'R16' : 'M16'}
-								sx={{
-									lineHeight: '1.3',
-									paddingBottom:
-										breakpoints.xxxl && !breakpoints.xxl
-											? '42px'
-											: undefined,
-								}}
-							>
-								{manager['LAST_NAME']}
-								<br />
-								{manager['NAME']}
-								<br />
-								{manager['SECOND_NAME']}
-							</Typography>
-						</Stack>
-
-						<Stack
-							justifyContent="end"
 							alignItems="end"
-							height="100%"
+							color="tertiary.main"
 						>
-							<Stack
-								gap={2}
-								alignItems="end"
-								color="tertiary.main"
-							>
-								{manager['WORK_PHONE'] ? (
-									<CopyBtn textToCopy={manager['WORK_PHONE']}>
-										<Stack
-											gap={1}
-											alignItems="center"
-											direction="row"
+							{manager['WORK_PHONE'] ? (
+								<CopyBtn textToCopy={manager['WORK_PHONE']}>
+									<Stack
+										gap={1}
+										alignItems="center"
+										direction="row"
+									>
+										<Typography
+											variant={
+												breakpoints.xxxl ? 'R16' : 'R20'
+											}
+											color={
+												breakpoints.xxl
+													? 'secondary.main'
+													: undefined
+											}
 										>
-											<Typography
-												variant={
-													breakpoints.xxxl
-														? 'R16'
-														: 'R20'
-												}
-												color={
-													breakpoints.xxl
-														? 'secondary.main'
-														: undefined
-												}
-											>
-												{formatPhoneNumber(
-													manager['WORK_PHONE']
-												)}
-											</Typography>
-											<CopyIcon strokeWidth={1.5} />
-										</Stack>
-									</CopyBtn>
-								) : null}
+											{formatPhoneNumber(
+												manager['WORK_PHONE']
+											)}
+										</Typography>
+										<CopyIcon strokeWidth={1.5} />
+									</Stack>
+								</CopyBtn>
+							) : null}
 
-								{!breakpoints.xxl && (
-									<ManagerActions manager={manager} />
-								)}
-							</Stack>
+							{!breakpoints.xxl && (
+								<ManagerActions chatRoute={chatRoute} />
+							)}
 						</Stack>
 					</Stack>
-				</CardContent>
+				</Stack>
+			</CardContent>
 
-				{breakpoints.xxl && <ManagerActionsMobile manager={manager} />}
-			</Card>
-		);
-	}
+			{breakpoints.xxl && <ManagerActionsMobile manager={manager} />}
+		</Card>
+	);
 };

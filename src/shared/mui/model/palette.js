@@ -5,6 +5,7 @@ const palette = {
 		light: '#C16496',
 		dark: '#992D68',
 		contrastText: '#FFFFFF',
+		lightText: '#F5A3CF',
 	},
 	secondary: {
 		main: '#514996',

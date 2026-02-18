@@ -11,10 +11,8 @@ import DocsToApprove from './DocsToApprove';
 import Taxes from './reports/Taxes';
 import { useMaxWidth } from 'shared/model';
 import { Recommendations } from '../recommends/Recommendations';
-import { useActualRecommendation } from '../../api/accounting/getActualRecommendation';
-import { useRecommendationsHistory } from '../../api/accounting/getReccommendationsHistory';
 
-const Accounting = ({ ...props }) => {
+const Accounting = ({ deparmentId, ...props }) => {
 	const breakpoints = useMaxWidth();
 	const selectedReport = useAccountingReportStore.use.report();
 	const reports = useAccountingReports();
@@ -61,10 +59,7 @@ const Accounting = ({ ...props }) => {
 			</Grid>
 
 			<Grid size="grow">
-				<Recommendations
-					useActualRecommendationQuery={useActualRecommendation}
-					useRecommendationsHistoryQuery={useRecommendationsHistory}
-				/>
+				<Recommendations deparmentId={deparmentId} />
 			</Grid>
 		</Grid>
 	);

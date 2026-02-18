@@ -3,9 +3,9 @@ import { ThemeProvider } from './themeProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Routes from './router/ui/Routes';
 
-export const Providers = () => {
-	const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
+export const Providers = () => {
 	return (
 		<React.StrictMode>
 			<QueryClientProvider client={queryClient}>

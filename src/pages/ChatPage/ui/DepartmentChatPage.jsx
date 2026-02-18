@@ -1,5 +1,6 @@
 import { Skeleton } from '@mui/material';
-import { Chat, CHAT_TYPE } from 'entities/Chat';
+import { CHAT_TYPE } from 'entities/Chat';
+import { Chat } from 'widgets/Chat';
 import { useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { AppRoutes, RoutePath } from 'shared/router';

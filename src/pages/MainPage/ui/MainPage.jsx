@@ -43,7 +43,7 @@ const MainPage = () => {
 					<CompanyCard sx={{ height: '100%' }} />
 				</Grid>
 
-				{breakpoints.lg && (
+				{/* 	{breakpoints.lg && (
 					<Grid
 						size={5}
 						order={2}
@@ -51,7 +51,7 @@ const MainPage = () => {
 					>
 						<CompanyBalanceCard sx={{ height: '100%' }} />
 					</Grid>
-				)}
+				)} */}
 
 				{!breakpoints.lg && (
 					<Grid

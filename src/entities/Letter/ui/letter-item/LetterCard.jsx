@@ -10,8 +10,6 @@ import {
 import { useGenerateDocx, useGeneratePdf } from '../../lib/useGenerateDocument';
 import { letterToFields } from '../../model/generator-config/formLetter';
 import { useState } from 'react';
-import { CheckSquareIcon } from 'shared/icons/CheckSquare';
-import { EditSquareIcon } from 'shared/icons/EditSqueare';
 import ImportIcon from 'shared/icons/Import';
 import { formatDate } from 'shared/lib';
 import { useMaxWidth } from 'shared/model';

@@ -6,10 +6,10 @@ import {
 	IconButton,
 } from '@mui/material';
 import { useState } from 'react';
-import { RecommendationsHistory } from './Recommendations.history';
-import { RecommendationsActual } from './Recommendations.actual';
 import ArrowIcon from 'shared/icons/Arrow';
 import { useMaxWidth } from 'shared/model';
+import { useDepartmentChat, useImportantMessages } from 'entities/Chat';
+import { RecommendationItem } from './Recommendation.item';
 
 const iconSx = (isOpen) => ({
 	transform: `rotate(${isOpen ? '90deg' : '-90deg'})`,
@@ -17,20 +17,24 @@ const iconSx = (isOpen) => ({
 	strokeWidth: 2,
 });
 
-export const Recommendations = ({
-	useActualRecommendationQuery,
-	useRecommendationsHistoryQuery,
-}) => {
+export const Recommendations = ({ deparmentId }) => {
 	const breakpoints = useMaxWidth();
 	const [isOpen, setOpen] = useState(false);
 
+	const { data: chat } = useDepartmentChat(deparmentId);
 	const {
-		data: actualRecommend,
-		isLoading,
-		isError,
-	} = useActualRecommendationQuery();
+		data: recomendations,
+		isLoading: isNotificationsLoading,
+		isError: isNotificationsError,
+	} = useImportantMessages(chat?.id);
 
-	if (isError || isLoading || !actualRecommend) return null;
+	if (
+		isNotificationsError ||
+		isNotificationsLoading ||
+		!recomendations ||
+		recomendations.length === 0
+	)
+		return null;
 
 	return (
 		<Card
@@ -70,16 +74,39 @@ export const Recommendations = ({
 			/>
 			<CardContent>
 				{isOpen ? (
-					<RecommendationsHistory
-						useRecommendationsHistoryQuery={
-							useRecommendationsHistoryQuery
-						}
-					/>
+					recomendations.map((r) => (
+						<RecommendationItem
+							key={r.id}
+							recommendation={r}
+						/>
+					))
 				) : (
-					<RecommendationsActual
-						useActualRecommendationQuery={
-							useActualRecommendationQuery
-						}
+					<RecommendationItem
+						recommendation={recomendations[0]}
+						sx={{
+							alignItems: breakpoints.md ? 'center' : undefined,
+							gap: breakpoints.lg ? 2 : undefined,
+						}}
+						slotProps={{
+							typography: {
+								sx: {
+									display: '-webkit-box',
+									WebkitLineClamp: breakpoints.xxxl
+										? breakpoints.lg
+											? 4
+											: 2
+										: 1,
+									WebkitBoxOrient: 'vertical',
+									overflow: 'hidden',
+									textOverflow: 'ellipsis',
+									maxHeight: breakpoints.xxxl
+										? breakpoints.lg
+											? '6.5rem'
+											: '3.5rem'
+										: '2rem',
+								},
+							},
+						}}
 					/>
 				)}
 			</CardContent>

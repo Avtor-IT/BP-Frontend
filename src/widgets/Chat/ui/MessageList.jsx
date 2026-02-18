@@ -1,9 +1,15 @@
 import { CircularProgress, Stack } from '@mui/material';
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import MessageItem from './MessageItem';
+import { MessageItem } from 'features/Chat';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import {
+	useRef,
+	useState,
+	useLayoutEffect,
+	useEffect,
+	useCallback,
+} from 'react';
 
-const ITEM_HEIGHT = 45 + 8;
+const ITEM_HEIGHT = 35 + 8;
 
 const MessageList = ({
 	messages,
@@ -11,8 +17,8 @@ const MessageList = ({
 	isFetchingNextPage,
 	fetchNextPage,
 	onMessageVisible,
-	listHeight,
-	status: _status,
+	style,
+	...props
 }) => {
 	const parentRef = useRef(null);
 	const topRef = useRef(null);
@@ -23,6 +29,39 @@ const MessageList = ({
 	const prevLastIdRef = useRef(null);
 	const prevScrollRef = useRef(0);
 	const prevTotalSizeRef = useRef(0);
+	const isInitialScrollRef = useRef(true);
+	const allowTopFetchRef = useRef(false);
+	const pendingInitialScrollRef = useRef(false);
+	const [containerHeight, setContainerHeight] = useState(0);
+
+	useLayoutEffect(() => {
+		const element = parentRef.current;
+		if (!element) {
+			return undefined;
+		}
+
+		const updateHeight = () => {
+			setContainerHeight(element.clientHeight);
+		};
+
+		updateHeight();
+
+		if (typeof ResizeObserver === 'undefined') {
+			if (typeof window === 'undefined') {
+				return undefined;
+			}
+
+			window.addEventListener('resize', updateHeight);
+			return () => {
+				window.removeEventListener('resize', updateHeight);
+			};
+		}
+
+		const observer = new ResizeObserver(updateHeight);
+		observer.observe(element);
+
+		return () => observer.disconnect();
+	}, []);
 
 	const virtualizer = useVirtualizer({
 		count: hasNextPage ? messages.length + 1 : messages.length,
@@ -43,7 +82,7 @@ const MessageList = ({
 
 	const items = virtualizer.getVirtualItems();
 	const totalSize = virtualizer.getTotalSize();
-	const pad = Math.max(0, parseInt(listHeight) - totalSize);
+	const pad = Math.max(0, containerHeight - totalSize);
 
 	useEffect(() => {
 		/* observe top for paging */
@@ -56,6 +95,10 @@ const MessageList = ({
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.target.id !== 'top') return;
+					if (!allowTopFetchRef.current) {
+						return;
+					}
+
 					if (
 						entry.isIntersecting &&
 						hasNextPage &&
@@ -75,7 +118,7 @@ const MessageList = ({
 		return () => observer.disconnect();
 	}, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		/* update scrollRef if the messages count changes */
 		if (!messages.length) {
 			countRef.current = 0;
@@ -88,13 +131,16 @@ const MessageList = ({
 		const firstId = messages[0]?.id;
 		const lastId = messages[messages.length - 1]?.id;
 		const lastMessage = messages[messages.length - 1];
-		const totalSize = virtualizer.getTotalSize();
+		const currentTotalSize = virtualizer.getTotalSize();
 
 		if (prevCount == null) {
 			scrollRef.current = {
 				index: messages.length - (hasNextPage ? 0 : 1),
 				align: 'end',
 			};
+			isInitialScrollRef.current = true;
+			allowTopFetchRef.current = false;
+			pendingInitialScrollRef.current = true;
 		} else if (prevCount < messages.length) {
 			const added = messages.length - prevCount;
 			const isPrepend =
@@ -112,7 +158,7 @@ const MessageList = ({
 					index: added + (hasNextPage ? 1 : 0),
 					align: 'top',
 					adjust: {
-						delta: totalSize - prevTotalSizeRef.current,
+						delta: currentTotalSize - prevTotalSizeRef.current,
 						base:
 							parentRef.current.scrollTop ??
 							prevScrollRef.current,
@@ -132,10 +178,10 @@ const MessageList = ({
 		countRef.current = messages.length;
 		prevFirstIdRef.current = firstId;
 		prevLastIdRef.current = lastId;
-		prevTotalSizeRef.current = totalSize;
-	}, [messages, hasNextPage]);
+		prevTotalSizeRef.current = currentTotalSize;
+	}, [messages, hasNextPage, virtualizer]);
 
-	const handleScroll = () => {
+	const handleScroll = useCallback(() => {
 		const element = parentRef.current;
 		if (!element) return;
 
@@ -145,23 +191,45 @@ const MessageList = ({
 
 		isAtBottomRef.current =
 			scrollHeight - scrollTop - clientHeight <= threshold;
-	};
+	}, []);
 
 	useLayoutEffect(() => {
 		/* scroll based on scrollRef */
-		if (scrollRef.current) {
-			requestAnimationFrame(() => {
-				if (!scrollRef.current) return;
-				const { index, align, adjust, behavior } = scrollRef.current;
+		if (!scrollRef.current) {
+			return;
+		}
 
-				if (adjust && parentRef.current) {
-					virtualizer.scrollToOffset(adjust.base + adjust.delta);
-					delete scrollRef.current.adjust;
-				} else {
-					/* Срабатывает при append, надо исправить */
-					virtualizer.scrollToIndex(index, { align, behavior });
+		const { index, align, adjust, behavior } = scrollRef.current;
+
+		if (adjust) {
+			if (!parentRef.current) {
+				return;
+			}
+			virtualizer.scrollToOffset(adjust.base + adjust.delta);
+			scrollRef.current = null;
+			if (pendingInitialScrollRef.current) {
+				allowTopFetchRef.current = true;
+				pendingInitialScrollRef.current = false;
+			}
+			return;
+		}
+
+		const shouldFollowUp = isInitialScrollRef.current;
+		scrollRef.current = null;
+		isInitialScrollRef.current = false;
+
+		if (shouldFollowUp) {
+			requestAnimationFrame(() => {
+				virtualizer.scrollToIndex(index, { align, behavior });
+				if (pendingInitialScrollRef.current) {
+					allowTopFetchRef.current = true;
+					pendingInitialScrollRef.current = false;
 				}
 			});
+		} else if (pendingInitialScrollRef.current) {
+			virtualizer.scrollToIndex(index, { align, behavior });
+			allowTopFetchRef.current = true;
+			pendingInitialScrollRef.current = false;
 		}
 	}, [messages.length, virtualizer]);
 
@@ -170,16 +238,18 @@ const MessageList = ({
 			ref={parentRef}
 			onScroll={handleScroll}
 			style={{
-				height: listHeight,
+				height: '100%',
 				overflow: 'auto',
 				contain: 'strict',
+				...style,
 			}}
+			{...props}
 		>
 			{pad > 0 && <div style={{ height: pad }} />}
 
 			<div
 				style={{
-					height: virtualizer.getTotalSize(),
+					height: totalSize,
 					width: '100%',
 					position: 'relative',
 				}}

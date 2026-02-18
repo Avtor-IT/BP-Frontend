@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { fileToBase64 } from '../lib/toBase64';
+import { fileToBase64 } from 'shared/lib/file';
 
 export const useFiletoBase64 = () =>
 	useMutation({

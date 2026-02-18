@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { CHAT_TYPE } from 'entities/Chat';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
-
-export const CHAT_TYPE = {
-	DEPARTMENT: 'DEPARTMENT',
-	MANAGER: 'MANAGER',
-};
 
 export const useChatWS = ({ roomId, type = CHAT_TYPE.DEPARTMENT }) => {
 	const [url, setUrl] = useState();

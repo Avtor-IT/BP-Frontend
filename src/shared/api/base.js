@@ -34,7 +34,7 @@ class Api {
 				return Promise.resolve(response.data);
 			})
 			.catch((error) => {
-				return Promise.reject(error.response);
+				return Promise.reject(error?.response?.data);
 			});
 	};
 
@@ -45,7 +45,7 @@ class Api {
 				return Promise.resolve(response.data);
 			})
 			.catch((error) => {
-				return Promise.reject(error);
+				return Promise.reject(error?.response?.data);
 			});
 	};
 
@@ -53,10 +53,10 @@ class Api {
 		return instance
 			.delete(url, config)
 			.then((response) => {
-				return Promise.resolve(response);
+				return Promise.resolve(response.data);
 			})
 			.catch((error) => {
-				return Promise.reject(error);
+				return Promise.reject(error?.response?.data);
 			});
 	};
 
@@ -73,7 +73,7 @@ class Api {
 					'application/octet-stream',
 			});
 		} catch (e) {
-			throw Error(e?.response?.data?.error || e);
+			throw Error(e?.response?.data || e);
 		}
 	};
 

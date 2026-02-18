@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-const RenderFile = ({ content, type, ...props }) => {
+export const RenderFile = ({ content, type, ...props }) => {
 	if (content === null) {
 		return (
 			<Box p={2}>
@@ -62,5 +62,3 @@ const RenderFile = ({ content, type, ...props }) => {
 		</pre>
 	) : null;
 };
-
-export default RenderFile;

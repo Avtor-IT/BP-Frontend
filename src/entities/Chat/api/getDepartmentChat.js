@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 
@@ -15,5 +15,16 @@ const getDepartmentChat = async (id) => {
 export const useDepartmentChat = (id) =>
 	useQuery({
 		queryFn: async () => await getDepartmentChat(id),
-		queryKey: [KEY],
+		queryKey: [KEY, id],
+		staleTime: Infinity,
+		enabled: Boolean(id),
+	});
+
+export const useDepartmentChats = (ids) =>
+	useQueries({
+		queries: ids.map((id) => ({
+			queryFn: async () => await getDepartmentChat(id),
+			queryKey: [KEY, id],
+			staleTime: Infinity,
+		})),
 	});
