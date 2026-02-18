@@ -1,32 +1,11 @@
-import { Box, CircularProgress, Modal, Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useEffect, useState } from 'react';
 import useGetBlob from '../hooks/useGetBlob';
 import DownloadDocumentButton from './DownloadDocumentButton';
 import { RenderFile } from 'shared/ui/RenderFile';
 import { formatFileName } from 'shared/lib/file';
-
-const boxStyle = {
-	paddingBlock: 2,
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 800,
-	minHeight: 250,
-	maxHeight: '100vh',
-	display: 'flex',
-	outline: 'none',
-};
-
-const style = {
-	bgcolor: 'background.paper',
-	boxShadow: 24,
-	borderRadius: '8px',
-	overflow: 'auto',
-	flexGrow: 1,
-	p: 2,
-};
+import { Modal } from 'shared/ui/Modal';
 
 const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 	const { data: blob, isError } = useGetBlob(downloadUrl);
@@ -62,27 +41,16 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 				open={open}
 				onClose={onClose}
 			>
-				<Box sx={boxStyle}>
-					<Box
-						sx={{
-							...style,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}
-					>
-						<Typography
-							variant="M24"
-							maxWidth="calc(100% - 2rem)"
-							overflow="hidden"
-							textOverflow="ellipsis"
-						>
-							{!downloadUrl
-								? 'Файл отсутствует на севрере.'
-								: 'Произошла ошибка при загрузке документа.'}
-						</Typography>
-					</Box>
-				</Box>
+				<Typography
+					variant="M24"
+					maxWidth="calc(100% - 2rem)"
+					overflow="hidden"
+					textOverflow="ellipsis"
+				>
+					{!downloadUrl
+						? 'Файл отсутствует на севрере.'
+						: 'Произошла ошибка при загрузке документа.'}
+				</Typography>
 			</Modal>
 		);
 	}
@@ -93,18 +61,14 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 				open={open}
 				onClose={onClose}
 			>
-				<Box sx={boxStyle}>
-					<Box
-						sx={{
-							...style,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}
-					>
-						<CircularProgress color="primary" />
-					</Box>
-				</Box>
+				<Stack
+					width="100%"
+					flexGrow={1}
+					justifyContent="center"
+					alignItems="center"
+				>
+					<CircularProgress color="primary" />
+				</Stack>
 			</Modal>
 		);
 	}
@@ -114,44 +78,43 @@ const DocumentModal = ({ open, onClose, downloadUrl, fileName }) => {
 			open={open}
 			onClose={onClose}
 		>
-			<Box sx={boxStyle}>
+			<Stack
+				gap={2}
+				alignItems="start"
+				justifyContent="start"
+			>
 				<Stack
-					sx={style}
-					gap={2}
+					direction="row"
+					gap={1}
+					alignItems="center"
 				>
-					<Stack
-						direction="row"
-						gap={1}
-						alignItems="center"
+					<Typography
+						variant="M24"
+						maxWidth="calc(100% - 2rem)"
+						overflow="hidden"
+						textOverflow="ellipsis"
 					>
-						<Typography
-							variant="M24"
-							maxWidth="calc(100% - 2rem)"
-							overflow="hidden"
-							textOverflow="ellipsis"
-						>
-							{formatFileName(fileName)}
-						</Typography>
+						{formatFileName(fileName)}
+					</Typography>
 
-						<DownloadDocumentButton
-							downloadUrl={downloadUrl}
-							fileName={fileName}
-							style={{ height: '1rem' }}
-						/>
-					</Stack>
-
-					<Stack
-						flexGrow={1}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<RenderFile
-							content={content}
-							type={blob.type.split(';')[0]}
-						/>
-					</Stack>
+					<DownloadDocumentButton
+						downloadUrl={downloadUrl}
+						fileName={fileName}
+						style={{ height: '1rem' }}
+					/>
 				</Stack>
-			</Box>
+
+				<Stack
+					flexGrow={1}
+					justifyContent="center"
+					alignItems="center"
+				>
+					<RenderFile
+						content={content}
+						type={blob.type.split(';')[0]}
+					/>
+				</Stack>
+			</Stack>
 		</Modal>
 	);
 };

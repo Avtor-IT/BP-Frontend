@@ -1,16 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
 import { Button, Skeleton, Stack, Typography } from '@mui/material';
+import { DocumentModal } from 'entities/Documents';
 import { formatTimestampToShortDate } from 'shared/lib';
-import { DocumentModal, useUploadedFiles } from 'entities/Documents';
 import { formatFileName } from 'shared/lib/file';
+import { MESSAGE_TYPES } from '../model/useMessageItem';
 
-const MESSAGE_TYPES = {
-	USER: 'user',
-	B24: 'b24',
-	IMPORTANT: 'important',
-};
+const getMessageProps = (type, slotProps) => {
+	const rightPadding = slotProps?.listItemText?.pr ?? 0;
 
-const messageProps = (type, slotProps) => {
 	switch (type) {
 		case MESSAGE_TYPES.USER:
 			return {
@@ -59,7 +55,7 @@ const messageProps = (type, slotProps) => {
 					paddingBlock: 1,
 					paddingInline: 2,
 					...slotProps?.listItemText,
-					pr: 20 + slotProps?.listItemText?.pr,
+					pr: 20 + rightPadding,
 				},
 			};
 		case MESSAGE_TYPES.IMPORTANT:
@@ -84,7 +80,7 @@ const messageProps = (type, slotProps) => {
 					paddingBlock: 1,
 					paddingInline: 2,
 					...slotProps?.listItemText,
-					pr: 20 + slotProps?.listItemText?.pr,
+					pr: 20 + rightPadding,
 				},
 			};
 		default:
@@ -123,45 +119,19 @@ const FileItem = ({ file, onClick }) => {
 	);
 };
 
-export const MessageItem = ({
+export const MessageItemView = ({
 	message,
-	onMessageVisible,
+	messageType,
+	messageRef,
 	slotProps,
+	fileQueries,
+	openedFile,
+	onFileOpen,
+	onModalClose,
 	...props
 }) => {
-	const messageRef = useRef(null);
-	const messageType = message.is_important
-		? MESSAGE_TYPES.IMPORTANT
-		: message.sender_type === 'user'
-		? MESSAGE_TYPES.USER
-		: MESSAGE_TYPES.B24;
-
-	const fileQueries = useUploadedFiles(message.attached_ids);
-	const [openedFile, setOpenedFile] = useState(null);
-
-	useEffect(() => {
-		const element = messageRef.current;
-		if (!element) return;
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						onMessageVisible?.(message);
-					}
-				});
-			},
-			{
-				rootMargin: '0px',
-			}
-		);
-
-		observer.observe(element);
-
-		return () => {
-			observer.unobserve(element);
-		};
-	}, [message.id, message, onMessageVisible]);
+	const messageProps = getMessageProps(messageType, slotProps);
+	const attachedIds = message.attached_ids ?? [];
 
 	return (
 		<div
@@ -173,15 +143,12 @@ export const MessageItem = ({
 				pr={1}
 				{...slotProps?.wrapper}
 			>
-				<Stack sx={messageProps(messageType, slotProps)?.sx}>
-					<Typography
-						{...messageProps(messageType, slotProps)?.slotProps
-							.primary}
-					>
+				<Stack sx={messageProps?.sx}>
+					<Typography {...messageProps?.slotProps?.primary}>
 						{message.content}
 					</Typography>
 
-					{!!message.attached_ids.length && (
+					{!!attachedIds.length && (
 						<Stack
 							paddingBlock={1}
 							gap={1}
@@ -192,16 +159,18 @@ export const MessageItem = ({
 										<Skeleton
 											key={i}
 											height="35px"
+											variant="rounded"
 											sx={{
 												backgroundColor:
 													'background.light',
+												borderRadius: 2,
 											}}
 										/>
 									);
 
 								return (
 									<FileItem
-										onClick={() => setOpenedFile(file)}
+										onClick={() => onFileOpen(file)}
 										file={file}
 										key={file?.ID || i}
 									/>
@@ -210,10 +179,7 @@ export const MessageItem = ({
 						</Stack>
 					)}
 
-					<Typography
-						{...messageProps(messageType, slotProps)?.slotProps
-							.secondary}
-					>
+					<Typography {...messageProps?.slotProps?.secondary}>
 						{`${formatTimestampToShortDate(message.timestamp)}\n${
 							message.read ? 'V' : 'O'
 						}`}
@@ -223,7 +189,7 @@ export const MessageItem = ({
 
 			<DocumentModal
 				open={!!openedFile}
-				onClose={() => setOpenedFile(null)}
+				onClose={onModalClose}
 				downloadUrl={openedFile?.DOWNLOAD_URL}
 				fileName={openedFile?.NAME}
 			/>

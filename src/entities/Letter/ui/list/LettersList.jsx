@@ -4,12 +4,13 @@ import useLetters from '../../api/getLetters';
 import LetterActions from '../letter-item/LetterActions';
 import LetterCard from '../letter-item/LetterCard';
 import LetterText from '../letter-item/LetterText';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { VirtualizedLettersList } from './VirtualizedLettersList';
 import { useMaxWidth } from 'shared/model';
 import { EmptyListIcon } from 'shared/icons/EmptyList';
+import { Modal } from 'shared/ui/Modal';
 
-const LetterItemTemplate = ({ letter }) => {
+const LetterItemTemplate = ({ letter, onExpand }) => {
 	return (
 		<Grid
 			container
@@ -32,7 +33,10 @@ const LetterItemTemplate = ({ letter }) => {
 				order={{ lg: 2, xs: 3 }}
 			>
 				{letter ? (
-					<LetterText text={letter.content.letter.text} />
+					<LetterText
+						text={letter.content.letter.text}
+						onExpand={onExpand}
+					/>
 				) : (
 					<Skeleton
 						variant="rounded"
@@ -77,6 +81,7 @@ const LettersList = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useLetters();
+	const [openenLetter, setOpenedLetter] = useState(null);
 
 	const sentinelRef = useRef(null);
 
@@ -132,11 +137,29 @@ const LettersList = () => {
 			width="100%"
 			pb={4}
 		>
+			<Modal
+				open={!!openenLetter}
+				onClose={() => setOpenedLetter(null)}
+			>
+				<Stack gap={2}>
+					<Typography variant="M20">
+						{openenLetter?.subject}
+					</Typography>
+					<Typography variant="R16">
+						{openenLetter?.content.letter.text}
+					</Typography>
+				</Stack>
+			</Modal>
 			<VirtualizedLettersList
 				items={letters}
 				itemHeight={breakpoints.md ? 340 : breakpoints.lg ? 280 : 200}
 				overscan={4}
-				renderItem={(letter) => <LetterItemTemplate letter={letter} />}
+				renderItem={(letter) => (
+					<LetterItemTemplate
+						letter={letter}
+						onExpand={() => setOpenedLetter(letter)}
+					/>
+				)}
 			/>
 
 			<div ref={sentinelRef} />

@@ -1,5 +1,4 @@
 import { CircularProgress, Stack } from '@mui/material';
-import { MessageItem } from 'features/Chat';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
 	useRef,
@@ -8,6 +7,7 @@ import {
 	useEffect,
 	useCallback,
 } from 'react';
+import { MessageItem } from './MessageItem';
 
 const ITEM_HEIGHT = 35 + 8;
 

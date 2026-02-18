@@ -6,3 +6,4 @@ export { default as UploadDocument } from './ui/UploadDocument';
 export { default as useCompanyDocuments } from './hooks/useCompanyDocuments';
 export { useUploadedFiles } from './api/getUploadedFile';
 export { default as DocumentModal } from './ui/DocumentModal';
+export { usePrepareAndUploadFile } from './hooks/useUploadFileMutation';

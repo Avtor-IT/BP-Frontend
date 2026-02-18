@@ -3,7 +3,7 @@ import { ExpandIcon } from 'shared/icons/Expand';
 import { useMaxWidth } from 'shared/model';
 import { FadedScrollBox } from 'shared/ui/Scrollable';
 
-const LetterText = ({ text }) => {
+const LetterText = ({ text, onExpand }) => {
 	const breakpoints = useMaxWidth();
 
 	return (
@@ -32,7 +32,10 @@ const LetterText = ({ text }) => {
 						Текст письма:
 					</Typography>
 
-					<IconButton sx={{ padding: 0 }}>
+					<IconButton
+						sx={{ padding: 0 }}
+						onClick={() => onExpand?.()}
+					>
 						<ExpandIcon />
 					</IconButton>
 				</Stack>

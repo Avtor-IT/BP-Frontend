@@ -8,8 +8,7 @@ import { useChatWS } from '../model/useChatWS';
 import { updateMessages } from '../model/updateMessagesCache';
 import { PaperClipIcon } from 'shared/icons/Paperclip';
 import { ArrowEnterIcon } from 'shared/icons/ArrowEnter';
-// eslint-disable-next-line no-restricted-imports
-import { usePrepareAndUploadFile } from 'entities/Documents/@X/Chat';
+import { usePrepareAndUploadFile } from 'entities/Documents';
 
 const SendMessageForm = ({ roomId, type }) => {
 	const queryClient = useQueryClient();
