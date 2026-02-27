@@ -1,15 +1,42 @@
 import { Box, IconButton, Skeleton, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import ChatHistory from './ChatHistory';
 import { SendMessageForm } from 'features/Chat';
-import { useDepartmentChat } from 'entities/Chat';
+import { CHAT_TYPE, useDepartmentChat, useManagerChat } from 'entities/Chat';
 import { CloseIcon } from 'shared/icons/Close';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoutes, RoutePath } from 'shared/router';
+import { useDepartmentById } from 'entities/Department';
 
 const Chat = ({ roomId, type, ...props }) => {
 	const navigate = useNavigate();
-	const { data: chat, isLoading, isError } = useDepartmentChat(roomId);
+	const {
+		data: chat,
+		isLoading,
+		isError,
+	} = type === CHAT_TYPE.DEPARTMENT
+		? useDepartmentChat(roomId)
+		: useManagerChat();
+
+	const {
+		data: department,
+		isLoading: isDepartmentLoading,
+		isError: isDepartmentError,
+	} = useDepartmentById(chat?.department_id);
+
+	const chatName = useMemo(() => {
+		if (type === CHAT_TYPE.MANAGER) return 'Менеджер';
+
+		if (isDepartmentLoading)
+			return (
+				<Skeleton
+					variant="text"
+					width="200px"
+				/>
+			);
+		if (isDepartmentError) return 'Ошибка при получении названия чата';
+		return department?.result?.name;
+	}, [department]);
 
 	useEffect(() => {
 		const handleKeyDown = (event) => {
@@ -60,7 +87,7 @@ const Chat = ({ roomId, type, ...props }) => {
 					paddingBlock={4}
 					borderRadius={4}
 				>
-					<Typography variant="M24">Чат с кем?</Typography>
+					<Typography variant="M24">{chatName}</Typography>
 					<IconButton
 						sx={{ color: 'secondary.contrastText' }}
 						component={Link}
@@ -80,7 +107,10 @@ const Chat = ({ roomId, type, ...props }) => {
 						flexGrow={1}
 						minHeight={0}
 					>
-						<ChatHistory chatId={chat.id} />
+						<ChatHistory
+							chatId={chat.id}
+							type={type}
+						/>
 					</Box>
 
 					<SendMessageForm

@@ -55,7 +55,7 @@ const getMessageProps = (type, slotProps) => {
 					paddingBlock: 1,
 					paddingInline: 2,
 					...slotProps?.listItemText,
-					pr: 20 + rightPadding,
+					pr: 20 + rightPadding + 'px',
 				},
 			};
 		case MESSAGE_TYPES.IMPORTANT:
@@ -80,7 +80,7 @@ const getMessageProps = (type, slotProps) => {
 					paddingBlock: 1,
 					paddingInline: 2,
 					...slotProps?.listItemText,
-					pr: 20 + rightPadding,
+					pr: 20 + rightPadding + 'px',
 				},
 			};
 		default:

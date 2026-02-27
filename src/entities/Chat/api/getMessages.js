@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
+import { CHAT_TYPE } from '../model/constants';
 
 export const MESSAGES_KEY = apiEndpoints.CHAT_MESSAGES;
 
@@ -8,6 +9,12 @@ const getMessages = async (chat_room_id, page = 1, page_size = 10) => {
 	return await api.Get(apiEndpoints.CHAT_MESSAGES, {
 		params: { page, page_size },
 		urlParams: { chat_room_id },
+	});
+};
+
+const getManagerMessages = async (page = 1, page_size = 10) => {
+	return await api.Get(apiEndpoints.MANAGER_MESSAGES, {
+		params: { page, page_size },
 	});
 };
 
@@ -51,10 +58,14 @@ const dedupePagesById = (pages) => {
 	return changed ? nextPages : pages;
 };
 
-const useMessages = (chat_room_id) =>
+const useMessages = (chat_room_id, type) =>
 	useInfiniteQuery({
-		queryKey: [MESSAGES_KEY, chat_room_id],
-		queryFn: ({ pageParam }) => getMessages(chat_room_id, pageParam),
+		queryKey: [MESSAGES_KEY, chat_room_id, type],
+		queryFn: ({ pageParam }) =>
+			type === CHAT_TYPE.DEPARTMENT
+				? getMessages(chat_room_id, pageParam)
+				: getManagerMessages(pageParam),
+
 		getNextPageParam: (lastpage) => lastpage.next_page,
 		select: (data) => {
 			const pages = dedupePagesById(data.pages);

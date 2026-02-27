@@ -3,10 +3,13 @@ import {
 	ListItemAvatar,
 	ListItemButton,
 	ListItemText,
+	Skeleton,
 	Stack,
 	Typography,
 } from '@mui/material';
 import { useMessagesCount } from 'entities/Chat';
+import { useDepartmentById } from 'entities/Department';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { formatTimestampToShortDate } from 'shared/lib';
 
@@ -16,6 +19,25 @@ export const ChatItem = ({ chat }) => {
 	const isRead = lastMessage?.read;
 
 	const chatType = chat.department_id ? 'b24' : 'manager';
+	const {
+		data: department,
+		isLoading,
+		isError,
+	} = useDepartmentById(chat.department_id);
+
+	const chatName = useMemo(() => {
+		if (chatType === 'manager') return 'Менеджер';
+
+		if (isLoading)
+			return (
+				<Skeleton
+					variant="text"
+					width="200px"
+				/>
+			);
+		if (isError) return 'Ошибка при получении названия чата';
+		return department?.result?.name;
+	}, [department]);
 
 	const { data } = useMessagesCount({
 		sender_type: chatType,
@@ -74,9 +96,7 @@ export const ChatItem = ({ chat }) => {
 							: 'textPrimary.default',
 					},
 				}}
-				primary={`b24 id: ${
-					chat['manager_id'] || chat['department_id']
-				}`}
+				primary={chatName}
 				secondary={lastMessage ? lastMessage.content : 'Нет сообщений'}
 			/>
 

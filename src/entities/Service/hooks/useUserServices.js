@@ -12,6 +12,7 @@ const useUserServices = () =>
 	useQuery({
 		queryKey: [KEY],
 		queryFn: getUserServices,
+		staleTime: Infinity,
 	});
 
 export default useUserServices;

@@ -9,7 +9,7 @@ export const DepartmentChatById = ({ id }) => {
 		return (
 			<Skeleton
 				variant="rounded"
-				height="65px"
+				height="112px"
 				sx={{ marginBlock: 3 }}
 			/>
 		);

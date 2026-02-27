@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { AppRoutes, RoutePath } from 'shared/router';
 import { useEffect, useMemo } from 'react';
 
-const ChatHistory = ({ chatId, ...props }) => {
+const ChatHistory = ({ chatId, type, ...props }) => {
 	const {
 		data: messages,
 		isError: isMessagesError,
@@ -15,7 +15,7 @@ const ChatHistory = ({ chatId, ...props }) => {
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-	} = useMessages(chatId);
+	} = useMessages(chatId, type);
 
 	const messageList = useMemo(() => {
 		if (!messages) {
@@ -24,7 +24,7 @@ const ChatHistory = ({ chatId, ...props }) => {
 		return messages.pages.flatMap((page) => page.results).reverse();
 	}, [messages]);
 
-	const handleMessageVisibility = useReadMessageOnVisible(chatId);
+	const handleMessageVisibility = useReadMessageOnVisible(chatId, type);
 
 	const navigate = useNavigate();
 	useEffect(() => {

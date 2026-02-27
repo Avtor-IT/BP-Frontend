@@ -14,14 +14,14 @@ const readMessage = async (message_id) => {
 	);
 };
 
-const useReadMessage = (chat_room_id) => {
+const useReadMessage = (chat_room_id, type) => {
 	const qc = useQueryClient();
 
 	return useMutation({
 		mutationFn: async (message_id) => await readMessage(message_id),
-		mutationKey: [KEY, (message_id) => message_id],
+		mutationKey: [KEY, chat_room_id, type],
 		onSuccess: (result) => {
-			qc.setQueryData([MESSAGES_KEY, chat_room_id], (oldData) => {
+			qc.setQueryData([MESSAGES_KEY, chat_room_id, type], (oldData) => {
 				const newPages = oldData.pages.map((page) => {
 					const messageIndex = page.results.findIndex(
 						(message) => message.id === result.message_id
