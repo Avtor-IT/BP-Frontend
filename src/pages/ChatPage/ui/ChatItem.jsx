@@ -45,6 +45,8 @@ export const ChatItem = ({ chat }) => {
 		read: false,
 	});
 
+	console.log(lastMessage);
+
 	return (
 		<ListItemButton
 			sx={{
@@ -97,7 +99,35 @@ export const ChatItem = ({ chat }) => {
 					},
 				}}
 				primary={chatName}
-				secondary={lastMessage ? lastMessage.content : 'Нет сообщений'}
+				secondary={
+					lastMessage ? (
+						<>
+							{lastMessage.sender_type === 'user' && (
+								<Typography
+									variant="R16"
+									color="tertiary.main"
+								>
+									Вы:
+								</Typography>
+							)}{' '}
+							{lastMessage.content && (
+								<Typography variant="R16">
+									{lastMessage.content}
+								</Typography>
+							)}{' '}
+							{!!lastMessage.attached_ids.length && (
+								<Typography
+									variant="R16"
+									color="tertiary.main"
+								>
+									[вложения]
+								</Typography>
+							)}
+						</>
+					) : (
+						'Нет сообщений'
+					)
+				}
 			/>
 
 			<Stack

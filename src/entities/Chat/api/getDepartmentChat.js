@@ -2,7 +2,7 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { api } from 'shared/api';
 import { apiEndpoints } from 'shared/model';
 
-const KEY = apiEndpoints.DEPARTMENT_CHAT;
+export const DEPARTMENT_CHAT_KEY = apiEndpoints.DEPARTMENT_CHAT;
 
 const getDepartmentChat = async (id) => {
 	return await api.Get(apiEndpoints.DEPARTMENT_CHAT, {
@@ -15,7 +15,7 @@ const getDepartmentChat = async (id) => {
 export const useDepartmentChat = (id) =>
 	useQuery({
 		queryFn: async () => await getDepartmentChat(id),
-		queryKey: [KEY, id],
+		queryKey: [DEPARTMENT_CHAT_KEY, id],
 		staleTime: Infinity,
 		enabled: Boolean(id),
 	});
@@ -24,7 +24,7 @@ export const useDepartmentChats = (ids) =>
 	useQueries({
 		queries: ids.map((id) => ({
 			queryFn: async () => await getDepartmentChat(id),
-			queryKey: [KEY, id],
+			queryKey: [DEPARTMENT_CHAT_KEY, id],
 			staleTime: Infinity,
 		})),
 	});

@@ -11,7 +11,6 @@ const useChatList = () =>
 	useQuery({
 		queryFn: getChatList,
 		queryKey: [KEY],
-		staleTime: Infinity,
 	});
 
 export default useChatList;

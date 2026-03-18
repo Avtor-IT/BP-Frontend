@@ -2,13 +2,17 @@ import { Chip, IconButton, Stack, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from 'entities/User';
 import { useEffect, useRef, useState } from 'react';
-import { CHAT_LIST_KEY } from 'entities/Chat';
-import { apiEndpoints } from 'shared/model';
+import {
+	CHAT_TYPE,
+	DEPARTMENT_CHAT_KEY,
+	MANAGER_CHAT_KEY,
+} from 'entities/Chat';
 import { useChatWS } from '../model/useChatWS';
 import { updateMessages } from '../model/updateMessagesCache';
 import { PaperClipIcon } from 'shared/icons/Paperclip';
 import { ArrowEnterIcon } from 'shared/icons/ArrowEnter';
 import { usePrepareAndUploadFile } from 'entities/Documents';
+import { MESSAGES_KEY } from 'entities/Chat';
 
 const SendMessageForm = ({ roomId, type }) => {
 	const queryClient = useQueryClient();
@@ -57,11 +61,17 @@ const SendMessageForm = ({ roomId, type }) => {
 	const onMessageHandler = (lastJsonMessage) => {
 		const msg = lastJsonMessage;
 
-		queryClient.setQueryData(
-			[apiEndpoints.CHAT_MESSAGES, roomId],
-			(oldData) => updateMessages(oldData, msg)
+		queryClient.setQueryData([MESSAGES_KEY, roomId, type], (oldData) =>
+			updateMessages(oldData, msg)
 		);
-		queryClient.invalidateQueries({ queryKey: [CHAT_LIST_KEY] });
+
+		queryClient.invalidateQueries({
+			queryKey: [
+				type === CHAT_TYPE.MANAGER
+					? MANAGER_CHAT_KEY
+					: DEPARTMENT_CHAT_KEY,
+			],
+		});
 	};
 
 	const uploadFiles = (files, params) =>
